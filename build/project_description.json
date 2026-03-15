@@ -1,7 +1,7 @@
 {
     "version":            "1",
     "project_name":       "ENDAP",
-    "project_version":    "e2c4493-dirty",
+    "project_version":    "kernel-v1-3-g9fb2fe6-dirty",
     "project_path":       "/home/mateus/dev/projects/ENDAP",
     "idf_path":           "/home/mateus/esp/esp-idf",
     "build_dir":          "/home/mateus/dev/projects/ENDAP/build",
