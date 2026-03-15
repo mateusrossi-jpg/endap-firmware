@@ -46,6 +46,7 @@
 
 #include "scheduler.h"
 #include "runtime_monitor.h"
+#include "automation_engine.h"
 
 /* ============================================================
    SAFETY
@@ -117,6 +118,12 @@ static void core_init_services(void)
     /* Snapshot system */
 
     snapshot_init();
+
+    /* ============================================================
+       AUTOMATION ENGINE
+    ============================================================ */
+
+    automation_engine_init();   // <<< ADICIONADO
 }
 
 /* ============================================================

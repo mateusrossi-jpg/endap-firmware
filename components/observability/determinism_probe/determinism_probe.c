@@ -6,21 +6,34 @@
 
 #define TAG "DET_PROBE"
 
-static uint64_t start;
+static uint64_t start_time;
 static uint32_t cycles;
 
 static uint32_t min = UINT32_MAX;
 static uint32_t max = 0;
 static uint64_t sum = 0;
 
+/* ============================================================
+   CYCLE START
+============================================================ */
+
 void IRAM_ATTR determinism_probe_cycle_start(uint64_t now)
 {
-    start = now;
+    start_time = now;
 }
+
+/* ============================================================
+   CYCLE END
+============================================================ */
 
 void IRAM_ATTR determinism_probe_cycle_end(uint64_t now)
 {
-    uint32_t dt = (uint32_t)(now - start);
+    uint64_t dt;
+
+    if (now >= start_time)
+        dt = now - start_time;
+    else
+        dt = 0;
 
     if (dt < min) min = dt;
     if (dt > max) max = dt;
@@ -32,10 +45,11 @@ void IRAM_ATTR determinism_probe_cycle_end(uint64_t now)
     if ((cycles & 1023) == 0)
     {
         ESP_LOGI(TAG,
-        "cycles=%" PRIu32 " jitter(min/avg/max)=%" PRIu32 "/%" PRIu32 "/%" PRIu32 " us",
-        cycles,
-        min,
-        (uint32_t)(sum / cycles),
-        max);
+            "cycles=%" PRIu32
+            " jitter(min/avg/max)=%" PRIu32 "/%" PRIu32 "/%" PRIu32 " us",
+            cycles,
+            min,
+            (uint32_t)(sum / cycles),
+            max);
     }
 }

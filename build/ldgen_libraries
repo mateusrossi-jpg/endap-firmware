@@ -70,6 +70,7 @@
 /home/mateus/dev/projects/ENDAP/build/esp-idf/fieldbus/libfieldbus.a
 /home/mateus/dev/projects/ENDAP/build/esp-idf/state/libstate.a
 /home/mateus/dev/projects/ENDAP/build/esp-idf/logger/liblogger.a
+/home/mateus/dev/projects/ENDAP/build/esp-idf/event_bus/libevent_bus.a
 /home/mateus/dev/projects/ENDAP/build/esp-idf/snapshot/libsnapshot.a
 /home/mateus/dev/projects/ENDAP/build/esp-idf/runtime_monitor/libruntime_monitor.a
 /home/mateus/dev/projects/ENDAP/build/esp-idf/deterministic_snapshot/libdeterministic_snapshot.a
@@ -79,7 +80,9 @@
 /home/mateus/dev/projects/ENDAP/build/esp-idf/determinism_probe/libdeterminism_probe.a
 /home/mateus/dev/projects/ENDAP/build/esp-idf/kernel_trace/libkernel_trace.a
 /home/mateus/dev/projects/ENDAP/build/esp-idf/kernel_metrics/libkernel_metrics.a
+/home/mateus/dev/projects/ENDAP/build/esp-idf/phase_monitor/libphase_monitor.a
 /home/mateus/dev/projects/ENDAP/build/esp-idf/control_loop/libcontrol_loop.a
+/home/mateus/dev/projects/ENDAP/build/esp-idf/automation/libautomation.a
 /home/mateus/dev/projects/ENDAP/build/esp-idf/core/libcore.a
 /home/mateus/dev/projects/ENDAP/build/esp-idf/main/libmain.a
 /home/mateus/dev/projects/ENDAP/build/esp-idf/hal_layer/libhal_layer.a

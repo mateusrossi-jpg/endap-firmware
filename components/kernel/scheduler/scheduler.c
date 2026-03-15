@@ -4,6 +4,7 @@
 #include "io_image.h"
 #include "fieldbus.h"
 #include "control_kernel.h"
+#include "event_bus.h"
 
 void IRAM_ATTR scheduler_run_io(void)
 {
@@ -23,6 +24,7 @@ void IRAM_ATTR scheduler_run_automation(void)
 
 void IRAM_ATTR scheduler_run_events(void)
 {
+  event_bus_dispatch();
 }
 
 void IRAM_ATTR scheduler_run_diagnostics(void)

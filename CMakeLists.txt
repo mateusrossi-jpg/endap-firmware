@@ -14,6 +14,8 @@ set(EXTRA_COMPONENT_DIRS
     components/runtime/runtime_monitor
     components/runtime/snapshot
     components/runtime/latency_histogram
+    components/runtime/event_bus
+    components/runtime/automation
 
     components/data/io_image
     components/data/state
@@ -30,6 +32,7 @@ set(EXTRA_COMPONENT_DIRS
     components/observability/determinism_probe
     components/observability/kernel_trace
     components/observability/kernel_metrics
+    components/observability/phase_monitor
 )
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)

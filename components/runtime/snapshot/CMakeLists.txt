@@ -5,4 +5,5 @@ idf_component_register(
     PRIV_REQUIRES
         state
         logger
+        event_bus
 )

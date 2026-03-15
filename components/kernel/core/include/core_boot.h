@@ -1,6 +1,11 @@
-#ifndef CORE_BOOT_H
-#define CORE_BOOT_H
+#pragma once
 
-void core_boot(void);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+void control_loop_start(void);
+
+#ifdef __cplusplus
+}
 #endif

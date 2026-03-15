@@ -70,6 +70,7 @@ $<TARGET_FILE:__idf_latency_histogram>
 $<TARGET_FILE:__idf_fieldbus>
 $<TARGET_FILE:__idf_state>
 $<TARGET_FILE:__idf_logger>
+$<TARGET_FILE:__idf_event_bus>
 $<TARGET_FILE:__idf_snapshot>
 $<TARGET_FILE:__idf_runtime_monitor>
 $<TARGET_FILE:__idf_deterministic_snapshot>
@@ -79,7 +80,9 @@ $<TARGET_FILE:__idf_scheduler>
 $<TARGET_FILE:__idf_determinism_probe>
 $<TARGET_FILE:__idf_kernel_trace>
 $<TARGET_FILE:__idf_kernel_metrics>
+$<TARGET_FILE:__idf_phase_monitor>
 $<TARGET_FILE:__idf_control_loop>
+$<TARGET_FILE:__idf_automation>
 $<TARGET_FILE:__idf_core>
 $<TARGET_FILE:__idf_main>
 $<TARGET_FILE:__idf_hal_layer>

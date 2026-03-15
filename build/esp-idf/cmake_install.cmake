@@ -454,6 +454,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("/home/mateus/dev/projects/ENDAP/build/esp-idf/event_bus/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("/home/mateus/dev/projects/ENDAP/build/esp-idf/snapshot/cmake_install.cmake")
 endif()
 
@@ -499,7 +504,17 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("/home/mateus/dev/projects/ENDAP/build/esp-idf/phase_monitor/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("/home/mateus/dev/projects/ENDAP/build/esp-idf/control_loop/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("/home/mateus/dev/projects/ENDAP/build/esp-idf/automation/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

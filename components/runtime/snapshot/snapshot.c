@@ -1,5 +1,6 @@
 #include "snapshot.h"
 #include "state.h"
+#include "event_bus.h"
 
 #include "esp_timer.h"
 #include <string.h>
@@ -39,7 +40,7 @@ MARK DIRTY
 void snapshot_mark_dirty(void)
 {
     snapshot_dirty = true;
-    last_change = esp_timer_get_time()/1000;
+    last_change = esp_timer_get_time() / 1000;
 }
 
 /* ============================================================
@@ -55,38 +56,58 @@ uint32_t snapshot_get_crc(void)
 EXPORT
 ============================================================ */
 
-uint16_t snapshot_export(uint8_t *buffer,uint16_t max_len)
+uint16_t snapshot_export(uint8_t *buffer, uint16_t max_len)
 {
-    if(!buffer)
+    if (!buffer)
         return 0;
 
     uint16_t pos = 0;
 
-    for(uint16_t id=0;id<STATE_MAX_ENTRIES;id++)
+    for (uint16_t id = 0; id < STATE_MAX_ENTRIES; id++)
     {
-        if(!state_is_dirty(id))
+        if (!state_is_dirty(id))
             continue;
 
-        if(pos + 6 > max_len)
+        if (pos + 6 > max_len)
             break;
 
         int32_t value;
 
-        if(!state_get_int(id,&value))
+        if (!state_get_int(id, &value))
             continue;
+
+        /* ============================================================
+           EVENT GENERATION
+        ============================================================ */
+
+        endap_event_t ev = {
+            .type = EVENT_INPUT_CHANGE,
+            .source = id,
+            .data = value
+        };
+
+        event_bus_publish(ev);
+
+        /* ============================================================
+           SNAPSHOT EXPORT
+        ============================================================ */
 
         buffer[pos++] = id & 0xFF;
         buffer[pos++] = id >> 8;
 
-        memcpy(&buffer[pos],&value,sizeof(int32_t));
+        memcpy(&buffer[pos], &value, sizeof(int32_t));
         pos += sizeof(int32_t);
 
         state_clear_dirty(id);
     }
 
+    /* ============================================================
+       CRC CALCULATION
+    ============================================================ */
+
     uint32_t crc = 0;
 
-    for(uint16_t i=0;i<pos;i++)
+    for (uint16_t i = 0; i < pos; i++)
         crc ^= buffer[i];
 
     snapshot_crc = crc;
@@ -102,13 +123,13 @@ static void snapshot_save(void)
 {
     uint8_t buffer[512];
 
-    uint16_t len = snapshot_export(buffer,sizeof(buffer));
+    uint16_t len = snapshot_export(buffer, sizeof(buffer));
 
-    if(len == 0)
+    if (len == 0)
         return;
 
-    if(storage)
-        storage->write(buffer,len);
+    if (storage)
+        storage->write(buffer, len);
 
     snapshot_dirty = false;
 }
@@ -119,11 +140,11 @@ PROCESS
 
 void snapshot_process(void)
 {
-    if(!snapshot_dirty)
+    if (!snapshot_dirty)
         return;
 
-    int64_t now = esp_timer_get_time()/1000;
+    int64_t now = esp_timer_get_time() / 1000;
 
-    if((now - last_change) >= SNAPSHOT_DEBOUNCE_MS)
+    if ((now - last_change) >= SNAPSHOT_DEBOUNCE_MS)
         snapshot_save();
 }

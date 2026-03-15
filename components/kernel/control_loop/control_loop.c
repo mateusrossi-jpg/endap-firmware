@@ -17,8 +17,8 @@
 
 #include "determinism_probe.h"
 #include "kernel_trace.h"
-#include "control_loop_metrics.h"
 #include "kernel_metrics.h"
+#include "phase_monitor.h"
 
 #define TAG "CTRL_LOOP"
 
@@ -26,8 +26,25 @@
 #define LOOP_WARN_US   3000
 #define BOOT_IGNORE_CYCLES 2000
 
+#define DEADLINE_FAULT_THRESHOLD 200
+
+/* ============================================================
+   STATIC TASK (NO HEAP)
+============================================================ */
+
+static StackType_t control_stack[4096];
+static StaticTask_t control_task_buffer;
+
+/* ============================================================
+   TIMER
+============================================================ */
+
 static gptimer_handle_t loop_timer = NULL;
 static TaskHandle_t control_task_handle = NULL;
+
+/* ============================================================
+   RUNTIME STATE
+============================================================ */
 
 static uint64_t expected_cycle_time = 0;
 static uint32_t cycle_counter = 0;
@@ -44,20 +61,33 @@ static uint64_t exec_max = 0;
 static uint32_t deadline_miss = 0;
 static uint32_t overrun_count = 0;
 
+/* ============================================================
+   PHASE METRICS
+============================================================ */
+
 static uint32_t phase_io_max = 0;
 static uint32_t phase_fieldbus_max = 0;
 static uint32_t phase_automation_max = 0;
 static uint32_t phase_events_max = 0;
 static uint32_t phase_diag_max = 0;
 
+static uint32_t *phase_max_table[] =
+{
+    &phase_io_max,
+    &phase_fieldbus_max,
+    &phase_automation_max,
+    &phase_events_max,
+    &phase_diag_max
+};
 
 /* ============================================================
-   SCHEDULER TABLE
+   SCHEDULER TABLE (CONST = DETERMINISTIC)
 ============================================================ */
 
 typedef void (*phase_fn_t)(void);
 
-static phase_fn_t phase_table[] = {
+static const phase_fn_t phase_table[] =
+{
     scheduler_run_io,
     scheduler_run_fieldbus,
     scheduler_run_automation,
@@ -66,7 +96,6 @@ static phase_fn_t phase_table[] = {
 };
 
 #define PHASE_COUNT (sizeof(phase_table) / sizeof(phase_fn_t))
-
 
 /* ============================================================
    TIMER ISR
@@ -84,7 +113,6 @@ static bool IRAM_ATTR timer_callback(
     return hp == pdTRUE;
 }
 
-
 /* ============================================================
    FAST TIMER READ
 ============================================================ */
@@ -96,9 +124,8 @@ static inline IRAM_ATTR uint64_t read_time(void)
     return t;
 }
 
-
 /* ============================================================
-   CONTROL LOOP
+   CONTROL LOOP TASK
 ============================================================ */
 
 static void IRAM_ATTR control_loop_run(void *arg)
@@ -137,55 +164,37 @@ static void IRAM_ATTR control_loop_run(void *arg)
 
             jitter_sum += j;
             jitter_samples++;
-
-            if (j > LOOP_WARN_US && (cycle_counter & 1023) == 0)
-                ESP_LOGW(TAG, "loop delay %" PRIu64 " us", j);
         }
 
-        while (start > expected_cycle_time)
-            expected_cycle_time += LOOP_PERIOD_US;
+        if (start > expected_cycle_time)
+        {
+            uint64_t diff = start - expected_cycle_time;
+            expected_cycle_time += ((diff / LOOP_PERIOD_US) + 1) * LOOP_PERIOD_US;
+        }
 
         determinism_probe_cycle_start(start);
         kernel_trace_cycle_start(start);
 
         /* ============================================================
-           PHASE EXECUTION (SCHEDULER TABLE)
+           PHASE EXECUTION
         ============================================================ */
 
-        for (int i = 0; i < PHASE_COUNT; i++)
+        for (uint8_t i = 0; i < PHASE_COUNT; i++)
         {
-            uint64_t p0 = read_time();
+            uint64_t t_before = read_time();
 
             phase_table[i]();
 
-            uint64_t p1 = read_time();
-            uint32_t dt = p1 - p0;
+            uint64_t dt = read_time() - t_before;
 
-            switch (i)
-            {
-                case 0:
-                    if (dt > phase_io_max) phase_io_max = dt;
-                    break;
+            if (dt > *phase_max_table[i])
+                *phase_max_table[i] = (uint32_t)dt;
 
-                case 1:
-                    if (dt > phase_fieldbus_max) phase_fieldbus_max = dt;
-                    break;
-
-                case 2:
-                    if (dt > phase_automation_max) phase_automation_max = dt;
-                    break;
-
-                case 3:
-                    if (dt > phase_events_max) phase_events_max = dt;
-                    break;
-
-                case 4:
-                    if (dt > phase_diag_max) phase_diag_max = dt;
-                    break;
-            }
+            phase_monitor_check(i, (uint32_t)dt);
         }
 
         uint64_t end = read_time();
+
         uint64_t exec = end - start;
 
         if (exec < exec_min) exec_min = exec;
@@ -193,11 +202,17 @@ static void IRAM_ATTR control_loop_run(void *arg)
 
         if (exec > LOOP_PERIOD_US)
         {
+            deadline_miss++;
+
             ESP_LOGE(TAG,
                 "deadline miss exec=%" PRIu64 " us",
                 exec);
 
-            deadline_miss++;
+            if (deadline_miss > DEADLINE_FAULT_THRESHOLD)
+            {
+                ESP_LOGE(TAG,"KERNEL FAULT: too many deadline misses");
+                esp_system_abort("control loop deadline fault");
+            }
         }
 
         determinism_probe_cycle_end(end);
@@ -222,81 +237,58 @@ static void IRAM_ATTR control_loop_run(void *arg)
                 jitter_max,
                 exec_min,
                 exec_max);
-
-            ESP_LOGI(TAG,
-                "phase max(us): io=%" PRIu32
-                " fieldbus=%" PRIu32
-                " automation=%" PRIu32
-                " events=%" PRIu32
-                " diag=%" PRIu32,
-                phase_io_max,
-                phase_fieldbus_max,
-                phase_automation_max,
-                phase_events_max,
-                phase_diag_max);
         }
 
         watchdog_feed(WD_CONTROL_LOOP);
     }
 }
 
-
 /* ============================================================
-   START CONTROL LOOP
+   CONTROL LOOP START
 ============================================================ */
 
 void control_loop_start(void)
 {
-    kernel_metrics_init();
+    ESP_LOGI(TAG,"Initializing control loop");
 
-    xTaskCreatePinnedToCore(
-        control_loop_run,
-        "CONTROL_LOOP",
-        3072,
-        NULL,
-        configMAX_PRIORITIES - 1,
-        &control_task_handle,
-        1);
-
-    gptimer_config_t config = {
+    gptimer_config_t timer_config =
+    {
         .clk_src = GPTIMER_CLK_SRC_DEFAULT,
         .direction = GPTIMER_COUNT_UP,
         .resolution_hz = 1000000
     };
 
-    gptimer_new_timer(&config, &loop_timer);
+    ESP_ERROR_CHECK(gptimer_new_timer(&timer_config, &loop_timer));
 
-    gptimer_event_callbacks_t cbs = {
+    gptimer_event_callbacks_t cbs =
+    {
         .on_alarm = timer_callback
     };
 
-    gptimer_register_event_callbacks(loop_timer, &cbs, NULL);
+    ESP_ERROR_CHECK(gptimer_register_event_callbacks(loop_timer, &cbs, NULL));
 
-    gptimer_alarm_config_t alarm = {
-        .reload_count = 0,
+    gptimer_alarm_config_t alarm_config =
+    {
         .alarm_count = LOOP_PERIOD_US,
+        .reload_count = 0,
         .flags.auto_reload_on_alarm = true
     };
 
-    gptimer_set_alarm_action(loop_timer, &alarm);
+    ESP_ERROR_CHECK(gptimer_set_alarm_action(loop_timer, &alarm_config));
 
-    gptimer_enable(loop_timer);
-    gptimer_start(loop_timer);
+    control_task_handle = xTaskCreateStaticPinnedToCore(
+    control_loop_run,
+    "control_loop",
+    4096,
+    NULL,
+    configMAX_PRIORITIES - 1,
+    control_stack,
+    &control_task_buffer,
+    1
+);
 
-    ESP_LOGI(TAG, "Control loop started (%d us)", LOOP_PERIOD_US);
-}
+    ESP_ERROR_CHECK(gptimer_enable(loop_timer));
+    ESP_ERROR_CHECK(gptimer_start(loop_timer));
 
-
-/* ============================================================
-   METRICS
-============================================================ */
-
-void control_loop_get_metrics(control_loop_metrics_t *m)
-{
-    if (!m) return;
-
-    m->max_jitter = jitter_max;
-    m->max_exec_time = exec_max;
-    m->deadline_miss = deadline_miss;
-    m->overrun_count = overrun_count;
+    ESP_LOGI(TAG,"Control loop started (1ms)");
 }

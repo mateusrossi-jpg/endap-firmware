@@ -20,13 +20,22 @@ static uint32_t exec_min = UINT32_MAX;
 static uint32_t exec_max = 0;
 static uint64_t exec_sum = 0;
 
+/* ============================================================
+   CYCLE START
+============================================================ */
+
 void IRAM_ATTR kernel_trace_cycle_start(uint64_t now)
 {
     cycle_start = now;
 
     if (last_cycle != 0)
     {
-        uint64_t period = now - last_cycle;
+        uint64_t period;
+
+        if (now >= last_cycle)
+            period = now - last_cycle;
+        else
+            period = 0;
 
         if (period < 100000)
         {
@@ -48,9 +57,18 @@ void IRAM_ATTR kernel_trace_cycle_start(uint64_t now)
     last_cycle = now;
 }
 
+/* ============================================================
+   CYCLE END
+============================================================ */
+
 void IRAM_ATTR kernel_trace_cycle_end(uint64_t now)
 {
-    uint32_t exec = (uint32_t)(now - cycle_start);
+    uint64_t exec;
+
+    if (now >= cycle_start)
+        exec = now - cycle_start;
+    else
+        exec = 0;
 
     if (exec < exec_min)
         exec_min = exec;
@@ -65,15 +83,15 @@ void IRAM_ATTR kernel_trace_cycle_end(uint64_t now)
     if ((cycles & 1023) == 0)
     {
         ESP_LOGI(TAG,
-        "cycles=%" PRIu32
-        " jitter(min/avg/max)=%" PRIu32 "/%" PRIu32 "/%" PRIu32 " us"
-        " exec(min/avg/max)=%" PRIu32 "/%" PRIu32 "/%" PRIu32 " us",
-        cycles,
-        jitter_min,
-        (uint32_t)(jitter_sum / cycles),
-        jitter_max,
-        exec_min,
-        (uint32_t)(exec_sum / cycles),
-        exec_max);
+            "cycles=%" PRIu32
+            " jitter(min/avg/max)=%" PRIu32 "/%" PRIu32 "/%" PRIu32 " us"
+            " exec(min/avg/max)=%" PRIu32 "/%" PRIu32 "/%" PRIu32 " us",
+            cycles,
+            jitter_min,
+            (uint32_t)(jitter_sum / cycles),
+            jitter_max,
+            exec_min,
+            (uint32_t)(exec_sum / cycles),
+            exec_max);
     }
 }
