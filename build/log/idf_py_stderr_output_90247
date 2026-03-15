@@ -1,0 +1,23 @@
+[0;33m--- esp-idf-monitor 1.9.0 on /dev/ttyUSB0 115200[0m
+[0;33m--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H[0m
+[0m--- 0x40080400: [0;33m_init[0m[0m at [0;32m??[0m[0m:[1;31m?[0m
+[0m--- 0x400813b0: [0;33mcall_start_cpu1[0m[0m at [0;32m/home/mateus/esp/esp-idf/components/esp_system/port/cpu_start.c[0m[0m:[1;31m157[0m
+[0m--- 0x400da263: [0;33mtask_wdt_timeout_handling[0m[0m at [0;32m/home/mateus/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c[0m[0m:[1;31m461[0m
+[0m--- 0x400da3ea: [0;33mtask_wdt_isr[0m[0m at [0;32m/home/mateus/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c[0m[0m:[1;31m585[0m
+[0m--- 0x40082c41: [0;33m_xt_lowint1[0m[0m at [0;32m/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/xtensa_vectors.S[0m[0m:[1;31m1240[0m
+[0m--- 0x40083427: [0;33mcontrol_loop_run[0m[0m at [0;32m/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c[0m[0m:[1;31m93[0m
+[0m--- 0x400d5f07: [0;33mcontrol_loop_start[0m[0m at [0;32m/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c[0m[0m:[1;31m258[0m
+[0m--- 0x400d5de0: [0;33mcore_start[0m[0m at [0;32m/home/mateus/dev/projects/ENDAP/components/kernel/core/core_boot.c[0m[0m:[1;31m147[0m
+[0m--- 0x400d5d0b: [0;33mapp_main[0m[0m at [0;32m/home/mateus/dev/projects/ENDAP/main/main.c[0m[0m:[1;31m5[0m
+[0m--- 0x400e9d14: [0;33mmain_task[0m[0m at [0;32m/home/mateus/esp/esp-idf/components/freertos/app_startup.c[0m[0m:[1;31m208[0m
+[0m--- 0x40089b41: [0;33mvPortTaskWrapper[0m[0m at [0;32m/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c[0m[0m:[1;31m162[0m
+[0m--- 0x400da263: [0;33mtask_wdt_timeout_handling[0m[0m at [0;32m/home/mateus/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c[0m[0m:[1;31m461[0m
+[0m--- 0x400da3ea: [0;33mtask_wdt_isr[0m[0m at [0;32m/home/mateus/esp/esp-idf/components/esp_system/task_wdt/task_wdt.c[0m[0m:[1;31m585[0m
+[0m--- 0x40082c41: [0;33m_xt_lowint1[0m[0m at [0;32m/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/xtensa_vectors.S[0m[0m:[1;31m1240[0m
+[0m--- 0x40083427: [0;33mcontrol_loop_run[0m[0m at [0;32m/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c[0m[0m:[1;31m93[0m
+[0m--- 0x400d5f07: [0;33mcontrol_loop_start[0m[0m at [0;32m/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c[0m[0m:[1;31m258[0m
+[0m--- 0x400d5de0: [0;33mcore_start[0m[0m at [0;32m/home/mateus/dev/projects/ENDAP/components/kernel/core/core_boot.c[0m[0m:[1;31m147[0m
+[0m--- 0x400d5d0b: [0;33mapp_main[0m[0m at [0;32m/home/mateus/dev/projects/ENDAP/main/main.c[0m[0m:[1;31m5[0m
+[0m--- 0x400e9d14: [0;33mmain_task[0m[0m at [0;32m/home/mateus/esp/esp-idf/components/freertos/app_startup.c[0m[0m:[1;31m208[0m
+[0m--- 0x40089b41: [0;33mvPortTaskWrapper[0m[0m at [0;32m/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c[0m[0m:[1;31m162[0m
+[0m

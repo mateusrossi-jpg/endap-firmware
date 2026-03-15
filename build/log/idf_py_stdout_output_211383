@@ -1,0 +1,131 @@
+xxxx5х��ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7080
+load:0x40078000,len:15584
+load:0x40080400,len:4
+ho 8 tail 4 room 4
+load:0x40080404,len:3876
+entry 0x4008064c
+[0;32mI (31) boot: ESP-IDF v5.1.2 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Mar 11 2026 15:11:30[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (35) boot: chip revision: v3.1[0m
+[0;32mI (39) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (44) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (48) boot.esp32: SPI Flash Size : 4MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (58) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (69) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (77) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (84) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (92) boot: End of partition table[0m
+[0;32mI (96) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=0bba8h ( 48040) map[0m
+[0;32mI (122) esp_image: segment 1: paddr=0001bbd0 vaddr=3ffb0000 size=021e0h (  8672) load[0m
+[0;32mI (125) esp_image: segment 2: paddr=0001ddb8 vaddr=40080000 size=02260h (  8800) load[0m
+[0;32mI (131) esp_image: segment 3: paddr=00020020 vaddr=400d0020 size=1a834h (108596) map[0m
+[0;32mI (175) esp_image: segment 4: paddr=0003a85c vaddr=40082260 size=0bc68h ( 48232) load[0m
+[0;32mI (202) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (202) boot: Disabling RNG early entropy source...[0m
+[0;32mI (214) cpu_start: Multicore app[0m
+[0;32mI (214) cpu_start: Pro cpu up.[0m
+[0;32mI (214) cpu_start: Starting app cpu, entry point is 0x400813b8[0m
+[0;32mI (0) cpu_start: App cpu up.[0m
+[0;32mI (232) cpu_start: Pro cpu start user code[0m
+[0;32mI (232) cpu_start: cpu freq: 240000000 Hz[0m
+[0;32mI (232) cpu_start: Application information:[0m
+[0;32mI (237) cpu_start: Project name:     ENDAP[0m
+[0;32mI (242) cpu_start: App version:      1[0m
+[0;32mI (246) cpu_start: Compile time:     Mar 11 2026 15:11:30[0m
+[0;32mI (252) cpu_start: ELF file SHA256:  fde567ab8b4bbfda...[0m
+[0;32mI (258) cpu_start: ESP-IDF:          v5.1.2[0m
+[0;32mI (263) cpu_start: Min chip rev:     v0.0[0m
+[0;32mI (268) cpu_start: Max chip rev:     v3.99 [0m
+[0;32mI (273) cpu_start: Chip rev:         v3.1[0m
+[0;32mI (278) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (285) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (291) heap_init: At 3FFB31E8 len 0002CE18 (179 KiB): DRAM[0m
+[0;32mI (297) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (303) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (310) heap_init: At 4008DEC8 len 00012138 (72 KiB): IRAM[0m
+[0;32mI (317) spi_flash: detected chip: generic[0m
+[0;32mI (321) spi_flash: flash io: dio[0m
+[0;32mI (325) app_start: Starting scheduler on CPU0[0m
+[0;32mI (330) app_start: Starting scheduler on CPU1[0m
+[0;32mI (330) main_task: Started on CPU0[0m
+[0;32mI (340) main_task: Calling app_main()[0m
+[0;32mI (370) CORE_SUP: Boot ENDAP[0m
+[0;32mI (370) CORE_SUP: Init Infrastructure[0m
+[0;32mI (370) gpio: GPIO[27]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (380) RS485: Driver RS485 inicializado[0m
+[0;32mI (380) CORE_SUP: Init Domain[0m
+[0;32mI (390) CORE_SUP: Init Services[0m
+[0;32mI (390) WATCHDOG: Watchdog initialized[0m
+[0;32mI (400) WATCHDOG: Registered WD 0[0m
+[0;32mI (400) CORE_SUP: Starting Control Loop[0m
+[0;32mI (400) CTRL_LOOP: Control loop started (1000 us)[0m
+[0;32mI (410) main_task: Returned from app_main()[0m
+[0;32mI (1430) DET_PROBE: cycles=1024 jitter(min/avg/max)=27/27/154 us[0m
+[0;32mI (1430) KTRACE: cycles=1024 jitter(min/avg/max)=1000/998/1000 us exec(min/avg/max)=27/27/154 us[0m
+[0;32mI (2460) DET_PROBE: cycles=2048 jitter(min/avg/max)=27/27/154 us[0m
+[0;32mI (2460) KTRACE: cycles=2048 jitter(min/avg/max)=309/998/1000 us exec(min/avg/max)=27/27/154 us[0m
+[0;32mI (3480) DET_PROBE: cycles=3072 jitter(min/avg/max)=27/27/154 us[0m
+[0;32mI (3480) KTRACE: cycles=3072 jitter(min/avg/max)=309/998/1000 us exec(min/avg/max)=27/27/154 us[0m
+[0;32mI (4510) DET_PROBE: cycles=4096 jitter(min/avg/max)=27/27/154 us[0m
+[0;32mI (4510) KTRACE: cycles=4096 jitter(min/avg/max)=309/998/1000 us exec(min/avg/max)=27/27/154 us[0m
+[0;32mI (5420) CTRL_LOOP: jitter(min/avg/max)=1006/1015/1016 exec(min/max)=27/154[0m
+[0;32mI (5420) CTRL_LOOP: phase max(us): io=27 fieldbus=72 automation=35 events=2 diag=2[0m
+[0;32mI (5540) DET_PROBE: cycles=5120 jitter(min/avg/max)=27/27/154 us[0m
+[0;32mI (5540) KTRACE: cycles=5120 jitter(min/avg/max)=99/998/1000 us exec(min/avg/max)=27/27/154 us[0m
+[0;32mI (6570) DET_PROBE: cycles=6144 jitter(min/avg/max)=27/27/154 us[0m
+[0;32mI (6570) KTRACE: cycles=6144 jitter(min/avg/max)=76/998/1000 us exec(min/avg/max)=27/27/154 us[0m
+[0;32mI (7600) DET_PROBE: cycles=7168 jitter(min/avg/max)=27/27/154 us[0m
+[0;32mI (7600) KTRACE: cycles=7168 jitter(min/avg/max)=76/998/1000 us exec(min/avg/max)=27/27/154 us[0m
+[0;32mI (8620) DET_PROBE: cycles=8192 jitter(min/avg/max)=27/27/154 us[0m
+[0;32mI (8620) KTRACE: cycles=8192 jitter(min/avg/max)=76/998/1000 us exec(min/avg/max)=27/27/154 us[0m
+[0;32mI (9650) DET_PROBE: cycles=9216 jitter(min/avg/max)=27/27/154 us[0m
+[0;32mI (9650) KTRACE: cycles=9216 jitter(min/avg/max)=76/998/1000 us exec(min/avg/max)=27/27/154 us[0m
+[0;32mI (10440) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (10440) CTRL_LOOP: jitter(min/avg/max)=92/1015/1016 exec(min/max)=27/176[0m
+[0;32mI (10440) CTRL_LOOP: phase max(us): io=27 fieldbus=154 automation=35 events=2 diag=2[0m
+[0;32mI (10690) DET_PROBE: cycles=10240 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (10690) KTRACE: cycles=10240 jitter(min/avg/max)=76/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (11720) DET_PROBE: cycles=11264 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (11720) KTRACE: cycles=11264 jitter(min/avg/max)=76/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (12750) DET_PROBE: cycles=12288 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (12750) KTRACE: cycles=12288 jitter(min/avg/max)=76/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (13770) DET_PROBE: cycles=13312 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (13770) KTRACE: cycles=13312 jitter(min/avg/max)=76/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (14800) DET_PROBE: cycles=14336 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (14800) KTRACE: cycles=14336 jitter(min/avg/max)=76/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (15470) CTRL_LOOP: jitter(min/avg/max)=92/1015/1016 exec(min/max)=27/176[0m
+[0;32mI (15470) CTRL_LOOP: phase max(us): io=27 fieldbus=154 automation=35 events=2 diag=2[0m
+[0;32mI (15830) DET_PROBE: cycles=15360 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (15830) KTRACE: cycles=15360 jitter(min/avg/max)=57/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (16860) DET_PROBE: cycles=16384 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (16860) KTRACE: cycles=16384 jitter(min/avg/max)=57/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (17890) DET_PROBE: cycles=17408 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (17890) KTRACE: cycles=17408 jitter(min/avg/max)=57/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (18920) DET_PROBE: cycles=18432 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (18920) KTRACE: cycles=18432 jitter(min/avg/max)=57/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (19940) DET_PROBE: cycles=19456 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (19940) KTRACE: cycles=19456 jitter(min/avg/max)=57/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (20490) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (20490) CTRL_LOOP: jitter(min/avg/max)=73/1015/1016 exec(min/max)=27/176[0m
+[0;32mI (20500) CTRL_LOOP: phase max(us): io=27 fieldbus=154 automation=35 events=2 diag=2[0m
+[0;32mI (20980) DET_PROBE: cycles=20480 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (20980) KTRACE: cycles=20480 jitter(min/avg/max)=57/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (22010) DET_PROBE: cycles=21504 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (22010) KTRACE: cycles=21504 jitter(min/avg/max)=57/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (23040) DET_PROBE: cycles=22528 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (23040) KTRACE: cycles=22528 jitter(min/avg/max)=57/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (24070) DET_PROBE: cycles=23552 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (24070) KTRACE: cycles=23552 jitter(min/avg/max)=57/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (25100) DET_PROBE: cycles=24576 jitter(min/avg/max)=27/27/176 us[0m
+[0;32mI (25100) KTRACE: cycles=24576 jitter(min/avg/max)=57/998/1000 us exec(min/avg/max)=27/27/176 us[0m
+[0;32mI (25520) CTRL_LOOP: jitter(min/avg/max)=73/1015/1016 exec(min/max)=27/176[0m
+[0;32mI (25520) CTRL_LOOP: phase max(us): io=27 fieldbus=154 automation=35 events=2 diag=2[0m

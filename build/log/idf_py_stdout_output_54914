@@ -1,0 +1,430 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7080
+load:0x40078000,len:15584
+load:0x40080400,len:4
+ho 8 tail 4 room 4
+load:0x40080404,len:3876
+entry 0x4008064c
+[0;32mI (31) boot: ESP-IDF v5.1.2 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Mar 11 2026 15:11:30[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (35) boot: chip revision: v3.1[0m
+[0;32mI (39) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (44) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (48) boot.esp32: SPI Flash Size : 4MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (58) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (69) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (77) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (84) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (92) boot: End of partition table[0m
+[0;32mI (96) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=0bb30h ( 47920) map[0m
+[0;32mI (122) esp_image: segment 1: paddr=0001bb58 vaddr=3ffb0000 size=021d0h (  8656) load[0m
+[0;32mI (125) esp_image: segment 2: paddr=0001dd30 vaddr=40080000 size=022e8h (  8936) load[0m
+[0;32mI (131) esp_image: segment 3: paddr=00020020 vaddr=400d0020 size=1a7f0h (108528) map[0m
+[0;32mI (175) esp_image: segment 4: paddr=0003a818 vaddr=400822e8 size=0ba1ch ( 47644) load[0m
+[0;32mI (202) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (202) boot: Disabling RNG early entropy source...[0m
+[0;32mI (213) cpu_start: Multicore app[0m
+[0;32mI (214) cpu_start: Pro cpu up.[0m
+[0;32mI (214) cpu_start: Starting app cpu, entry point is 0x40081360[0m
+[0;32mI (0) cpu_start: App cpu up.[0m
+[0;32mI (232) cpu_start: Pro cpu start user code[0m
+[0;32mI (232) cpu_start: cpu freq: 240000000 Hz[0m
+[0;32mI (232) cpu_start: Application information:[0m
+[0;32mI (237) cpu_start: Project name:     ENDAP[0m
+[0;32mI (241) cpu_start: App version:      1[0m
+[0;32mI (246) cpu_start: Compile time:     Mar 11 2026 15:11:30[0m
+[0;32mI (252) cpu_start: ELF file SHA256:  ee7e3885205e038e...[0m
+[0;32mI (258) cpu_start: ESP-IDF:          v5.1.2[0m
+[0;32mI (263) cpu_start: Min chip rev:     v0.0[0m
+[0;32mI (267) cpu_start: Max chip rev:     v3.99 [0m
+[0;32mI (272) cpu_start: Chip rev:         v3.1[0m
+[0;32mI (277) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (284) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (290) heap_init: At 3FFB31A0 len 0002CE60 (179 KiB): DRAM[0m
+[0;32mI (297) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (303) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (309) heap_init: At 4008DD04 len 000122FC (72 KiB): IRAM[0m
+[0;32mI (317) spi_flash: detected chip: generic[0m
+[0;32mI (320) spi_flash: flash io: dio[0m
+[0;32mI (325) app_start: Starting scheduler on CPU0[0m
+[0;32mI (329) app_start: Starting scheduler on CPU1[0m
+[0;32mI (329) main_task: Started on CPU0[0m
+[0;32mI (339) main_task: Calling app_main()[0m
+[0;32mI (369) CORE_SUP: Boot ENDAP[0m
+[0;32mI (369) CORE_SUP: Init Infrastructure[0m
+[0;32mI (369) gpio: GPIO[27]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (379) RS485: Driver RS485 inicializado[0m
+[0;32mI (379) CORE_SUP: Init Domain[0m
+[0;32mI (389) CORE_SUP: Init Services[0m
+[0;32mI (389) WATCHDOG: Watchdog initialized[0m
+[0;32mI (399) WATCHDOG: Registered WD 0[0m
+[0;32mI (399) CORE_SUP: Starting Control Loop[0m
+[0;32mI (399) CTRL_LOOP: Control loop started (1000 us)[0m
+[0;32mI (409) main_task: Returned from app_main()[0m
+[0;32mI (1429) DET_PROBE: cycles=1024 jitter(min/avg/max)=21/21/65 us[0m
+[0;32mI (1429) KTRACE: cycles=1024 jitter(min/avg/max)=1000/998/1000 us exec(min/avg/max)=21/21/65 us[0m
+[0;33mW (2459) CTRL_LOOP: loop delay 2047016 us[0m
+[0;32mI (2459) DET_PROBE: cycles=2048 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (2459) KTRACE: cycles=2048 jitter(min/avg/max)=514/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (3489) CTRL_LOOP: loop delay 3071016 us[0m
+[0;32mI (3489) DET_PROBE: cycles=3072 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (3489) KTRACE: cycles=3072 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (4519) CTRL_LOOP: loop delay 4095016 us[0m
+[0;32mI (4519) DET_PROBE: cycles=4096 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (4519) KTRACE: cycles=4096 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (5429) CTRL_LOOP: jitter(min/avg/max)=2000016/3499515/4999016 exec(min/max)=20/148[0m
+[0;32mI (5429) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (5559) CTRL_LOOP: loop delay 5119016 us[0m
+[0;32mI (5559) DET_PROBE: cycles=5120 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (5559) KTRACE: cycles=5120 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (6589) CTRL_LOOP: loop delay 6143016 us[0m
+[0;32mI (6589) DET_PROBE: cycles=6144 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (6589) KTRACE: cycles=6144 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (7619) CTRL_LOOP: loop delay 7167016 us[0m
+[0;32mI (7619) DET_PROBE: cycles=7168 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (7619) KTRACE: cycles=7168 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (8649) CTRL_LOOP: loop delay 8191016 us[0m
+[0;32mI (8649) DET_PROBE: cycles=8192 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (8649) KTRACE: cycles=8192 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (9679) CTRL_LOOP: loop delay 9215016 us[0m
+[0;32mI (9679) DET_PROBE: cycles=9216 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (9679) KTRACE: cycles=9216 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (10479) CTRL_LOOP: jitter(min/avg/max)=2000016/5999515/9999016 exec(min/max)=20/148[0m
+[0;32mI (10479) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (10719) CTRL_LOOP: loop delay 10239016 us[0m
+[0;32mI (10719) DET_PROBE: cycles=10240 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (10719) KTRACE: cycles=10240 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (11749) CTRL_LOOP: loop delay 11263016 us[0m
+[0;32mI (11749) DET_PROBE: cycles=11264 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (11749) KTRACE: cycles=11264 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (12789) CTRL_LOOP: loop delay 12287016 us[0m
+[0;32mI (12789) DET_PROBE: cycles=12288 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (12789) KTRACE: cycles=12288 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (13819) CTRL_LOOP: loop delay 13311016 us[0m
+[0;32mI (13819) DET_PROBE: cycles=13312 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (13819) KTRACE: cycles=13312 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (14849) CTRL_LOOP: loop delay 14335016 us[0m
+[0;32mI (14849) DET_PROBE: cycles=14336 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (14849) KTRACE: cycles=14336 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (15529) CTRL_LOOP: jitter(min/avg/max)=2000016/8499515/14999016 exec(min/max)=20/148[0m
+[0;32mI (15529) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (15889) CTRL_LOOP: loop delay 15359016 us[0m
+[0;32mI (15889) DET_PROBE: cycles=15360 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (15889) KTRACE: cycles=15360 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (16919) CTRL_LOOP: loop delay 16383016 us[0m
+[0;32mI (16919) DET_PROBE: cycles=16384 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (16919) KTRACE: cycles=16384 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (17959) CTRL_LOOP: loop delay 17407016 us[0m
+[0;32mI (17959) DET_PROBE: cycles=17408 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (17959) KTRACE: cycles=17408 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (18989) CTRL_LOOP: loop delay 18431016 us[0m
+[0;32mI (18989) DET_PROBE: cycles=18432 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (18989) KTRACE: cycles=18432 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (20019) CTRL_LOOP: loop delay 19455016 us[0m
+[0;32mI (20019) DET_PROBE: cycles=19456 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (20019) KTRACE: cycles=19456 jitter(min/avg/max)=301/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (20569) CTRL_LOOP: jitter(min/avg/max)=2000016/10999515/19999016 exec(min/max)=20/148[0m
+[0;32mI (20569) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (21059) CTRL_LOOP: loop delay 20479016 us[0m
+[0;32mI (21059) DET_PROBE: cycles=20480 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (21059) KTRACE: cycles=20480 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (22089) CTRL_LOOP: loop delay 21503016 us[0m
+[0;32mI (22089) DET_PROBE: cycles=21504 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (22089) KTRACE: cycles=21504 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (23119) CTRL_LOOP: loop delay 22527016 us[0m
+[0;32mI (23119) DET_PROBE: cycles=22528 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (23129) KTRACE: cycles=22528 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (24159) CTRL_LOOP: loop delay 23551016 us[0m
+[0;32mI (24159) DET_PROBE: cycles=23552 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (24159) KTRACE: cycles=23552 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (25189) CTRL_LOOP: loop delay 24575016 us[0m
+[0;32mI (25189) DET_PROBE: cycles=24576 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (25189) KTRACE: cycles=24576 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (25619) CTRL_LOOP: jitter(min/avg/max)=2000016/13499515/24999016 exec(min/max)=20/148[0m
+[0;32mI (25619) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (26229) CTRL_LOOP: loop delay 25599016 us[0m
+[0;32mI (26229) DET_PROBE: cycles=25600 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (26229) KTRACE: cycles=25600 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (27259) CTRL_LOOP: loop delay 26623016 us[0m
+[0;32mI (27259) DET_PROBE: cycles=26624 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (27259) KTRACE: cycles=26624 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (28289) CTRL_LOOP: loop delay 27647016 us[0m
+[0;32mI (28289) DET_PROBE: cycles=27648 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (28289) KTRACE: cycles=27648 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (29329) CTRL_LOOP: loop delay 28671016 us[0m
+[0;32mI (29329) DET_PROBE: cycles=28672 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (29329) KTRACE: cycles=28672 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (30359) CTRL_LOOP: loop delay 29695016 us[0m
+[0;32mI (30359) DET_PROBE: cycles=29696 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (30359) KTRACE: cycles=29696 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (30669) CTRL_LOOP: jitter(min/avg/max)=2000016/15999515/29999016 exec(min/max)=20/148[0m
+[0;32mI (30669) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (31399) CTRL_LOOP: loop delay 30719016 us[0m
+[0;32mI (31399) DET_PROBE: cycles=30720 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (31399) KTRACE: cycles=30720 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (32429) CTRL_LOOP: loop delay 31743016 us[0m
+[0;32mI (32429) DET_PROBE: cycles=31744 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (32429) KTRACE: cycles=31744 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (33459) CTRL_LOOP: loop delay 32767016 us[0m
+[0;32mI (33459) DET_PROBE: cycles=32768 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (33459) KTRACE: cycles=32768 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (34499) CTRL_LOOP: loop delay 33791016 us[0m
+[0;32mI (34499) DET_PROBE: cycles=33792 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (34499) KTRACE: cycles=33792 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (35529) CTRL_LOOP: loop delay 34815016 us[0m
+[0;32mI (35529) DET_PROBE: cycles=34816 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (35529) KTRACE: cycles=34816 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (35719) CTRL_LOOP: jitter(min/avg/max)=2000016/18499515/34999016 exec(min/max)=20/148[0m
+[0;32mI (35719) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (36569) CTRL_LOOP: loop delay 35839016 us[0m
+[0;32mI (36569) DET_PROBE: cycles=35840 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (36569) KTRACE: cycles=35840 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (37599) CTRL_LOOP: loop delay 36863016 us[0m
+[0;32mI (37599) DET_PROBE: cycles=36864 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (37599) KTRACE: cycles=36864 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (38629) CTRL_LOOP: loop delay 37887016 us[0m
+[0;32mI (38629) DET_PROBE: cycles=37888 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (38629) KTRACE: cycles=37888 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (39659) CTRL_LOOP: loop delay 38911016 us[0m
+[0;32mI (39659) DET_PROBE: cycles=38912 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (39669) KTRACE: cycles=38912 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (40699) CTRL_LOOP: loop delay 39935016 us[0m
+[0;32mI (40699) DET_PROBE: cycles=39936 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (40699) KTRACE: cycles=39936 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (40769) CTRL_LOOP: jitter(min/avg/max)=2000016/20999515/39999016 exec(min/max)=20/148[0m
+[0;32mI (40769) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (41729) CTRL_LOOP: loop delay 40959016 us[0m
+[0;32mI (41729) DET_PROBE: cycles=40960 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (41739) KTRACE: cycles=40960 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (42769) CTRL_LOOP: loop delay 41983016 us[0m
+[0;32mI (42769) DET_PROBE: cycles=41984 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (42769) KTRACE: cycles=41984 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (43799) CTRL_LOOP: loop delay 43007016 us[0m
+[0;32mI (43799) DET_PROBE: cycles=43008 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (43799) KTRACE: cycles=43008 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (44829) CTRL_LOOP: loop delay 44031016 us[0m
+[0;32mI (44829) DET_PROBE: cycles=44032 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (44829) KTRACE: cycles=44032 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (45809) CTRL_LOOP: jitter(min/avg/max)=2000016/23499515/44999016 exec(min/max)=20/148[0m
+[0;32mI (45809) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (45869) CTRL_LOOP: loop delay 45055016 us[0m
+[0;32mI (45869) DET_PROBE: cycles=45056 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (45869) KTRACE: cycles=45056 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (46899) CTRL_LOOP: loop delay 46079016 us[0m
+[0;32mI (46899) DET_PROBE: cycles=46080 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (46899) KTRACE: cycles=46080 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (47939) CTRL_LOOP: loop delay 47103016 us[0m
+[0;32mI (47939) DET_PROBE: cycles=47104 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (47939) KTRACE: cycles=47104 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (48969) CTRL_LOOP: loop delay 48127016 us[0m
+[0;32mI (48969) DET_PROBE: cycles=48128 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (48969) KTRACE: cycles=48128 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (49999) CTRL_LOOP: loop delay 49151016 us[0m
+[0;32mI (49999) DET_PROBE: cycles=49152 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (49999) KTRACE: cycles=49152 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (50859) CTRL_LOOP: jitter(min/avg/max)=2000016/25999515/49999016 exec(min/max)=20/148[0m
+[0;32mI (50859) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (51039) CTRL_LOOP: loop delay 50175016 us[0m
+[0;32mI (51039) DET_PROBE: cycles=50176 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (51039) KTRACE: cycles=50176 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (52069) CTRL_LOOP: loop delay 51199016 us[0m
+[0;32mI (52069) DET_PROBE: cycles=51200 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (52069) KTRACE: cycles=51200 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (53109) CTRL_LOOP: loop delay 52223016 us[0m
+[0;32mI (53109) DET_PROBE: cycles=52224 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (53109) KTRACE: cycles=52224 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (54139) CTRL_LOOP: loop delay 53247016 us[0m
+[0;32mI (54139) DET_PROBE: cycles=53248 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (54139) KTRACE: cycles=53248 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (55169) CTRL_LOOP: loop delay 54271016 us[0m
+[0;32mI (55169) DET_PROBE: cycles=54272 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (55169) KTRACE: cycles=54272 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (55909) CTRL_LOOP: jitter(min/avg/max)=2000016/28499515/54999016 exec(min/max)=20/148[0m
+[0;32mI (55909) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (56209) CTRL_LOOP: loop delay 55295016 us[0m
+[0;32mI (56209) DET_PROBE: cycles=55296 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (56209) KTRACE: cycles=55296 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (57239) CTRL_LOOP: loop delay 56319016 us[0m
+[0;32mI (57239) DET_PROBE: cycles=56320 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (57239) KTRACE: cycles=56320 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (58269) CTRL_LOOP: loop delay 57343016 us[0m
+[0;32mI (58269) DET_PROBE: cycles=57344 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (58279) KTRACE: cycles=57344 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (59309) CTRL_LOOP: loop delay 58367016 us[0m
+[0;32mI (59309) DET_PROBE: cycles=58368 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (59309) KTRACE: cycles=58368 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (60339) CTRL_LOOP: loop delay 59391016 us[0m
+[0;32mI (60339) DET_PROBE: cycles=59392 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (60339) KTRACE: cycles=59392 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (60959) CTRL_LOOP: jitter(min/avg/max)=2000016/30999515/59999016 exec(min/max)=20/148[0m
+[0;32mI (60959) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (61379) CTRL_LOOP: loop delay 60415016 us[0m
+[0;32mI (61379) DET_PROBE: cycles=60416 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (61379) KTRACE: cycles=60416 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (62409) CTRL_LOOP: loop delay 61439016 us[0m
+[0;32mI (62409) DET_PROBE: cycles=61440 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (62409) KTRACE: cycles=61440 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (63439) CTRL_LOOP: loop delay 62463016 us[0m
+[0;32mI (63439) DET_PROBE: cycles=62464 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (63439) KTRACE: cycles=62464 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (64479) CTRL_LOOP: loop delay 63487016 us[0m
+[0;32mI (64479) DET_PROBE: cycles=63488 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (64479) KTRACE: cycles=63488 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (65509) CTRL_LOOP: loop delay 64511016 us[0m
+[0;32mI (65509) DET_PROBE: cycles=64512 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (65509) KTRACE: cycles=64512 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (66009) CTRL_LOOP: jitter(min/avg/max)=2000016/33499515/64999016 exec(min/max)=20/148[0m
+[0;32mI (66009) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (66549) CTRL_LOOP: loop delay 65535016 us[0m
+[0;32mI (66549) DET_PROBE: cycles=65536 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (66549) KTRACE: cycles=65536 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (67579) CTRL_LOOP: loop delay 66559016 us[0m
+[0;32mI (67579) DET_PROBE: cycles=66560 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (67579) KTRACE: cycles=66560 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (68609) CTRL_LOOP: loop delay 67583016 us[0m
+[0;32mI (68609) DET_PROBE: cycles=67584 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (68609) KTRACE: cycles=67584 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (69649) CTRL_LOOP: loop delay 68607016 us[0m
+[0;32mI (69649) DET_PROBE: cycles=68608 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (69649) KTRACE: cycles=68608 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (70679) CTRL_LOOP: loop delay 69631016 us[0m
+[0;32mI (70679) DET_PROBE: cycles=69632 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (70679) KTRACE: cycles=69632 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (71059) CTRL_LOOP: jitter(min/avg/max)=2000016/35999515/69999016 exec(min/max)=20/148[0m
+[0;32mI (71059) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (71719) CTRL_LOOP: loop delay 70655016 us[0m
+[0;32mI (71719) DET_PROBE: cycles=70656 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (71719) KTRACE: cycles=70656 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (72749) CTRL_LOOP: loop delay 71679016 us[0m
+[0;32mI (72749) DET_PROBE: cycles=71680 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (72749) KTRACE: cycles=71680 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (73779) CTRL_LOOP: loop delay 72703016 us[0m
+[0;32mI (73779) DET_PROBE: cycles=72704 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (73779) KTRACE: cycles=72704 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (74809) CTRL_LOOP: loop delay 73727016 us[0m
+[0;32mI (74809) DET_PROBE: cycles=73728 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (74819) KTRACE: cycles=73728 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (75849) CTRL_LOOP: loop delay 74751016 us[0m
+[0;32mI (75849) DET_PROBE: cycles=74752 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (75849) KTRACE: cycles=74752 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (76099) CTRL_LOOP: jitter(min/avg/max)=2000016/38499515/74999016 exec(min/max)=20/148[0m
+[0;32mI (76099) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (76879) CTRL_LOOP: loop delay 75775016 us[0m
+[0;32mI (76879) DET_PROBE: cycles=75776 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (76889) KTRACE: cycles=75776 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (77919) CTRL_LOOP: loop delay 76799016 us[0m
+[0;32mI (77919) DET_PROBE: cycles=76800 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (77919) KTRACE: cycles=76800 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (78949) CTRL_LOOP: loop delay 77823016 us[0m
+[0;32mI (78949) DET_PROBE: cycles=77824 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (78949) KTRACE: cycles=77824 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (79979) CTRL_LOOP: loop delay 78847016 us[0m
+[0;32mI (79979) DET_PROBE: cycles=78848 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (79979) KTRACE: cycles=78848 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (81019) CTRL_LOOP: loop delay 79871016 us[0m
+[0;32mI (81019) DET_PROBE: cycles=79872 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (81019) KTRACE: cycles=79872 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (81149) CTRL_LOOP: jitter(min/avg/max)=2000016/40999515/79999016 exec(min/max)=20/148[0m
+[0;32mI (81149) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (82049) CTRL_LOOP: loop delay 80895016 us[0m
+[0;32mI (82049) DET_PROBE: cycles=80896 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (82049) KTRACE: cycles=80896 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (83089) CTRL_LOOP: loop delay 81919016 us[0m
+[0;32mI (83089) DET_PROBE: cycles=81920 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (83089) KTRACE: cycles=81920 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (84119) CTRL_LOOP: loop delay 82943016 us[0m
+[0;32mI (84119) DET_PROBE: cycles=82944 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (84119) KTRACE: cycles=82944 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (85149) CTRL_LOOP: loop delay 83967016 us[0m
+[0;32mI (85149) DET_PROBE: cycles=83968 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (85149) KTRACE: cycles=83968 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (86189) CTRL_LOOP: loop delay 84991016 us[0m
+[0;32mI (86189) DET_PROBE: cycles=84992 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (86189) KTRACE: cycles=84992 jitter(min/avg/max)=274/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (86199) CTRL_LOOP: jitter(min/avg/max)=2000016/43499515/84999016 exec(min/max)=20/148[0m
+[0;32mI (86199) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (87229) CTRL_LOOP: loop delay 86015016 us[0m
+[0;32mI (87229) DET_PROBE: cycles=86016 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (87229) KTRACE: cycles=86016 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (88259) CTRL_LOOP: loop delay 87039016 us[0m
+[0;32mI (88259) DET_PROBE: cycles=87040 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (88259) KTRACE: cycles=87040 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (89289) CTRL_LOOP: loop delay 88063016 us[0m
+[0;32mI (89289) DET_PROBE: cycles=88064 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (89289) KTRACE: cycles=88064 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (90329) CTRL_LOOP: loop delay 89087016 us[0m
+[0;32mI (90329) DET_PROBE: cycles=89088 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (90329) KTRACE: cycles=89088 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (91249) CTRL_LOOP: jitter(min/avg/max)=2000016/45999515/89999016 exec(min/max)=20/148[0m
+[0;32mI (91249) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (91359) CTRL_LOOP: loop delay 90111016 us[0m
+[0;32mI (91359) DET_PROBE: cycles=90112 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (91359) KTRACE: cycles=90112 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (92399) CTRL_LOOP: loop delay 91135016 us[0m
+[0;32mI (92399) DET_PROBE: cycles=91136 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (92399) KTRACE: cycles=91136 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (93429) CTRL_LOOP: loop delay 92159016 us[0m
+[0;32mI (93429) DET_PROBE: cycles=92160 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (93429) KTRACE: cycles=92160 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (94459) CTRL_LOOP: loop delay 93183016 us[0m
+[0;32mI (94459) DET_PROBE: cycles=93184 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (94459) KTRACE: cycles=93184 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (95489) CTRL_LOOP: loop delay 94207016 us[0m
+[0;32mI (95489) DET_PROBE: cycles=94208 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (95499) KTRACE: cycles=94208 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (96299) CTRL_LOOP: jitter(min/avg/max)=2000016/48499515/94999016 exec(min/max)=20/148[0m
+[0;32mI (96299) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (96529) CTRL_LOOP: loop delay 95231016 us[0m
+[0;32mI (96529) DET_PROBE: cycles=95232 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (96529) KTRACE: cycles=95232 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (97559) CTRL_LOOP: loop delay 96255016 us[0m
+[0;32mI (97559) DET_PROBE: cycles=96256 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (97569) KTRACE: cycles=96256 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (98599) CTRL_LOOP: loop delay 97279016 us[0m
+[0;32mI (98599) DET_PROBE: cycles=97280 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (98599) KTRACE: cycles=97280 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (99629) CTRL_LOOP: loop delay 98303016 us[0m
+[0;32mI (99629) DET_PROBE: cycles=98304 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (99629) KTRACE: cycles=98304 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (100659) CTRL_LOOP: loop delay 99327016 us[0m
+[0;32mI (100659) DET_PROBE: cycles=99328 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (100659) KTRACE: cycles=99328 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (101339) CTRL_LOOP: jitter(min/avg/max)=2000016/50999515/99999016 exec(min/max)=20/148[0m
+[0;32mI (101339) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (101699) CTRL_LOOP: loop delay 100351016 us[0m
+[0;32mI (101699) DET_PROBE: cycles=100352 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (101699) KTRACE: cycles=100352 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (102729) CTRL_LOOP: loop delay 101375016 us[0m
+[0;32mI (102729) DET_PROBE: cycles=101376 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (102729) KTRACE: cycles=101376 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (103769) CTRL_LOOP: loop delay 102399016 us[0m
+[0;32mI (103769) DET_PROBE: cycles=102400 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (103769) KTRACE: cycles=102400 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (104799) CTRL_LOOP: loop delay 103423016 us[0m
+[0;32mI (104799) DET_PROBE: cycles=103424 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (104799) KTRACE: cycles=103424 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (105829) CTRL_LOOP: loop delay 104447016 us[0m
+[0;32mI (105829) DET_PROBE: cycles=104448 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (105829) KTRACE: cycles=104448 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;32mI (106389) CTRL_LOOP: jitter(min/avg/max)=2000016/53499515/104999016 exec(min/max)=20/148[0m
+[0;32mI (106389) CTRL_LOOP: phase max(us): io=6 fieldbus=2 automation=6 events=2 diag=2[0m
+[0;33mW (106869) CTRL_LOOP: loop delay 105471016 us[0m
+[0;32mI (106869) DET_PROBE: cycles=105472 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (106869) KTRACE: cycles=105472 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (107899) CTRL_LOOP: loop delay 106495016 us[0m
+[0;32mI (107899) DET_PROBE: cycles=106496 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (107899) KTRACE: cycles=106496 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (108939) CTRL_LOOP: loop delay 107519016 us[0m
+[0;32mI (108939) DET_PROBE: cycles=107520 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (108939) KTRACE: cycles=107520 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m
+[0;33mW (109969) CTRL_LOOP: loop delay 108543016 us[0m
+[0;32mI (109969) DET_PROBE: cycles=108544 jitter(min/avg/max)=20/21/148 us[0m
+[0;32mI (109969) KTRACE: cycles=108544 jitter(min/avg/max)=60/998/1000 us exec(min/avg/max)=20/21/148 us[0m

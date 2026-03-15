@@ -1,0 +1,344 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7080
+load:0x40078000,len:15584
+load:0x40080400,len:4
+ho 8 tail 4 room 4
+load:0x40080404,len:3876
+entry 0x4008064c
+[0;32mI (31) boot: ESP-IDF v5.1.2 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Mar 11 2026 14:20:24[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (35) boot: chip revision: v3.1[0m
+[0;32mI (39) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (44) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (48) boot.esp32: SPI Flash Size : 4MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (58) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (69) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (77) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (84) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (92) boot: End of partition table[0m
+[0;32mI (96) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=0b380h ( 45952) map[0m
+[0;32mI (121) esp_image: segment 1: paddr=0001b3a8 vaddr=3ffb0000 size=021c0h (  8640) load[0m
+[0;32mI (124) esp_image: segment 2: paddr=0001d570 vaddr=40080000 size=02aa8h ( 10920) load[0m
+[0;32mI (131) esp_image: segment 3: paddr=00020020 vaddr=400d0020 size=1a18ch (106892) map[0m
+[0;32mI (174) esp_image: segment 4: paddr=0003a1b4 vaddr=40082aa8 size=0ad78h ( 44408) load[0m
+[0;32mI (199) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (199) boot: Disabling RNG early entropy source...[0m
+[0;32mI (211) cpu_start: Multicore app[0m
+[0;32mI (211) cpu_start: Pro cpu up.[0m
+[0;32mI (211) cpu_start: Starting app cpu, entry point is 0x400812f8[0m
+[0;32mI (0) cpu_start: App cpu up.[0m
+[0;32mI (229) cpu_start: Pro cpu start user code[0m
+[0;32mI (229) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (229) cpu_start: Application information:[0m
+[0;32mI (234) cpu_start: Project name:     ENDAP[0m
+[0;32mI (239) cpu_start: App version:      1[0m
+[0;32mI (243) cpu_start: Compile time:     Mar 11 2026 14:20:16[0m
+[0;32mI (249) cpu_start: ELF file SHA256:  a84e97112599f8e4...[0m
+[0;32mI (255) cpu_start: ESP-IDF:          v5.1.2[0m
+[0;32mI (260) cpu_start: Min chip rev:     v0.0[0m
+[0;32mI (265) cpu_start: Max chip rev:     v3.99 [0m
+[0;32mI (269) cpu_start: Chip rev:         v3.1[0m
+[0;32mI (274) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (282) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (287) heap_init: At 3FFB38C0 len 0002C740 (177 KiB): DRAM[0m
+[0;32mI (294) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (300) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (307) heap_init: At 4008D820 len 000127E0 (73 KiB): IRAM[0m
+[0;32mI (314) spi_flash: detected chip: generic[0m
+[0;32mI (317) spi_flash: flash io: dio[0m
+[0;32mI (322) app_start: Starting scheduler on CPU0[0m
+[0;32mI (326) app_start: Starting scheduler on CPU1[0m
+[0;32mI (326) main_task: Started on CPU0[0m
+[0;32mI (336) main_task: Calling app_main()[0m
+[0;32mI (386) CORE_SUP: Boot ENDAP[0m
+[0;32mI (386) CORE_SUP: Init Infrastructure[0m
+[0;32mI (386) gpio: GPIO[27]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (386) RS485: Driver RS485 inicializado[0m
+[0;32mI (396) CORE_SUP: Init Domain[0m
+[0;32mI (396) CORE_SUP: Init Services[0m
+[0;32mI (396) WATCHDOG: Watchdog initialized[0m
+[0;32mI (406) WATCHDOG: Registered WD 0 timeout=20 ms[0m
+[0;32mI (406) CORE_SUP: Starting Control Loop[0m
+[0;32mI (416) CTRL_LOOP: Control loop started (1000us)[0m
+[0;32mI (416) main_task: Returned from app_main()[0m
+[0;32mI (1416) DET_PROBE: cycles=1000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (2416) DET_PROBE: cycles=2000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (3416) DET_PROBE: cycles=3000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (4416) DET_PROBE: cycles=4000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (5416) DET_PROBE: cycles=5000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (6416) DET_PROBE: cycles=6000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (7416) DET_PROBE: cycles=7000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (8416) DET_PROBE: cycles=8000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (9416) DET_PROBE: cycles=9000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (10416) DET_PROBE: cycles=10000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (11416) DET_PROBE: cycles=11000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (12416) DET_PROBE: cycles=12000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (13416) DET_PROBE: cycles=13000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (14416) DET_PROBE: cycles=14000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (15416) DET_PROBE: cycles=15000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (16416) DET_PROBE: cycles=16000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (17416) DET_PROBE: cycles=17000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (18416) DET_PROBE: cycles=18000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (19416) DET_PROBE: cycles=19000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (20416) DET_PROBE: cycles=20000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (21416) DET_PROBE: cycles=21000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (22416) DET_PROBE: cycles=22000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (23416) DET_PROBE: cycles=23000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (24416) DET_PROBE: cycles=24000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (25416) DET_PROBE: cycles=25000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (26416) DET_PROBE: cycles=26000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (27416) DET_PROBE: cycles=27000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (28416) DET_PROBE: cycles=28000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (29416) DET_PROBE: cycles=29000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (30416) DET_PROBE: cycles=30000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (31416) DET_PROBE: cycles=31000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (32416) DET_PROBE: cycles=32000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (33416) DET_PROBE: cycles=33000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (34416) DET_PROBE: cycles=34000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (35416) DET_PROBE: cycles=35000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (36416) DET_PROBE: cycles=36000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (37416) DET_PROBE: cycles=37000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (38416) DET_PROBE: cycles=38000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (39416) DET_PROBE: cycles=39000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (40416) DET_PROBE: cycles=40000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (41416) DET_PROBE: cycles=41000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (42416) DET_PROBE: cycles=42000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (43416) DET_PROBE: cycles=43000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (44416) DET_PROBE: cycles=44000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (45416) DET_PROBE: cycles=45000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (46416) DET_PROBE: cycles=46000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (47416) DET_PROBE: cycles=47000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (48416) DET_PROBE: cycles=48000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (49416) DET_PROBE: cycles=49000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (50416) DET_PROBE: cycles=50000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (51416) DET_PROBE: cycles=51000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (52416) DET_PROBE: cycles=52000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (53416) DET_PROBE: cycles=53000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (54416) DET_PROBE: cycles=54000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (55416) DET_PROBE: cycles=55000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (56416) DET_PROBE: cycles=56000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (57416) DET_PROBE: cycles=57000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (58416) DET_PROBE: cycles=58000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (59416) DET_PROBE: cycles=59000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (60416) DET_PROBE: cycles=60000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (61416) DET_PROBE: cycles=61000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (62416) DET_PROBE: cycles=62000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (63416) DET_PROBE: cycles=63000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (64416) DET_PROBE: cycles=64000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (65416) DET_PROBE: cycles=65000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (66416) DET_PROBE: cycles=66000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (67416) DET_PROBE: cycles=67000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (68416) DET_PROBE: cycles=68000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (69416) DET_PROBE: cycles=69000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (70416) DET_PROBE: cycles=70000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (71416) DET_PROBE: cycles=71000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (72416) DET_PROBE: cycles=72000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (73416) DET_PROBE: cycles=73000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (74416) DET_PROBE: cycles=74000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (75416) DET_PROBE: cycles=75000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (76416) DET_PROBE: cycles=76000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (77416) DET_PROBE: cycles=77000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (78416) DET_PROBE: cycles=78000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (79416) DET_PROBE: cycles=79000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (80416) DET_PROBE: cycles=80000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (81416) DET_PROBE: cycles=81000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (82416) DET_PROBE: cycles=82000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (83416) DET_PROBE: cycles=83000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (84416) DET_PROBE: cycles=84000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (85416) DET_PROBE: cycles=85000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (86416) DET_PROBE: cycles=86000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (87416) DET_PROBE: cycles=87000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (88416) DET_PROBE: cycles=88000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (89416) DET_PROBE: cycles=89000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (90416) DET_PROBE: cycles=90000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (91416) DET_PROBE: cycles=91000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (92416) DET_PROBE: cycles=92000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (93416) DET_PROBE: cycles=93000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (94416) DET_PROBE: cycles=94000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (95416) DET_PROBE: cycles=95000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (96416) DET_PROBE: cycles=96000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (97416) DET_PROBE: cycles=97000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (98416) DET_PROBE: cycles=98000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (99416) DET_PROBE: cycles=99000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (100416) DET_PROBE: cycles=100000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (101416) DET_PROBE: cycles=101000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (102416) DET_PROBE: cycles=102000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (103416) DET_PROBE: cycles=103000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (104416) DET_PROBE: cycles=104000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (105416) DET_PROBE: cycles=105000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (106416) DET_PROBE: cycles=106000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (107416) DET_PROBE: cycles=107000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (108416) DET_PROBE: cycles=108000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (109416) DET_PROBE: cycles=109000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (110416) DET_PROBE: cycles=110000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (111416) DET_PROBE: cycles=111000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (112416) DET_PROBE: cycles=112000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (113416) DET_PROBE: cycles=113000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (114416) DET_PROBE: cycles=114000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (115416) DET_PROBE: cycles=115000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (116416) DET_PROBE: cycles=116000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (117416) DET_PROBE: cycles=117000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (118416) DET_PROBE: cycles=118000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (119416) DET_PROBE: cycles=119000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (120416) DET_PROBE: cycles=120000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (121416) DET_PROBE: cycles=121000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (122416) DET_PROBE: cycles=122000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (123416) DET_PROBE: cycles=123000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (124416) DET_PROBE: cycles=124000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (125416) DET_PROBE: cycles=125000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (126416) DET_PROBE: cycles=126000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (127416) DET_PROBE: cycles=127000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (128416) DET_PROBE: cycles=128000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (129416) DET_PROBE: cycles=129000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (130416) DET_PROBE: cycles=130000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (131416) DET_PROBE: cycles=131000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (132416) DET_PROBE: cycles=132000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (133416) DET_PROBE: cycles=133000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (134416) DET_PROBE: cycles=134000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (135416) DET_PROBE: cycles=135000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (136416) DET_PROBE: cycles=136000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (137416) DET_PROBE: cycles=137000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (138416) DET_PROBE: cycles=138000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (139416) DET_PROBE: cycles=139000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (140416) DET_PROBE: cycles=140000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (141416) DET_PROBE: cycles=141000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (142416) DET_PROBE: cycles=142000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (143416) DET_PROBE: cycles=143000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (144416) DET_PROBE: cycles=144000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (145416) DET_PROBE: cycles=145000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (146416) DET_PROBE: cycles=146000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (147416) DET_PROBE: cycles=147000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (148416) DET_PROBE: cycles=148000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (149416) DET_PROBE: cycles=149000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (150416) DET_PROBE: cycles=150000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (151416) DET_PROBE: cycles=151000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (152416) DET_PROBE: cycles=152000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (153416) DET_PROBE: cycles=153000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (154416) DET_PROBE: cycles=154000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (155416) DET_PROBE: cycles=155000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (156416) DET_PROBE: cycles=156000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (157416) DET_PROBE: cycles=157000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (158416) DET_PROBE: cycles=158000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (159416) DET_PROBE: cycles=159000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (160416) DET_PROBE: cycles=160000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (161416) DET_PROBE: cycles=161000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (162416) DET_PROBE: cycles=162000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (163416) DET_PROBE: cycles=163000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (164416) DET_PROBE: cycles=164000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (165416) DET_PROBE: cycles=165000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (166416) DET_PROBE: cycles=166000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (167416) DET_PROBE: cycles=167000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (168416) DET_PROBE: cycles=168000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (169416) DET_PROBE: cycles=169000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (170416) DET_PROBE: cycles=170000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (171416) DET_PROBE: cycles=171000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (172416) DET_PROBE: cycles=172000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (173416) DET_PROBE: cycles=173000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (174416) DET_PROBE: cycles=174000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (175416) DET_PROBE: cycles=175000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (176416) DET_PROBE: cycles=176000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (177416) DET_PROBE: cycles=177000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (178416) DET_PROBE: cycles=178000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (179416) DET_PROBE: cycles=179000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (180416) DET_PROBE: cycles=180000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (181416) DET_PROBE: cycles=181000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (182416) DET_PROBE: cycles=182000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (183416) DET_PROBE: cycles=183000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (184416) DET_PROBE: cycles=184000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (185416) DET_PROBE: cycles=185000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (186416) DET_PROBE: cycles=186000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (187416) DET_PROBE: cycles=187000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (188416) DET_PROBE: cycles=188000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (189416) DET_PROBE: cycles=189000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (190416) DET_PROBE: cycles=190000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (191416) DET_PROBE: cycles=191000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (192416) DET_PROBE: cycles=192000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (193416) DET_PROBE: cycles=193000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (194416) DET_PROBE: cycles=194000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (195416) DET_PROBE: cycles=195000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (196416) DET_PROBE: cycles=196000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (197416) DET_PROBE: cycles=197000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (198416) DET_PROBE: cycles=198000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (199416) DET_PROBE: cycles=199000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (200416) DET_PROBE: cycles=200000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (201416) DET_PROBE: cycles=201000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (202416) DET_PROBE: cycles=202000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (203416) DET_PROBE: cycles=203000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (204416) DET_PROBE: cycles=204000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (205416) DET_PROBE: cycles=205000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (206416) DET_PROBE: cycles=206000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (207416) DET_PROBE: cycles=207000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (208416) DET_PROBE: cycles=208000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (209416) DET_PROBE: cycles=209000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (210416) DET_PROBE: cycles=210000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (211416) DET_PROBE: cycles=211000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (212416) DET_PROBE: cycles=212000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (213416) DET_PROBE: cycles=213000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (214416) DET_PROBE: cycles=214000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (215416) DET_PROBE: cycles=215000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (216416) DET_PROBE: cycles=216000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (217416) DET_PROBE: cycles=217000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (218416) DET_PROBE: cycles=218000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (219416) DET_PROBE: cycles=219000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (220416) DET_PROBE: cycles=220000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (221416) DET_PROBE: cycles=221000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (222416) DET_PROBE: cycles=222000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (223416) DET_PROBE: cycles=223000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (224416) DET_PROBE: cycles=224000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (225416) DET_PROBE: cycles=225000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (226416) DET_PROBE: cycles=226000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (227416) DET_PROBE: cycles=227000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (228416) DET_PROBE: cycles=228000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (229416) DET_PROBE: cycles=229000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (230416) DET_PROBE: cycles=230000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (231416) DET_PROBE: cycles=231000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (232416) DET_PROBE: cycles=232000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (233416) DET_PROBE: cycles=233000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (234416) DET_PROBE: cycles=234000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (235416) DET_PROBE: cycles=235000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (236416) DET_PROBE: cycles=236000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (237416) DET_PROBE: cycles=237000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (238416) DET_PROBE: cycles=238000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (239416) DET_PROBE: cycles=239000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (240416) DET_PROBE: cycles=240000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (241416) DET_PROBE: cycles=241000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (242416) DET_PROBE: cycles=242000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (243416) DET_PROBE: cycles=243000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (244416) DET_PROBE: cycles=244000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (245416) DET_PROBE: cycles=245000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (246416) DET_PROBE: cycles=246000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (247416) DET_PROBE: cycles=247000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (248416) DET_PROBE: cycles=248000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (249416) DET_PROBE: cycles=249000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (250416) DET_PROBE: cycles=250000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (251416) DET_PROBE: cycles=251000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (252416) DET_PROBE: cycles=252000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (253416) DET_PROBE: cycles=253000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (254416) DET_PROBE: cycles=254000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (255416) DET_PROBE: cycles=255000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (256416) DET_PROBE: cycles=256000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (257416) DET_PROBE: cycles=257000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (258416) DET_PROBE: cycles=258000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (259416) DET_PROBE: cycles=259000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (260416) DET_PROBE: cycles=260000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (261416) DET_PROBE: cycles=261000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (262416) DET_PROBE: cycles=262000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (263416) DET_PROBE: cycles=263000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (264416) DET_PROBE: cycles=264000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (265416) DET_PROBE: cycles=265000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (266416) DET_PROBE: cycles=266000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (267416) DET_PROBE: cycles=267000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (268416) DET_PROBE: cycles=268000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (269416) DET_PROBE: cycles=269000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (270416) DET_PROBE: cycles=270000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (271416) DET_PROBE: cycles=271000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (272416) DET_PROBE: cycles=272000 jitter(min/avg/max)=12/17/204 us[0m
+[0;32mI (273416) DET_PROBE: cycles=273000 jitter(min/avg/max)=12/17/204 us[0m

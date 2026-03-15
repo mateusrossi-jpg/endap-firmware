@@ -1,0 +1,2103 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7080
+load:0x40078000,len:15584
+load:0x40080400,len:4
+ho 8 tail 4 room 4
+load:0x40080404,len:3876
+entry 0x4008064c
+[0;32mI (31) boot: ESP-IDF v5.1.2 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Mar 11 2026 15:11:30[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (35) boot: chip revision: v3.1[0m
+[0;32mI (39) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (44) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (48) boot.esp32: SPI Flash Size : 4MB[0m
+[0;32mI (53) boot: Enabling RNG early entropy source...[0m
+[0;32mI (58) boot: Partition Table:[0m
+[0;32mI (62) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (69) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (77) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (84) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (92) boot: End of partition table[0m
+[0;32mI (96) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=0b3d0h ( 46032) map[0m
+[0;32mI (121) esp_image: segment 1: paddr=0001b3f8 vaddr=3ffb0000 size=021c0h (  8640) load[0m
+[0;32mI (125) esp_image: segment 2: paddr=0001d5c0 vaddr=40080000 size=02a58h ( 10840) load[0m
+[0;32mI (131) esp_image: segment 3: paddr=00020020 vaddr=400d0020 size=19f0ch (106252) map[0m
+[0;32mI (173) esp_image: segment 4: paddr=00039f34 vaddr=40082a58 size=0ade8h ( 44520) load[0m
+[0;32mI (199) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (199) boot: Disabling RNG early entropy source...[0m
+[0;32mI (211) cpu_start: Multicore app[0m
+[0;32mI (211) cpu_start: Pro cpu up.[0m
+[0;32mI (211) cpu_start: Starting app cpu, entry point is 0x400812fc[0m
+[0;32mI (0) cpu_start: App cpu up.[0m
+[0;32mI (229) cpu_start: Pro cpu start user code[0m
+[0;32mI (229) cpu_start: cpu freq: 240000000 Hz[0m
+[0;32mI (229) cpu_start: Application information:[0m
+[0;32mI (234) cpu_start: Project name:     ENDAP[0m
+[0;32mI (238) cpu_start: App version:      1[0m
+[0;32mI (243) cpu_start: Compile time:     Mar 11 2026 15:11:30[0m
+[0;32mI (249) cpu_start: ELF file SHA256:  2b9bdff4a558c353...[0m
+[0;32mI (255) cpu_start: ESP-IDF:          v5.1.2[0m
+[0;32mI (260) cpu_start: Min chip rev:     v0.0[0m
+[0;32mI (264) cpu_start: Max chip rev:     v3.99 [0m
+[0;32mI (269) cpu_start: Chip rev:         v3.1[0m
+[0;32mI (274) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (281) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (287) heap_init: At 3FFB3238 len 0002CDC8 (179 KiB): DRAM[0m
+[0;32mI (294) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (300) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (306) heap_init: At 4008D840 len 000127C0 (73 KiB): IRAM[0m
+[0;32mI (314) spi_flash: detected chip: generic[0m
+[0;32mI (317) spi_flash: flash io: dio[0m
+[0;32mI (322) app_start: Starting scheduler on CPU0[0m
+[0;32mI (326) app_start: Starting scheduler on CPU1[0m
+[0;32mI (326) main_task: Started on CPU0[0m
+[0;32mI (336) main_task: Calling app_main()[0m
+[0;32mI (366) CORE_SUP: Boot ENDAP[0m
+[0;32mI (366) CORE_SUP: Init Infrastructure[0m
+[0;32mI (366) gpio: GPIO[27]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 [0m
+[0;32mI (376) RS485: Driver RS485 inicializado[0m
+[0;32mI (376) CORE_SUP: Init Domain[0m
+[0;32mI (386) CORE_SUP: Init Services[0m
+[0;32mI (386) WATCHDOG: Watchdog initialized[0m
+[0;32mI (396) WATCHDOG: Registered WD 0 timeout=10 ms[0m
+[0;32mI (396) CORE_SUP: Starting Control Loop[0m
+[0;32mI (406) CTRL_LOOP: Control loop started (1000us)[0m
+[0;32mI (406) main_task: Returned from app_main()[0m
+[0;32mI (1406) DET_PROBE: cycles=1000 jitter(min/avg/max)=7/7/86 us[0m
+[0;32mI (1406) KTRACE: cycles=1000 jitter(min/avg/max)=947/998/1000 us exec(min/avg/max)=7/7/86 us[0m
+[0;32mI (2406) DET_PROBE: cycles=2000 jitter(min/avg/max)=7/7/86 us[0m
+[0;32mI (2406) KTRACE: cycles=2000 jitter(min/avg/max)=924/1001/5076 us exec(min/avg/max)=7/7/86 us[0m
+[0;32mI (3406) DET_PROBE: cycles=3000 jitter(min/avg/max)=7/7/86 us[0m
+[0;32mI (3406) KTRACE: cycles=3000 jitter(min/avg/max)=412/1001/5076 us exec(min/avg/max)=7/7/86 us[0m
+[0;32mI (4416) DET_PROBE: cycles=4000 jitter(min/avg/max)=7/7/86 us[0m
+[0;32mI (4416) KTRACE: cycles=4000 jitter(min/avg/max)=412/1002/5076 us exec(min/avg/max)=7/7/86 us[0m
+[0;32mI (5416) DET_PROBE: cycles=5000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (5416) KTRACE: cycles=5000 jitter(min/avg/max)=412/1002/5076 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (5416) KERNEL_METRICS: jitter_max=3585 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (6426) DET_PROBE: cycles=6000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (6426) KTRACE: cycles=6000 jitter(min/avg/max)=412/1003/13009 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (7426) DET_PROBE: cycles=7000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (7426) KTRACE: cycles=7000 jitter(min/avg/max)=328/1003/13009 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (8436) DET_PROBE: cycles=8000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (8436) KTRACE: cycles=8000 jitter(min/avg/max)=328/1003/13009 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (9436) DET_PROBE: cycles=9000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (9436) KTRACE: cycles=9000 jitter(min/avg/max)=328/1003/13009 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (10436) DET_PROBE: cycles=10000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (10436) KTRACE: cycles=10000 jitter(min/avg/max)=328/1003/13009 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (10446) KERNEL_METRICS: jitter_max=12009 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (11446) DET_PROBE: cycles=11000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (11446) KTRACE: cycles=11000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (12456) DET_PROBE: cycles=12000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (12456) KTRACE: cycles=12000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (13456) DET_PROBE: cycles=13000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (13456) KTRACE: cycles=13000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (14466) DET_PROBE: cycles=14000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (14466) KTRACE: cycles=14000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (15466) DET_PROBE: cycles=15000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (15466) KTRACE: cycles=15000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (15476) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (16476) DET_PROBE: cycles=16000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (16476) KTRACE: cycles=16000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (17486) DET_PROBE: cycles=17000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (17486) KTRACE: cycles=17000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (18486) DET_PROBE: cycles=18000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (18486) KTRACE: cycles=18000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (19486) DET_PROBE: cycles=19000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (19486) KTRACE: cycles=19000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (20496) DET_PROBE: cycles=20000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (20496) KTRACE: cycles=20000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (20496) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (21506) DET_PROBE: cycles=21000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (21506) KTRACE: cycles=21000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (22506) DET_PROBE: cycles=22000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (22506) KTRACE: cycles=22000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (23516) DET_PROBE: cycles=23000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (23516) KTRACE: cycles=23000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (24516) DET_PROBE: cycles=24000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (24516) KTRACE: cycles=24000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (25526) DET_PROBE: cycles=25000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (25526) KTRACE: cycles=25000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (25526) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (26536) DET_PROBE: cycles=26000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (26536) KTRACE: cycles=26000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (27536) DET_PROBE: cycles=27000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (27536) KTRACE: cycles=27000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (28546) DET_PROBE: cycles=28000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (28546) KTRACE: cycles=28000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (29546) DET_PROBE: cycles=29000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (29546) KTRACE: cycles=29000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (30546) DET_PROBE: cycles=30000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (30546) KTRACE: cycles=30000 jitter(min/avg/max)=328/1004/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (30556) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (31566) DET_PROBE: cycles=31000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (31566) KTRACE: cycles=31000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (32566) DET_PROBE: cycles=32000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (32566) KTRACE: cycles=32000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (33566) DET_PROBE: cycles=33000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (33566) KTRACE: cycles=33000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (34576) DET_PROBE: cycles=34000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (34576) KTRACE: cycles=34000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (35576) DET_PROBE: cycles=35000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (35576) KTRACE: cycles=35000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (35586) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (36586) DET_PROBE: cycles=36000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (36586) KTRACE: cycles=36000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (37596) DET_PROBE: cycles=37000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (37596) KTRACE: cycles=37000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (38596) DET_PROBE: cycles=38000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (38596) KTRACE: cycles=38000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (39606) DET_PROBE: cycles=39000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (39606) KTRACE: cycles=39000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (40606) DET_PROBE: cycles=40000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (40606) KTRACE: cycles=40000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (40616) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (41616) DET_PROBE: cycles=41000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (41616) KTRACE: cycles=41000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (42626) DET_PROBE: cycles=42000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (42626) KTRACE: cycles=42000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (43626) DET_PROBE: cycles=43000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (43626) KTRACE: cycles=43000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (44626) DET_PROBE: cycles=44000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (44626) KTRACE: cycles=44000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (45636) DET_PROBE: cycles=45000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (45636) KTRACE: cycles=45000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (45636) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (46646) DET_PROBE: cycles=46000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (46646) KTRACE: cycles=46000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (47646) DET_PROBE: cycles=47000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (47646) KTRACE: cycles=47000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (48656) DET_PROBE: cycles=48000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (48656) KTRACE: cycles=48000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (49656) DET_PROBE: cycles=49000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (49656) KTRACE: cycles=49000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (50666) DET_PROBE: cycles=50000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (50666) KTRACE: cycles=50000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (50666) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (51676) DET_PROBE: cycles=51000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (51676) KTRACE: cycles=51000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (52676) DET_PROBE: cycles=52000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (52676) KTRACE: cycles=52000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (53686) DET_PROBE: cycles=53000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (53686) KTRACE: cycles=53000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (54686) DET_PROBE: cycles=54000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (54686) KTRACE: cycles=54000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (55686) DET_PROBE: cycles=55000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (55686) KTRACE: cycles=55000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (55696) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (56706) DET_PROBE: cycles=56000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (56706) KTRACE: cycles=56000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (57706) DET_PROBE: cycles=57000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (57706) KTRACE: cycles=57000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (58706) DET_PROBE: cycles=58000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (58706) KTRACE: cycles=58000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (59716) DET_PROBE: cycles=59000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (59716) KTRACE: cycles=59000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (60716) DET_PROBE: cycles=60000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (60716) KTRACE: cycles=60000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (60726) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (61726) DET_PROBE: cycles=61000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (61726) KTRACE: cycles=61000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (62736) DET_PROBE: cycles=62000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (62736) KTRACE: cycles=62000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (63736) DET_PROBE: cycles=63000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (63736) KTRACE: cycles=63000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (64746) DET_PROBE: cycles=64000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (64746) KTRACE: cycles=64000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (65746) DET_PROBE: cycles=65000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (65746) KTRACE: cycles=65000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (65756) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (66756) DET_PROBE: cycles=66000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (66756) KTRACE: cycles=66000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (67766) DET_PROBE: cycles=67000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (67766) KTRACE: cycles=67000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (68766) DET_PROBE: cycles=68000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (68766) KTRACE: cycles=68000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (69766) DET_PROBE: cycles=69000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (69766) KTRACE: cycles=69000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (70776) DET_PROBE: cycles=70000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (70776) KTRACE: cycles=70000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (70776) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (71786) DET_PROBE: cycles=71000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (71786) KTRACE: cycles=71000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (72786) DET_PROBE: cycles=72000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (72786) KTRACE: cycles=72000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (73796) DET_PROBE: cycles=73000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (73796) KTRACE: cycles=73000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (74796) DET_PROBE: cycles=74000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (74796) KTRACE: cycles=74000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (75806) DET_PROBE: cycles=75000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (75806) KTRACE: cycles=75000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (75806) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (76816) DET_PROBE: cycles=76000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (76816) KTRACE: cycles=76000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (77816) DET_PROBE: cycles=77000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (77816) KTRACE: cycles=77000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (78826) DET_PROBE: cycles=78000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (78826) KTRACE: cycles=78000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (79826) DET_PROBE: cycles=79000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (79826) KTRACE: cycles=79000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (80826) DET_PROBE: cycles=80000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (80826) KTRACE: cycles=80000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (80836) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (81846) DET_PROBE: cycles=81000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (81846) KTRACE: cycles=81000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (82846) DET_PROBE: cycles=82000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (82846) KTRACE: cycles=82000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (83846) DET_PROBE: cycles=83000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (83846) KTRACE: cycles=83000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (84856) DET_PROBE: cycles=84000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (84856) KTRACE: cycles=84000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (85856) DET_PROBE: cycles=85000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (85856) KTRACE: cycles=85000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (85866) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (86866) DET_PROBE: cycles=86000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (86866) KTRACE: cycles=86000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (87876) DET_PROBE: cycles=87000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (87876) KTRACE: cycles=87000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (88876) DET_PROBE: cycles=88000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (88876) KTRACE: cycles=88000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (89886) DET_PROBE: cycles=89000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (89886) KTRACE: cycles=89000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (90886) DET_PROBE: cycles=90000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (90886) KTRACE: cycles=90000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (90896) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (91896) DET_PROBE: cycles=91000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (91896) KTRACE: cycles=91000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (92906) DET_PROBE: cycles=92000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (92906) KTRACE: cycles=92000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (93906) DET_PROBE: cycles=93000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (93906) KTRACE: cycles=93000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (94906) DET_PROBE: cycles=94000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (94906) KTRACE: cycles=94000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (95916) DET_PROBE: cycles=95000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (95916) KTRACE: cycles=95000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (95916) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (96926) DET_PROBE: cycles=96000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (96926) KTRACE: cycles=96000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (97926) DET_PROBE: cycles=97000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (97926) KTRACE: cycles=97000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (98936) DET_PROBE: cycles=98000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (98936) KTRACE: cycles=98000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (99936) DET_PROBE: cycles=99000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (99936) KTRACE: cycles=99000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (100946) DET_PROBE: cycles=100000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (100946) KTRACE: cycles=100000 jitter(min/avg/max)=328/1005/13614 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (100946) KERNEL_METRICS: jitter_max=12614 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (101956) DET_PROBE: cycles=101000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (101956) KTRACE: cycles=101000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (102956) DET_PROBE: cycles=102000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (102956) KTRACE: cycles=102000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (103966) DET_PROBE: cycles=103000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (103966) KTRACE: cycles=103000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (104966) DET_PROBE: cycles=104000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (104966) KTRACE: cycles=104000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (105976) DET_PROBE: cycles=105000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (105976) KTRACE: cycles=105000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (105976) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (106986) DET_PROBE: cycles=106000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (106986) KTRACE: cycles=106000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (107986) DET_PROBE: cycles=107000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (107986) KTRACE: cycles=107000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (108996) DET_PROBE: cycles=108000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (108996) KTRACE: cycles=108000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (109996) DET_PROBE: cycles=109000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (109996) KTRACE: cycles=109000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (110996) DET_PROBE: cycles=110000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (110996) KTRACE: cycles=110000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (111006) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (112016) DET_PROBE: cycles=111000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (112016) KTRACE: cycles=111000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (113016) DET_PROBE: cycles=112000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (113016) KTRACE: cycles=112000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (114026) DET_PROBE: cycles=113000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (114026) KTRACE: cycles=113000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (115026) DET_PROBE: cycles=114000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (115026) KTRACE: cycles=114000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (116026) DET_PROBE: cycles=115000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (116026) KTRACE: cycles=115000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (116036) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (117046) DET_PROBE: cycles=116000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (117046) KTRACE: cycles=116000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (118046) DET_PROBE: cycles=117000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (118046) KTRACE: cycles=117000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (119046) DET_PROBE: cycles=118000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (119046) KTRACE: cycles=118000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (120056) DET_PROBE: cycles=119000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (120056) KTRACE: cycles=119000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (121056) DET_PROBE: cycles=120000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (121056) KTRACE: cycles=120000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (121066) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (122076) DET_PROBE: cycles=121000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (122076) KTRACE: cycles=121000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (123076) DET_PROBE: cycles=122000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (123076) KTRACE: cycles=122000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (124076) DET_PROBE: cycles=123000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (124076) KTRACE: cycles=123000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (125086) DET_PROBE: cycles=124000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (125086) KTRACE: cycles=124000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (126086) DET_PROBE: cycles=125000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (126086) KTRACE: cycles=125000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (126096) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (127096) DET_PROBE: cycles=126000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (127096) KTRACE: cycles=126000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (128106) DET_PROBE: cycles=127000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (128106) KTRACE: cycles=127000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (129106) DET_PROBE: cycles=128000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (129106) KTRACE: cycles=128000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (130116) DET_PROBE: cycles=129000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (130116) KTRACE: cycles=129000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (131116) DET_PROBE: cycles=130000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (131116) KTRACE: cycles=130000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (131126) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (132126) DET_PROBE: cycles=131000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (132126) KTRACE: cycles=131000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (133136) DET_PROBE: cycles=132000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (133136) KTRACE: cycles=132000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (134136) DET_PROBE: cycles=133000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (134136) KTRACE: cycles=133000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (135146) DET_PROBE: cycles=134000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (135146) KTRACE: cycles=134000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (136146) DET_PROBE: cycles=135000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (136146) KTRACE: cycles=135000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (136146) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (137156) DET_PROBE: cycles=136000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (137156) KTRACE: cycles=136000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (138166) DET_PROBE: cycles=137000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (138166) KTRACE: cycles=137000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (139166) DET_PROBE: cycles=138000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (139166) KTRACE: cycles=138000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (140166) DET_PROBE: cycles=139000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (140166) KTRACE: cycles=139000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (141176) DET_PROBE: cycles=140000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (141176) KTRACE: cycles=140000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (141176) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (142186) DET_PROBE: cycles=141000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (142186) KTRACE: cycles=141000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (143196) DET_PROBE: cycles=142000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (143196) KTRACE: cycles=142000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (144196) DET_PROBE: cycles=143000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (144196) KTRACE: cycles=143000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (145196) DET_PROBE: cycles=144000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (145196) KTRACE: cycles=144000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (146206) DET_PROBE: cycles=145000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (146206) KTRACE: cycles=145000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (146206) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (147216) DET_PROBE: cycles=146000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (147216) KTRACE: cycles=146000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (148216) DET_PROBE: cycles=147000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (148216) KTRACE: cycles=147000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (149226) DET_PROBE: cycles=148000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (149226) KTRACE: cycles=148000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (150226) DET_PROBE: cycles=149000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (150226) KTRACE: cycles=149000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (151236) DET_PROBE: cycles=150000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (151236) KTRACE: cycles=150000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (151236) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (152246) DET_PROBE: cycles=151000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (152246) KTRACE: cycles=151000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (153246) DET_PROBE: cycles=152000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (153246) KTRACE: cycles=152000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (154256) DET_PROBE: cycles=153000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (154256) KTRACE: cycles=153000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (155256) DET_PROBE: cycles=154000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (155256) KTRACE: cycles=154000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (156266) DET_PROBE: cycles=155000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (156266) KTRACE: cycles=155000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (156266) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (157276) DET_PROBE: cycles=156000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (157276) KTRACE: cycles=156000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (158276) DET_PROBE: cycles=157000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (158276) KTRACE: cycles=157000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (159286) DET_PROBE: cycles=158000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (159286) KTRACE: cycles=158000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (160286) DET_PROBE: cycles=159000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (160286) KTRACE: cycles=159000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (161286) DET_PROBE: cycles=160000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (161286) KTRACE: cycles=160000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (161296) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (162306) DET_PROBE: cycles=161000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (162306) KTRACE: cycles=161000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (163306) DET_PROBE: cycles=162000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (163306) KTRACE: cycles=162000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (164316) DET_PROBE: cycles=163000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (164316) KTRACE: cycles=163000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (165316) DET_PROBE: cycles=164000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (165316) KTRACE: cycles=164000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (166316) DET_PROBE: cycles=165000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (166316) KTRACE: cycles=165000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (166326) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (167336) DET_PROBE: cycles=166000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (167336) KTRACE: cycles=166000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (168336) DET_PROBE: cycles=167000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (168336) KTRACE: cycles=167000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (169336) DET_PROBE: cycles=168000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (169336) KTRACE: cycles=168000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (170346) DET_PROBE: cycles=169000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (170346) KTRACE: cycles=169000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (171346) DET_PROBE: cycles=170000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (171346) KTRACE: cycles=170000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (171356) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (172366) DET_PROBE: cycles=171000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (172366) KTRACE: cycles=171000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (173366) DET_PROBE: cycles=172000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (173366) KTRACE: cycles=172000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (174366) DET_PROBE: cycles=173000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (174366) KTRACE: cycles=173000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (175376) DET_PROBE: cycles=174000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (175376) KTRACE: cycles=174000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (176376) DET_PROBE: cycles=175000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (176376) KTRACE: cycles=175000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (176386) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (177386) DET_PROBE: cycles=176000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (177386) KTRACE: cycles=176000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (178396) DET_PROBE: cycles=177000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (178396) KTRACE: cycles=177000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (179396) DET_PROBE: cycles=178000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (179396) KTRACE: cycles=178000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (180406) DET_PROBE: cycles=179000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (180406) KTRACE: cycles=179000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (181406) DET_PROBE: cycles=180000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (181406) KTRACE: cycles=180000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (181416) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (182416) DET_PROBE: cycles=181000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (182416) KTRACE: cycles=181000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (183426) DET_PROBE: cycles=182000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (183426) KTRACE: cycles=182000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (184426) DET_PROBE: cycles=183000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (184426) KTRACE: cycles=183000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (185436) DET_PROBE: cycles=184000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (185436) KTRACE: cycles=184000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (186436) DET_PROBE: cycles=185000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (186436) KTRACE: cycles=185000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (186436) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (187446) DET_PROBE: cycles=186000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (187446) KTRACE: cycles=186000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (188456) DET_PROBE: cycles=187000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (188456) KTRACE: cycles=187000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (189456) DET_PROBE: cycles=188000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (189456) KTRACE: cycles=188000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (190456) DET_PROBE: cycles=189000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (190456) KTRACE: cycles=189000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (191466) DET_PROBE: cycles=190000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (191466) KTRACE: cycles=190000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (191466) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (192476) DET_PROBE: cycles=191000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (192476) KTRACE: cycles=191000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (193486) DET_PROBE: cycles=192000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (193486) KTRACE: cycles=192000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (194486) DET_PROBE: cycles=193000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (194486) KTRACE: cycles=193000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (195486) DET_PROBE: cycles=194000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (195486) KTRACE: cycles=194000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (196496) DET_PROBE: cycles=195000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (196496) KTRACE: cycles=195000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (196496) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (197506) DET_PROBE: cycles=196000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (197506) KTRACE: cycles=196000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (198506) DET_PROBE: cycles=197000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (198506) KTRACE: cycles=197000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (199516) DET_PROBE: cycles=198000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (199516) KTRACE: cycles=198000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (200516) DET_PROBE: cycles=199000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (200516) KTRACE: cycles=199000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (201526) DET_PROBE: cycles=200000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (201526) KTRACE: cycles=200000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (201526) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (202536) DET_PROBE: cycles=201000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (202536) KTRACE: cycles=201000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (203536) DET_PROBE: cycles=202000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (203536) KTRACE: cycles=202000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (204546) DET_PROBE: cycles=203000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (204546) KTRACE: cycles=203000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (205546) DET_PROBE: cycles=204000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (205546) KTRACE: cycles=204000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (206556) DET_PROBE: cycles=205000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (206556) KTRACE: cycles=205000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (206556) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (207566) DET_PROBE: cycles=206000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (207566) KTRACE: cycles=206000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (208566) DET_PROBE: cycles=207000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (208566) KTRACE: cycles=207000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (209576) DET_PROBE: cycles=208000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (209576) KTRACE: cycles=208000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (210576) DET_PROBE: cycles=209000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (210576) KTRACE: cycles=209000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (211576) DET_PROBE: cycles=210000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (211576) KTRACE: cycles=210000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (211586) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (212596) DET_PROBE: cycles=211000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (212596) KTRACE: cycles=211000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (213596) DET_PROBE: cycles=212000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (213596) KTRACE: cycles=212000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (214606) DET_PROBE: cycles=213000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (214606) KTRACE: cycles=213000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (215606) DET_PROBE: cycles=214000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (215606) KTRACE: cycles=214000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (216606) DET_PROBE: cycles=215000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (216606) KTRACE: cycles=215000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (216616) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (217626) DET_PROBE: cycles=216000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (217626) KTRACE: cycles=216000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (218626) DET_PROBE: cycles=217000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (218626) KTRACE: cycles=217000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (219626) DET_PROBE: cycles=218000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (219626) KTRACE: cycles=218000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (220636) DET_PROBE: cycles=219000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (220636) KTRACE: cycles=219000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (221636) DET_PROBE: cycles=220000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (221636) KTRACE: cycles=220000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (221646) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (222656) DET_PROBE: cycles=221000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (222656) KTRACE: cycles=221000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (223656) DET_PROBE: cycles=222000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (223656) KTRACE: cycles=222000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (224656) DET_PROBE: cycles=223000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (224656) KTRACE: cycles=223000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (225666) DET_PROBE: cycles=224000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (225666) KTRACE: cycles=224000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (226666) DET_PROBE: cycles=225000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (226666) KTRACE: cycles=225000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (226676) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (227676) DET_PROBE: cycles=226000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (227676) KTRACE: cycles=226000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (228686) DET_PROBE: cycles=227000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (228686) KTRACE: cycles=227000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (229686) DET_PROBE: cycles=228000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (229686) KTRACE: cycles=228000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (230696) DET_PROBE: cycles=229000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (230696) KTRACE: cycles=229000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (231696) DET_PROBE: cycles=230000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (231696) KTRACE: cycles=230000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (231706) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (232706) DET_PROBE: cycles=231000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (232706) KTRACE: cycles=231000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (233716) DET_PROBE: cycles=232000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (233716) KTRACE: cycles=232000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (234716) DET_PROBE: cycles=233000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (234716) KTRACE: cycles=233000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (235726) DET_PROBE: cycles=234000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (235726) KTRACE: cycles=234000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (236726) DET_PROBE: cycles=235000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (236726) KTRACE: cycles=235000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (236726) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (237736) DET_PROBE: cycles=236000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (237736) KTRACE: cycles=236000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (238746) DET_PROBE: cycles=237000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (238746) KTRACE: cycles=237000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (239746) DET_PROBE: cycles=238000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (239746) KTRACE: cycles=238000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (240746) DET_PROBE: cycles=239000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (240746) KTRACE: cycles=239000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (241756) DET_PROBE: cycles=240000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (241756) KTRACE: cycles=240000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (241756) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (242766) DET_PROBE: cycles=241000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (242766) KTRACE: cycles=241000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (243776) DET_PROBE: cycles=242000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (243776) KTRACE: cycles=242000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (244776) DET_PROBE: cycles=243000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (244776) KTRACE: cycles=243000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (245776) DET_PROBE: cycles=244000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (245776) KTRACE: cycles=244000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (246786) DET_PROBE: cycles=245000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (246786) KTRACE: cycles=245000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (246786) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (247796) DET_PROBE: cycles=246000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (247796) KTRACE: cycles=246000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (248796) DET_PROBE: cycles=247000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (248796) KTRACE: cycles=247000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (249806) DET_PROBE: cycles=248000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (249806) KTRACE: cycles=248000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (250806) DET_PROBE: cycles=249000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (250806) KTRACE: cycles=249000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (251816) DET_PROBE: cycles=250000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (251816) KTRACE: cycles=250000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (251816) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (252826) DET_PROBE: cycles=251000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (252826) KTRACE: cycles=251000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (253826) DET_PROBE: cycles=252000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (253826) KTRACE: cycles=252000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (254836) DET_PROBE: cycles=253000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (254836) KTRACE: cycles=253000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (255836) DET_PROBE: cycles=254000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (255836) KTRACE: cycles=254000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (256846) DET_PROBE: cycles=255000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (256846) KTRACE: cycles=255000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (256846) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (257856) DET_PROBE: cycles=256000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (257856) KTRACE: cycles=256000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (258856) DET_PROBE: cycles=257000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (258856) KTRACE: cycles=257000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (259866) DET_PROBE: cycles=258000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (259866) KTRACE: cycles=258000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (260866) DET_PROBE: cycles=259000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (260866) KTRACE: cycles=259000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (261866) DET_PROBE: cycles=260000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (261866) KTRACE: cycles=260000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (261876) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (262886) DET_PROBE: cycles=261000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (262886) KTRACE: cycles=261000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (263886) DET_PROBE: cycles=262000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (263886) KTRACE: cycles=262000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (264896) DET_PROBE: cycles=263000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (264896) KTRACE: cycles=263000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (265896) DET_PROBE: cycles=264000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (265896) KTRACE: cycles=264000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (266896) DET_PROBE: cycles=265000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (266896) KTRACE: cycles=265000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (266906) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (267916) DET_PROBE: cycles=266000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (267916) KTRACE: cycles=266000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (268916) DET_PROBE: cycles=267000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (268916) KTRACE: cycles=267000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (269916) DET_PROBE: cycles=268000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (269916) KTRACE: cycles=268000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (270926) DET_PROBE: cycles=269000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (270926) KTRACE: cycles=269000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (271926) DET_PROBE: cycles=270000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (271926) KTRACE: cycles=270000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (271936) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (272946) DET_PROBE: cycles=271000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (272946) KTRACE: cycles=271000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (273946) DET_PROBE: cycles=272000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (273946) KTRACE: cycles=272000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (274946) DET_PROBE: cycles=273000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (274946) KTRACE: cycles=273000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (275956) DET_PROBE: cycles=274000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (275956) KTRACE: cycles=274000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (276956) DET_PROBE: cycles=275000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (276956) KTRACE: cycles=275000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (276966) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (277966) DET_PROBE: cycles=276000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (277966) KTRACE: cycles=276000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (278976) DET_PROBE: cycles=277000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (278976) KTRACE: cycles=277000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (279976) DET_PROBE: cycles=278000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (279976) KTRACE: cycles=278000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (280986) DET_PROBE: cycles=279000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (280986) KTRACE: cycles=279000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (281986) DET_PROBE: cycles=280000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (281986) KTRACE: cycles=280000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (281996) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (282996) DET_PROBE: cycles=281000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (282996) KTRACE: cycles=281000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (284006) DET_PROBE: cycles=282000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (284006) KTRACE: cycles=282000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (285006) DET_PROBE: cycles=283000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (285006) KTRACE: cycles=283000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (286016) DET_PROBE: cycles=284000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (286016) KTRACE: cycles=284000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (287016) DET_PROBE: cycles=285000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (287016) KTRACE: cycles=285000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (287016) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (288026) DET_PROBE: cycles=286000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (288026) KTRACE: cycles=286000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (289036) DET_PROBE: cycles=287000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (289036) KTRACE: cycles=287000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (290036) DET_PROBE: cycles=288000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (290036) KTRACE: cycles=288000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (291036) DET_PROBE: cycles=289000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (291036) KTRACE: cycles=289000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (292046) DET_PROBE: cycles=290000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (292046) KTRACE: cycles=290000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (292046) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (293056) DET_PROBE: cycles=291000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (293056) KTRACE: cycles=291000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (294066) DET_PROBE: cycles=292000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (294066) KTRACE: cycles=292000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (295066) DET_PROBE: cycles=293000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (295066) KTRACE: cycles=293000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (296066) DET_PROBE: cycles=294000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (296066) KTRACE: cycles=294000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (297076) DET_PROBE: cycles=295000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (297076) KTRACE: cycles=295000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (297076) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (298086) DET_PROBE: cycles=296000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (298086) KTRACE: cycles=296000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (299086) DET_PROBE: cycles=297000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (299086) KTRACE: cycles=297000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (300096) DET_PROBE: cycles=298000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (300096) KTRACE: cycles=298000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (301096) DET_PROBE: cycles=299000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (301096) KTRACE: cycles=299000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (302106) DET_PROBE: cycles=300000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (302106) KTRACE: cycles=300000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (302106) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (303116) DET_PROBE: cycles=301000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (303116) KTRACE: cycles=301000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (304116) DET_PROBE: cycles=302000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (304116) KTRACE: cycles=302000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (305126) DET_PROBE: cycles=303000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (305126) KTRACE: cycles=303000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (306126) DET_PROBE: cycles=304000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (306126) KTRACE: cycles=304000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (307136) DET_PROBE: cycles=305000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (307136) KTRACE: cycles=305000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (307136) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (308146) DET_PROBE: cycles=306000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (308146) KTRACE: cycles=306000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (309146) DET_PROBE: cycles=307000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (309146) KTRACE: cycles=307000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (310156) DET_PROBE: cycles=308000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (310156) KTRACE: cycles=308000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (311156) DET_PROBE: cycles=309000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (311156) KTRACE: cycles=309000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (312156) DET_PROBE: cycles=310000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (312156) KTRACE: cycles=310000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (312166) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (313176) DET_PROBE: cycles=311000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (313176) KTRACE: cycles=311000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (314176) DET_PROBE: cycles=312000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (314176) KTRACE: cycles=312000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (315186) DET_PROBE: cycles=313000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (315186) KTRACE: cycles=313000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (316186) DET_PROBE: cycles=314000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (316186) KTRACE: cycles=314000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (317186) DET_PROBE: cycles=315000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (317186) KTRACE: cycles=315000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (317196) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (318206) DET_PROBE: cycles=316000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (318206) KTRACE: cycles=316000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (319206) DET_PROBE: cycles=317000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (319206) KTRACE: cycles=317000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (320206) DET_PROBE: cycles=318000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (320206) KTRACE: cycles=318000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (321216) DET_PROBE: cycles=319000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (321216) KTRACE: cycles=319000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (322216) DET_PROBE: cycles=320000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (322216) KTRACE: cycles=320000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (322226) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (323236) DET_PROBE: cycles=321000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (323236) KTRACE: cycles=321000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (324236) DET_PROBE: cycles=322000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (324236) KTRACE: cycles=322000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (325236) DET_PROBE: cycles=323000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (325236) KTRACE: cycles=323000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (326246) DET_PROBE: cycles=324000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (326246) KTRACE: cycles=324000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (327246) DET_PROBE: cycles=325000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (327246) KTRACE: cycles=325000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (327256) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (328256) DET_PROBE: cycles=326000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (328256) KTRACE: cycles=326000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (329266) DET_PROBE: cycles=327000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (329266) KTRACE: cycles=327000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (330266) DET_PROBE: cycles=328000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (330266) KTRACE: cycles=328000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (331276) DET_PROBE: cycles=329000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (331276) KTRACE: cycles=329000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (332276) DET_PROBE: cycles=330000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (332276) KTRACE: cycles=330000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (332286) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (333286) DET_PROBE: cycles=331000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (333286) KTRACE: cycles=331000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (334296) DET_PROBE: cycles=332000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (334296) KTRACE: cycles=332000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (335296) DET_PROBE: cycles=333000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (335296) KTRACE: cycles=333000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (336306) DET_PROBE: cycles=334000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (336306) KTRACE: cycles=334000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (337306) DET_PROBE: cycles=335000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (337306) KTRACE: cycles=335000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (337306) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (338316) DET_PROBE: cycles=336000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (338316) KTRACE: cycles=336000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (339326) DET_PROBE: cycles=337000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (339326) KTRACE: cycles=337000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (340326) DET_PROBE: cycles=338000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (340326) KTRACE: cycles=338000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (341326) DET_PROBE: cycles=339000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (341326) KTRACE: cycles=339000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (342336) DET_PROBE: cycles=340000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (342336) KTRACE: cycles=340000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (342336) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (343346) DET_PROBE: cycles=341000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (343346) KTRACE: cycles=341000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (344356) DET_PROBE: cycles=342000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (344356) KTRACE: cycles=342000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (345356) DET_PROBE: cycles=343000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (345356) KTRACE: cycles=343000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (346356) DET_PROBE: cycles=344000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (346356) KTRACE: cycles=344000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (347366) DET_PROBE: cycles=345000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (347366) KTRACE: cycles=345000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (347366) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (348376) DET_PROBE: cycles=346000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (348376) KTRACE: cycles=346000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (349376) DET_PROBE: cycles=347000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (349376) KTRACE: cycles=347000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (350386) DET_PROBE: cycles=348000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (350386) KTRACE: cycles=348000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (351386) DET_PROBE: cycles=349000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (351386) KTRACE: cycles=349000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (352396) DET_PROBE: cycles=350000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (352396) KTRACE: cycles=350000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (352396) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (353406) DET_PROBE: cycles=351000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (353406) KTRACE: cycles=351000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (354406) DET_PROBE: cycles=352000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (354406) KTRACE: cycles=352000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (355416) DET_PROBE: cycles=353000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (355416) KTRACE: cycles=353000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (356416) DET_PROBE: cycles=354000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (356416) KTRACE: cycles=354000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (357426) DET_PROBE: cycles=355000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (357426) KTRACE: cycles=355000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (357426) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (358436) DET_PROBE: cycles=356000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (358436) KTRACE: cycles=356000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (359436) DET_PROBE: cycles=357000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (359436) KTRACE: cycles=357000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (360446) DET_PROBE: cycles=358000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (360446) KTRACE: cycles=358000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (361446) DET_PROBE: cycles=359000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (361446) KTRACE: cycles=359000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (362446) DET_PROBE: cycles=360000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (362446) KTRACE: cycles=360000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (362456) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (363466) DET_PROBE: cycles=361000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (363466) KTRACE: cycles=361000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (364466) DET_PROBE: cycles=362000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (364466) KTRACE: cycles=362000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (365476) DET_PROBE: cycles=363000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (365476) KTRACE: cycles=363000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (366476) DET_PROBE: cycles=364000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (366476) KTRACE: cycles=364000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (367476) DET_PROBE: cycles=365000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (367476) KTRACE: cycles=365000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (367486) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (368496) DET_PROBE: cycles=366000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (368496) KTRACE: cycles=366000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (369496) DET_PROBE: cycles=367000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (369496) KTRACE: cycles=367000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (370496) DET_PROBE: cycles=368000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (370496) KTRACE: cycles=368000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (371506) DET_PROBE: cycles=369000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (371506) KTRACE: cycles=369000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (372506) DET_PROBE: cycles=370000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (372506) KTRACE: cycles=370000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (372516) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (373526) DET_PROBE: cycles=371000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (373526) KTRACE: cycles=371000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (374526) DET_PROBE: cycles=372000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (374526) KTRACE: cycles=372000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (375526) DET_PROBE: cycles=373000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (375526) KTRACE: cycles=373000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (376536) DET_PROBE: cycles=374000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (376536) KTRACE: cycles=374000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (377536) DET_PROBE: cycles=375000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (377536) KTRACE: cycles=375000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (377546) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (378546) DET_PROBE: cycles=376000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (378546) KTRACE: cycles=376000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (379556) DET_PROBE: cycles=377000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (379556) KTRACE: cycles=377000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (380556) DET_PROBE: cycles=378000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (380556) KTRACE: cycles=378000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (381566) DET_PROBE: cycles=379000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (381566) KTRACE: cycles=379000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (382566) DET_PROBE: cycles=380000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (382566) KTRACE: cycles=380000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (382576) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (383576) DET_PROBE: cycles=381000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (383576) KTRACE: cycles=381000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (384586) DET_PROBE: cycles=382000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (384586) KTRACE: cycles=382000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (385586) DET_PROBE: cycles=383000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (385586) KTRACE: cycles=383000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (386596) DET_PROBE: cycles=384000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (386596) KTRACE: cycles=384000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (387596) DET_PROBE: cycles=385000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (387596) KTRACE: cycles=385000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (387596) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (388606) DET_PROBE: cycles=386000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (388606) KTRACE: cycles=386000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (389616) DET_PROBE: cycles=387000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (389616) KTRACE: cycles=387000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (390616) DET_PROBE: cycles=388000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (390616) KTRACE: cycles=388000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (391616) DET_PROBE: cycles=389000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (391616) KTRACE: cycles=389000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (392626) DET_PROBE: cycles=390000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (392626) KTRACE: cycles=390000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (392626) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (393636) DET_PROBE: cycles=391000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (393636) KTRACE: cycles=391000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (394646) DET_PROBE: cycles=392000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (394646) KTRACE: cycles=392000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (395646) DET_PROBE: cycles=393000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (395646) KTRACE: cycles=393000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (396646) DET_PROBE: cycles=394000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (396646) KTRACE: cycles=394000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (397656) DET_PROBE: cycles=395000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (397656) KTRACE: cycles=395000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (397656) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (398666) DET_PROBE: cycles=396000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (398666) KTRACE: cycles=396000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (399666) DET_PROBE: cycles=397000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (399666) KTRACE: cycles=397000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (400676) DET_PROBE: cycles=398000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (400676) KTRACE: cycles=398000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (401676) DET_PROBE: cycles=399000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (401676) KTRACE: cycles=399000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (402686) DET_PROBE: cycles=400000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (402686) KTRACE: cycles=400000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (402686) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (403696) DET_PROBE: cycles=401000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (403696) KTRACE: cycles=401000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (404696) DET_PROBE: cycles=402000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (404696) KTRACE: cycles=402000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (405706) DET_PROBE: cycles=403000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (405706) KTRACE: cycles=403000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (406706) DET_PROBE: cycles=404000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (406706) KTRACE: cycles=404000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (407716) DET_PROBE: cycles=405000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (407716) KTRACE: cycles=405000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (407716) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (408726) DET_PROBE: cycles=406000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (408726) KTRACE: cycles=406000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (409726) DET_PROBE: cycles=407000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (409726) KTRACE: cycles=407000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (410736) DET_PROBE: cycles=408000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (410736) KTRACE: cycles=408000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (411736) DET_PROBE: cycles=409000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (411736) KTRACE: cycles=409000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (412736) DET_PROBE: cycles=410000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (412736) KTRACE: cycles=410000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (412746) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (413756) DET_PROBE: cycles=411000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (413756) KTRACE: cycles=411000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (414756) DET_PROBE: cycles=412000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (414756) KTRACE: cycles=412000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (415766) DET_PROBE: cycles=413000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (415766) KTRACE: cycles=413000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (416766) DET_PROBE: cycles=414000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (416766) KTRACE: cycles=414000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (417766) DET_PROBE: cycles=415000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (417766) KTRACE: cycles=415000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (417776) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (418786) DET_PROBE: cycles=416000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (418786) KTRACE: cycles=416000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (419786) DET_PROBE: cycles=417000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (419786) KTRACE: cycles=417000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (420786) DET_PROBE: cycles=418000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (420786) KTRACE: cycles=418000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (421796) DET_PROBE: cycles=419000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (421796) KTRACE: cycles=419000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (422796) DET_PROBE: cycles=420000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (422796) KTRACE: cycles=420000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (422806) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (423816) DET_PROBE: cycles=421000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (423816) KTRACE: cycles=421000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (424816) DET_PROBE: cycles=422000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (424816) KTRACE: cycles=422000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (425816) DET_PROBE: cycles=423000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (425816) KTRACE: cycles=423000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (426826) DET_PROBE: cycles=424000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (426826) KTRACE: cycles=424000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (427826) DET_PROBE: cycles=425000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (427826) KTRACE: cycles=425000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (427836) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (428836) DET_PROBE: cycles=426000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (428836) KTRACE: cycles=426000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (429846) DET_PROBE: cycles=427000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (429846) KTRACE: cycles=427000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (430846) DET_PROBE: cycles=428000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (430846) KTRACE: cycles=428000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (431856) DET_PROBE: cycles=429000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (431856) KTRACE: cycles=429000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (432856) DET_PROBE: cycles=430000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (432856) KTRACE: cycles=430000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (432866) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (433866) DET_PROBE: cycles=431000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (433866) KTRACE: cycles=431000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (434876) DET_PROBE: cycles=432000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (434876) KTRACE: cycles=432000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (435876) DET_PROBE: cycles=433000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (435876) KTRACE: cycles=433000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (436886) DET_PROBE: cycles=434000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (436886) KTRACE: cycles=434000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (437886) DET_PROBE: cycles=435000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (437886) KTRACE: cycles=435000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (437886) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (438896) DET_PROBE: cycles=436000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (438896) KTRACE: cycles=436000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (439906) DET_PROBE: cycles=437000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (439906) KTRACE: cycles=437000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (440906) DET_PROBE: cycles=438000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (440906) KTRACE: cycles=438000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (441906) DET_PROBE: cycles=439000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (441906) KTRACE: cycles=439000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (442916) DET_PROBE: cycles=440000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (442916) KTRACE: cycles=440000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (442916) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (443926) DET_PROBE: cycles=441000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (443926) KTRACE: cycles=441000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (444936) DET_PROBE: cycles=442000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (444936) KTRACE: cycles=442000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (445936) DET_PROBE: cycles=443000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (445936) KTRACE: cycles=443000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (446936) DET_PROBE: cycles=444000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (446936) KTRACE: cycles=444000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (447946) DET_PROBE: cycles=445000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (447946) KTRACE: cycles=445000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (447946) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (448956) DET_PROBE: cycles=446000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (448956) KTRACE: cycles=446000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (449956) DET_PROBE: cycles=447000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (449956) KTRACE: cycles=447000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (450966) DET_PROBE: cycles=448000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (450966) KTRACE: cycles=448000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (451966) DET_PROBE: cycles=449000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (451966) KTRACE: cycles=449000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (452976) DET_PROBE: cycles=450000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (452976) KTRACE: cycles=450000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (452976) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (453986) DET_PROBE: cycles=451000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (453986) KTRACE: cycles=451000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (454986) DET_PROBE: cycles=452000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (454986) KTRACE: cycles=452000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (455996) DET_PROBE: cycles=453000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (455996) KTRACE: cycles=453000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (456996) DET_PROBE: cycles=454000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (456996) KTRACE: cycles=454000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (458006) DET_PROBE: cycles=455000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (458006) KTRACE: cycles=455000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (458006) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (459016) DET_PROBE: cycles=456000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (459016) KTRACE: cycles=456000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (460016) DET_PROBE: cycles=457000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (460016) KTRACE: cycles=457000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (461026) DET_PROBE: cycles=458000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (461026) KTRACE: cycles=458000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (462026) DET_PROBE: cycles=459000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (462026) KTRACE: cycles=459000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (463026) DET_PROBE: cycles=460000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (463026) KTRACE: cycles=460000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (463036) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (464046) DET_PROBE: cycles=461000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (464046) KTRACE: cycles=461000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (465046) DET_PROBE: cycles=462000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (465046) KTRACE: cycles=462000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (466056) DET_PROBE: cycles=463000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (466056) KTRACE: cycles=463000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (467056) DET_PROBE: cycles=464000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (467056) KTRACE: cycles=464000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (468056) DET_PROBE: cycles=465000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (468056) KTRACE: cycles=465000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (468066) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (469076) DET_PROBE: cycles=466000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (469076) KTRACE: cycles=466000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (470076) DET_PROBE: cycles=467000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (470076) KTRACE: cycles=467000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (471076) DET_PROBE: cycles=468000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (471076) KTRACE: cycles=468000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (472086) DET_PROBE: cycles=469000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (472086) KTRACE: cycles=469000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (473086) DET_PROBE: cycles=470000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (473086) KTRACE: cycles=470000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (473096) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (474106) DET_PROBE: cycles=471000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (474106) KTRACE: cycles=471000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (475106) DET_PROBE: cycles=472000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (475106) KTRACE: cycles=472000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (476106) DET_PROBE: cycles=473000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (476106) KTRACE: cycles=473000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (477116) DET_PROBE: cycles=474000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (477116) KTRACE: cycles=474000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (478116) DET_PROBE: cycles=475000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (478116) KTRACE: cycles=475000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (478126) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (479126) DET_PROBE: cycles=476000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (479126) KTRACE: cycles=476000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (480136) DET_PROBE: cycles=477000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (480136) KTRACE: cycles=477000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (481136) DET_PROBE: cycles=478000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (481136) KTRACE: cycles=478000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (482146) DET_PROBE: cycles=479000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (482146) KTRACE: cycles=479000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (483146) DET_PROBE: cycles=480000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (483146) KTRACE: cycles=480000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (483156) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (484156) DET_PROBE: cycles=481000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (484156) KTRACE: cycles=481000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (485166) DET_PROBE: cycles=482000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (485166) KTRACE: cycles=482000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (486166) DET_PROBE: cycles=483000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (486166) KTRACE: cycles=483000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (487176) DET_PROBE: cycles=484000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (487176) KTRACE: cycles=484000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (488176) DET_PROBE: cycles=485000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (488176) KTRACE: cycles=485000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (488176) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (489186) DET_PROBE: cycles=486000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (489186) KTRACE: cycles=486000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (490196) DET_PROBE: cycles=487000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (490196) KTRACE: cycles=487000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (491196) DET_PROBE: cycles=488000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (491196) KTRACE: cycles=488000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (492196) DET_PROBE: cycles=489000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (492196) KTRACE: cycles=489000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (493206) DET_PROBE: cycles=490000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (493206) KTRACE: cycles=490000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (493206) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (494216) DET_PROBE: cycles=491000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (494216) KTRACE: cycles=491000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (495226) DET_PROBE: cycles=492000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (495226) KTRACE: cycles=492000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (496226) DET_PROBE: cycles=493000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (496226) KTRACE: cycles=493000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (497226) DET_PROBE: cycles=494000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (497226) KTRACE: cycles=494000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (498236) DET_PROBE: cycles=495000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (498236) KTRACE: cycles=495000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (498236) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (499246) DET_PROBE: cycles=496000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (499246) KTRACE: cycles=496000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (500246) DET_PROBE: cycles=497000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (500246) KTRACE: cycles=497000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (501256) DET_PROBE: cycles=498000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (501256) KTRACE: cycles=498000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (502256) DET_PROBE: cycles=499000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (502256) KTRACE: cycles=499000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (503266) DET_PROBE: cycles=500000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (503266) KTRACE: cycles=500000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (503266) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (504276) DET_PROBE: cycles=501000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (504276) KTRACE: cycles=501000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (505276) DET_PROBE: cycles=502000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (505276) KTRACE: cycles=502000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (506286) DET_PROBE: cycles=503000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (506286) KTRACE: cycles=503000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (507286) DET_PROBE: cycles=504000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (507286) KTRACE: cycles=504000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (508296) DET_PROBE: cycles=505000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (508296) KTRACE: cycles=505000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (508296) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (509306) DET_PROBE: cycles=506000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (509306) KTRACE: cycles=506000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (510306) DET_PROBE: cycles=507000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (510306) KTRACE: cycles=507000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (511316) DET_PROBE: cycles=508000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (511316) KTRACE: cycles=508000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (512316) DET_PROBE: cycles=509000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (512316) KTRACE: cycles=509000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (513316) DET_PROBE: cycles=510000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (513316) KTRACE: cycles=510000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (513326) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (514336) DET_PROBE: cycles=511000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (514336) KTRACE: cycles=511000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (515336) DET_PROBE: cycles=512000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (515336) KTRACE: cycles=512000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (516346) DET_PROBE: cycles=513000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (516346) KTRACE: cycles=513000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (517346) DET_PROBE: cycles=514000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (517346) KTRACE: cycles=514000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (518346) DET_PROBE: cycles=515000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (518346) KTRACE: cycles=515000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (518356) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (519366) DET_PROBE: cycles=516000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (519366) KTRACE: cycles=516000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (520366) DET_PROBE: cycles=517000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (520366) KTRACE: cycles=517000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (521366) DET_PROBE: cycles=518000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (521366) KTRACE: cycles=518000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (522376) DET_PROBE: cycles=519000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (522376) KTRACE: cycles=519000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (523376) DET_PROBE: cycles=520000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (523376) KTRACE: cycles=520000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (523386) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (524396) DET_PROBE: cycles=521000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (524396) KTRACE: cycles=521000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (525396) DET_PROBE: cycles=522000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (525396) KTRACE: cycles=522000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (526396) DET_PROBE: cycles=523000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (526396) KTRACE: cycles=523000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (527406) DET_PROBE: cycles=524000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (527406) KTRACE: cycles=524000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (528406) DET_PROBE: cycles=525000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (528406) KTRACE: cycles=525000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (528416) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (529416) DET_PROBE: cycles=526000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (529416) KTRACE: cycles=526000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (530426) DET_PROBE: cycles=527000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (530426) KTRACE: cycles=527000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (531426) DET_PROBE: cycles=528000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (531426) KTRACE: cycles=528000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (532436) DET_PROBE: cycles=529000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (532436) KTRACE: cycles=529000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (533436) DET_PROBE: cycles=530000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (533436) KTRACE: cycles=530000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (533446) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (534446) DET_PROBE: cycles=531000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (534446) KTRACE: cycles=531000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (535456) DET_PROBE: cycles=532000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (535456) KTRACE: cycles=532000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (536456) DET_PROBE: cycles=533000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (536456) KTRACE: cycles=533000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (537466) DET_PROBE: cycles=534000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (537466) KTRACE: cycles=534000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (538466) DET_PROBE: cycles=535000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (538466) KTRACE: cycles=535000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (538466) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (539476) DET_PROBE: cycles=536000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (539476) KTRACE: cycles=536000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (540486) DET_PROBE: cycles=537000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (540486) KTRACE: cycles=537000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (541486) DET_PROBE: cycles=538000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (541486) KTRACE: cycles=538000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (542486) DET_PROBE: cycles=539000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (542486) KTRACE: cycles=539000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (543496) DET_PROBE: cycles=540000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (543496) KTRACE: cycles=540000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (543496) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (544506) DET_PROBE: cycles=541000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (544506) KTRACE: cycles=541000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (545516) DET_PROBE: cycles=542000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (545516) KTRACE: cycles=542000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (546516) DET_PROBE: cycles=543000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (546516) KTRACE: cycles=543000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (547516) DET_PROBE: cycles=544000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (547516) KTRACE: cycles=544000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (548526) DET_PROBE: cycles=545000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (548526) KTRACE: cycles=545000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (548526) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (549536) DET_PROBE: cycles=546000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (549536) KTRACE: cycles=546000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (550536) DET_PROBE: cycles=547000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (550536) KTRACE: cycles=547000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (551546) DET_PROBE: cycles=548000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (551546) KTRACE: cycles=548000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (552546) DET_PROBE: cycles=549000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (552546) KTRACE: cycles=549000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (553556) DET_PROBE: cycles=550000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (553556) KTRACE: cycles=550000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (553556) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (554566) DET_PROBE: cycles=551000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (554566) KTRACE: cycles=551000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (555566) DET_PROBE: cycles=552000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (555566) KTRACE: cycles=552000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (556576) DET_PROBE: cycles=553000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (556576) KTRACE: cycles=553000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (557576) DET_PROBE: cycles=554000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (557576) KTRACE: cycles=554000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (558586) DET_PROBE: cycles=555000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (558586) KTRACE: cycles=555000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (558586) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (559596) DET_PROBE: cycles=556000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (559596) KTRACE: cycles=556000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (560596) DET_PROBE: cycles=557000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (560596) KTRACE: cycles=557000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (561606) DET_PROBE: cycles=558000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (561606) KTRACE: cycles=558000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (562606) DET_PROBE: cycles=559000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (562606) KTRACE: cycles=559000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (563606) DET_PROBE: cycles=560000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (563606) KTRACE: cycles=560000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (563616) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (564626) DET_PROBE: cycles=561000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (564626) KTRACE: cycles=561000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (565626) DET_PROBE: cycles=562000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (565626) KTRACE: cycles=562000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (566636) DET_PROBE: cycles=563000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (566636) KTRACE: cycles=563000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (567636) DET_PROBE: cycles=564000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (567636) KTRACE: cycles=564000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (568636) DET_PROBE: cycles=565000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (568636) KTRACE: cycles=565000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (568646) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (569656) DET_PROBE: cycles=566000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (569656) KTRACE: cycles=566000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (570656) DET_PROBE: cycles=567000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (570656) KTRACE: cycles=567000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (571656) DET_PROBE: cycles=568000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (571656) KTRACE: cycles=568000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (572666) DET_PROBE: cycles=569000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (572666) KTRACE: cycles=569000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (573666) DET_PROBE: cycles=570000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (573666) KTRACE: cycles=570000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (573676) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (574686) DET_PROBE: cycles=571000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (574686) KTRACE: cycles=571000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (575686) DET_PROBE: cycles=572000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (575686) KTRACE: cycles=572000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (576686) DET_PROBE: cycles=573000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (576686) KTRACE: cycles=573000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (577696) DET_PROBE: cycles=574000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (577696) KTRACE: cycles=574000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (578696) DET_PROBE: cycles=575000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (578696) KTRACE: cycles=575000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (578706) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (579706) DET_PROBE: cycles=576000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (579706) KTRACE: cycles=576000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (580716) DET_PROBE: cycles=577000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (580716) KTRACE: cycles=577000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (581716) DET_PROBE: cycles=578000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (581716) KTRACE: cycles=578000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (582726) DET_PROBE: cycles=579000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (582726) KTRACE: cycles=579000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (583726) DET_PROBE: cycles=580000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (583726) KTRACE: cycles=580000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (583736) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (584736) DET_PROBE: cycles=581000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (584736) KTRACE: cycles=581000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (585746) DET_PROBE: cycles=582000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (585746) KTRACE: cycles=582000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (586746) DET_PROBE: cycles=583000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (586746) KTRACE: cycles=583000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (587756) DET_PROBE: cycles=584000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (587756) KTRACE: cycles=584000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (588756) DET_PROBE: cycles=585000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (588756) KTRACE: cycles=585000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (588756) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (589766) DET_PROBE: cycles=586000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (589766) KTRACE: cycles=586000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (590776) DET_PROBE: cycles=587000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (590776) KTRACE: cycles=587000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (591776) DET_PROBE: cycles=588000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (591776) KTRACE: cycles=588000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (592776) DET_PROBE: cycles=589000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (592776) KTRACE: cycles=589000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (593786) DET_PROBE: cycles=590000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (593786) KTRACE: cycles=590000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (593786) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (594796) DET_PROBE: cycles=591000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (594796) KTRACE: cycles=591000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (595806) DET_PROBE: cycles=592000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (595806) KTRACE: cycles=592000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (596806) DET_PROBE: cycles=593000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (596806) KTRACE: cycles=593000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (597806) DET_PROBE: cycles=594000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (597806) KTRACE: cycles=594000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (598816) DET_PROBE: cycles=595000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (598816) KTRACE: cycles=595000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (598816) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (599826) DET_PROBE: cycles=596000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (599826) KTRACE: cycles=596000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (600826) DET_PROBE: cycles=597000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (600826) KTRACE: cycles=597000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (601836) DET_PROBE: cycles=598000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (601836) KTRACE: cycles=598000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (602836) DET_PROBE: cycles=599000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (602836) KTRACE: cycles=599000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (603846) DET_PROBE: cycles=600000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (603846) KTRACE: cycles=600000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (603846) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (604856) DET_PROBE: cycles=601000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (604856) KTRACE: cycles=601000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (605856) DET_PROBE: cycles=602000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (605856) KTRACE: cycles=602000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (606866) DET_PROBE: cycles=603000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (606866) KTRACE: cycles=603000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (607866) DET_PROBE: cycles=604000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (607866) KTRACE: cycles=604000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (608876) DET_PROBE: cycles=605000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (608876) KTRACE: cycles=605000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (608876) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (609886) DET_PROBE: cycles=606000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (609886) KTRACE: cycles=606000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (610886) DET_PROBE: cycles=607000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (610886) KTRACE: cycles=607000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (611896) DET_PROBE: cycles=608000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (611896) KTRACE: cycles=608000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (612896) DET_PROBE: cycles=609000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (612896) KTRACE: cycles=609000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (613896) DET_PROBE: cycles=610000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (613896) KTRACE: cycles=610000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (613906) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (614916) DET_PROBE: cycles=611000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (614916) KTRACE: cycles=611000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (615916) DET_PROBE: cycles=612000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (615916) KTRACE: cycles=612000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (616926) DET_PROBE: cycles=613000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (616926) KTRACE: cycles=613000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (617926) DET_PROBE: cycles=614000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (617926) KTRACE: cycles=614000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (618926) DET_PROBE: cycles=615000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (618926) KTRACE: cycles=615000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (618936) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (619946) DET_PROBE: cycles=616000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (619946) KTRACE: cycles=616000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (620946) DET_PROBE: cycles=617000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (620946) KTRACE: cycles=617000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (621946) DET_PROBE: cycles=618000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (621946) KTRACE: cycles=618000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (622956) DET_PROBE: cycles=619000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (622956) KTRACE: cycles=619000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (623956) DET_PROBE: cycles=620000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (623956) KTRACE: cycles=620000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (623966) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (624976) DET_PROBE: cycles=621000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (624976) KTRACE: cycles=621000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (625976) DET_PROBE: cycles=622000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (625976) KTRACE: cycles=622000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (626976) DET_PROBE: cycles=623000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (626976) KTRACE: cycles=623000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (627986) DET_PROBE: cycles=624000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (627986) KTRACE: cycles=624000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (628986) DET_PROBE: cycles=625000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (628986) KTRACE: cycles=625000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (628996) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (629996) DET_PROBE: cycles=626000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (629996) KTRACE: cycles=626000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (631006) DET_PROBE: cycles=627000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (631006) KTRACE: cycles=627000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (632006) DET_PROBE: cycles=628000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (632006) KTRACE: cycles=628000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (633016) DET_PROBE: cycles=629000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (633016) KTRACE: cycles=629000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (634016) DET_PROBE: cycles=630000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (634016) KTRACE: cycles=630000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (634026) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (635026) DET_PROBE: cycles=631000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (635026) KTRACE: cycles=631000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (636036) DET_PROBE: cycles=632000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (636036) KTRACE: cycles=632000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (637036) DET_PROBE: cycles=633000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (637036) KTRACE: cycles=633000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (638046) DET_PROBE: cycles=634000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (638046) KTRACE: cycles=634000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (639046) DET_PROBE: cycles=635000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (639046) KTRACE: cycles=635000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (639046) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (640056) DET_PROBE: cycles=636000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (640056) KTRACE: cycles=636000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (641066) DET_PROBE: cycles=637000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (641066) KTRACE: cycles=637000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (642066) DET_PROBE: cycles=638000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (642066) KTRACE: cycles=638000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (643066) DET_PROBE: cycles=639000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (643066) KTRACE: cycles=639000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (644076) DET_PROBE: cycles=640000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (644076) KTRACE: cycles=640000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (644076) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (645086) DET_PROBE: cycles=641000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (645086) KTRACE: cycles=641000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (646096) DET_PROBE: cycles=642000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (646096) KTRACE: cycles=642000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (647096) DET_PROBE: cycles=643000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (647096) KTRACE: cycles=643000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (648096) DET_PROBE: cycles=644000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (648096) KTRACE: cycles=644000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (649106) DET_PROBE: cycles=645000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (649106) KTRACE: cycles=645000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (649106) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (650116) DET_PROBE: cycles=646000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (650116) KTRACE: cycles=646000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (651116) DET_PROBE: cycles=647000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (651116) KTRACE: cycles=647000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (652126) DET_PROBE: cycles=648000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (652126) KTRACE: cycles=648000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (653126) DET_PROBE: cycles=649000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (653126) KTRACE: cycles=649000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (654136) DET_PROBE: cycles=650000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (654136) KTRACE: cycles=650000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (654136) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (655146) DET_PROBE: cycles=651000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (655146) KTRACE: cycles=651000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (656146) DET_PROBE: cycles=652000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (656146) KTRACE: cycles=652000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (657156) DET_PROBE: cycles=653000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (657156) KTRACE: cycles=653000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (658156) DET_PROBE: cycles=654000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (658156) KTRACE: cycles=654000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (659166) DET_PROBE: cycles=655000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (659166) KTRACE: cycles=655000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (659166) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (660176) DET_PROBE: cycles=656000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (660176) KTRACE: cycles=656000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (661176) DET_PROBE: cycles=657000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (661176) KTRACE: cycles=657000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (662186) DET_PROBE: cycles=658000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (662186) KTRACE: cycles=658000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (663186) DET_PROBE: cycles=659000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (663186) KTRACE: cycles=659000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (664186) DET_PROBE: cycles=660000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (664186) KTRACE: cycles=660000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (664196) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (665206) DET_PROBE: cycles=661000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (665206) KTRACE: cycles=661000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (666206) DET_PROBE: cycles=662000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (666206) KTRACE: cycles=662000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (667216) DET_PROBE: cycles=663000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (667216) KTRACE: cycles=663000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (668216) DET_PROBE: cycles=664000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (668216) KTRACE: cycles=664000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (669216) DET_PROBE: cycles=665000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (669216) KTRACE: cycles=665000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (669226) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (670236) DET_PROBE: cycles=666000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (670236) KTRACE: cycles=666000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (671236) DET_PROBE: cycles=667000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (671236) KTRACE: cycles=667000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (672236) DET_PROBE: cycles=668000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (672236) KTRACE: cycles=668000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (673246) DET_PROBE: cycles=669000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (673246) KTRACE: cycles=669000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (674246) DET_PROBE: cycles=670000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (674246) KTRACE: cycles=670000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (674256) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (675266) DET_PROBE: cycles=671000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (675266) KTRACE: cycles=671000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (676266) DET_PROBE: cycles=672000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (676266) KTRACE: cycles=672000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (677266) DET_PROBE: cycles=673000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (677266) KTRACE: cycles=673000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (678276) DET_PROBE: cycles=674000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (678276) KTRACE: cycles=674000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (679276) DET_PROBE: cycles=675000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (679276) KTRACE: cycles=675000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (679286) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (680286) DET_PROBE: cycles=676000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (680286) KTRACE: cycles=676000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (681296) DET_PROBE: cycles=677000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (681296) KTRACE: cycles=677000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (682296) DET_PROBE: cycles=678000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (682296) KTRACE: cycles=678000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (683306) DET_PROBE: cycles=679000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (683306) KTRACE: cycles=679000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (684306) DET_PROBE: cycles=680000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (684306) KTRACE: cycles=680000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (684316) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (685316) DET_PROBE: cycles=681000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (685316) KTRACE: cycles=681000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (686326) DET_PROBE: cycles=682000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (686326) KTRACE: cycles=682000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (687326) DET_PROBE: cycles=683000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (687326) KTRACE: cycles=683000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (688336) DET_PROBE: cycles=684000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (688336) KTRACE: cycles=684000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (689336) DET_PROBE: cycles=685000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (689336) KTRACE: cycles=685000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (689336) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (690346) DET_PROBE: cycles=686000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (690346) KTRACE: cycles=686000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (691356) DET_PROBE: cycles=687000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (691356) KTRACE: cycles=687000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (692356) DET_PROBE: cycles=688000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (692356) KTRACE: cycles=688000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (693356) DET_PROBE: cycles=689000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (693356) KTRACE: cycles=689000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (694366) DET_PROBE: cycles=690000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (694366) KTRACE: cycles=690000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (694366) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (695376) DET_PROBE: cycles=691000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (695376) KTRACE: cycles=691000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (696386) DET_PROBE: cycles=692000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (696386) KTRACE: cycles=692000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (697386) DET_PROBE: cycles=693000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (697386) KTRACE: cycles=693000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (698386) DET_PROBE: cycles=694000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (698386) KTRACE: cycles=694000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (699396) DET_PROBE: cycles=695000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (699396) KTRACE: cycles=695000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (699396) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (700406) DET_PROBE: cycles=696000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (700406) KTRACE: cycles=696000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (701406) DET_PROBE: cycles=697000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (701406) KTRACE: cycles=697000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (702416) DET_PROBE: cycles=698000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (702416) KTRACE: cycles=698000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (703416) DET_PROBE: cycles=699000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (703416) KTRACE: cycles=699000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (704426) DET_PROBE: cycles=700000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (704426) KTRACE: cycles=700000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (704426) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (705436) DET_PROBE: cycles=701000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (705436) KTRACE: cycles=701000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (706436) DET_PROBE: cycles=702000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (706436) KTRACE: cycles=702000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (707446) DET_PROBE: cycles=703000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (707446) KTRACE: cycles=703000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (708446) DET_PROBE: cycles=704000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (708446) KTRACE: cycles=704000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (709456) DET_PROBE: cycles=705000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (709456) KTRACE: cycles=705000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (709456) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (710466) DET_PROBE: cycles=706000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (710466) KTRACE: cycles=706000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (711466) DET_PROBE: cycles=707000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (711466) KTRACE: cycles=707000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (712476) DET_PROBE: cycles=708000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (712476) KTRACE: cycles=708000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (713476) DET_PROBE: cycles=709000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (713476) KTRACE: cycles=709000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (714476) DET_PROBE: cycles=710000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (714476) KTRACE: cycles=710000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (714486) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (715496) DET_PROBE: cycles=711000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (715496) KTRACE: cycles=711000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (716496) DET_PROBE: cycles=712000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (716496) KTRACE: cycles=712000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (717506) DET_PROBE: cycles=713000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (717506) KTRACE: cycles=713000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (718506) DET_PROBE: cycles=714000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (718506) KTRACE: cycles=714000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (719506) DET_PROBE: cycles=715000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (719506) KTRACE: cycles=715000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (719516) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (720526) DET_PROBE: cycles=716000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (720526) KTRACE: cycles=716000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (721526) DET_PROBE: cycles=717000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (721526) KTRACE: cycles=717000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (722526) DET_PROBE: cycles=718000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (722526) KTRACE: cycles=718000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (723536) DET_PROBE: cycles=719000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (723536) KTRACE: cycles=719000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (724536) DET_PROBE: cycles=720000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (724536) KTRACE: cycles=720000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (724546) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (725556) DET_PROBE: cycles=721000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (725556) KTRACE: cycles=721000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (726556) DET_PROBE: cycles=722000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (726556) KTRACE: cycles=722000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (727556) DET_PROBE: cycles=723000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (727556) KTRACE: cycles=723000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (728566) DET_PROBE: cycles=724000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (728566) KTRACE: cycles=724000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (729566) DET_PROBE: cycles=725000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (729566) KTRACE: cycles=725000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (729576) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (730576) DET_PROBE: cycles=726000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (730576) KTRACE: cycles=726000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (731586) DET_PROBE: cycles=727000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (731586) KTRACE: cycles=727000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (732586) DET_PROBE: cycles=728000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (732586) KTRACE: cycles=728000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (733596) DET_PROBE: cycles=729000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (733596) KTRACE: cycles=729000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (734596) DET_PROBE: cycles=730000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (734596) KTRACE: cycles=730000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (734606) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (735606) DET_PROBE: cycles=731000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (735606) KTRACE: cycles=731000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (736616) DET_PROBE: cycles=732000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (736616) KTRACE: cycles=732000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (737616) DET_PROBE: cycles=733000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (737616) KTRACE: cycles=733000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (738626) DET_PROBE: cycles=734000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (738626) KTRACE: cycles=734000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (739626) DET_PROBE: cycles=735000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (739626) KTRACE: cycles=735000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (739626) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (740636) DET_PROBE: cycles=736000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (740636) KTRACE: cycles=736000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (741646) DET_PROBE: cycles=737000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (741646) KTRACE: cycles=737000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (742646) DET_PROBE: cycles=738000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (742646) KTRACE: cycles=738000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (743646) DET_PROBE: cycles=739000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (743646) KTRACE: cycles=739000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (744656) DET_PROBE: cycles=740000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (744656) KTRACE: cycles=740000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (744656) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (745666) DET_PROBE: cycles=741000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (745666) KTRACE: cycles=741000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (746676) DET_PROBE: cycles=742000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (746676) KTRACE: cycles=742000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (747676) DET_PROBE: cycles=743000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (747676) KTRACE: cycles=743000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (748676) DET_PROBE: cycles=744000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (748676) KTRACE: cycles=744000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (749686) DET_PROBE: cycles=745000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (749686) KTRACE: cycles=745000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (749686) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (750696) DET_PROBE: cycles=746000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (750696) KTRACE: cycles=746000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (751696) DET_PROBE: cycles=747000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (751696) KTRACE: cycles=747000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (752706) DET_PROBE: cycles=748000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (752706) KTRACE: cycles=748000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (753706) DET_PROBE: cycles=749000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (753706) KTRACE: cycles=749000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (754716) DET_PROBE: cycles=750000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (754716) KTRACE: cycles=750000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (754716) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (755726) DET_PROBE: cycles=751000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (755726) KTRACE: cycles=751000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (756726) DET_PROBE: cycles=752000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (756726) KTRACE: cycles=752000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (757736) DET_PROBE: cycles=753000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (757736) KTRACE: cycles=753000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (758736) DET_PROBE: cycles=754000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (758736) KTRACE: cycles=754000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (759746) DET_PROBE: cycles=755000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (759746) KTRACE: cycles=755000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (759746) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (760756) DET_PROBE: cycles=756000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (760756) KTRACE: cycles=756000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (761756) DET_PROBE: cycles=757000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (761756) KTRACE: cycles=757000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (762766) DET_PROBE: cycles=758000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (762766) KTRACE: cycles=758000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (763766) DET_PROBE: cycles=759000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (763766) KTRACE: cycles=759000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (764766) DET_PROBE: cycles=760000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (764766) KTRACE: cycles=760000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (764776) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (765786) DET_PROBE: cycles=761000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (765786) KTRACE: cycles=761000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (766786) DET_PROBE: cycles=762000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (766786) KTRACE: cycles=762000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (767796) DET_PROBE: cycles=763000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (767796) KTRACE: cycles=763000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (768796) DET_PROBE: cycles=764000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (768796) KTRACE: cycles=764000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (769796) DET_PROBE: cycles=765000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (769796) KTRACE: cycles=765000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (769806) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (770816) DET_PROBE: cycles=766000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (770816) KTRACE: cycles=766000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (771816) DET_PROBE: cycles=767000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (771816) KTRACE: cycles=767000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (772816) DET_PROBE: cycles=768000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (772816) KTRACE: cycles=768000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (773826) DET_PROBE: cycles=769000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (773826) KTRACE: cycles=769000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (774826) DET_PROBE: cycles=770000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (774826) KTRACE: cycles=770000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (774836) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (775846) DET_PROBE: cycles=771000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (775846) KTRACE: cycles=771000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (776846) DET_PROBE: cycles=772000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (776846) KTRACE: cycles=772000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (777846) DET_PROBE: cycles=773000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (777846) KTRACE: cycles=773000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (778856) DET_PROBE: cycles=774000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (778856) KTRACE: cycles=774000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (779856) DET_PROBE: cycles=775000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (779856) KTRACE: cycles=775000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (779866) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (780866) DET_PROBE: cycles=776000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (780866) KTRACE: cycles=776000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (781876) DET_PROBE: cycles=777000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (781876) KTRACE: cycles=777000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (782876) DET_PROBE: cycles=778000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (782876) KTRACE: cycles=778000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (783886) DET_PROBE: cycles=779000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (783886) KTRACE: cycles=779000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (784886) DET_PROBE: cycles=780000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (784886) KTRACE: cycles=780000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (784896) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (785896) DET_PROBE: cycles=781000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (785896) KTRACE: cycles=781000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (786906) DET_PROBE: cycles=782000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (786906) KTRACE: cycles=782000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (787906) DET_PROBE: cycles=783000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (787906) KTRACE: cycles=783000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (788916) DET_PROBE: cycles=784000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (788916) KTRACE: cycles=784000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (789916) DET_PROBE: cycles=785000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (789916) KTRACE: cycles=785000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (789916) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (790926) DET_PROBE: cycles=786000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (790926) KTRACE: cycles=786000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (791936) DET_PROBE: cycles=787000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (791936) KTRACE: cycles=787000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (792936) DET_PROBE: cycles=788000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (792936) KTRACE: cycles=788000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (793936) DET_PROBE: cycles=789000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (793936) KTRACE: cycles=789000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (794946) DET_PROBE: cycles=790000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (794946) KTRACE: cycles=790000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (794946) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (795956) DET_PROBE: cycles=791000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (795956) KTRACE: cycles=791000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (796966) DET_PROBE: cycles=792000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (796966) KTRACE: cycles=792000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (797966) DET_PROBE: cycles=793000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (797966) KTRACE: cycles=793000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (798966) DET_PROBE: cycles=794000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (798966) KTRACE: cycles=794000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (799976) DET_PROBE: cycles=795000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (799976) KTRACE: cycles=795000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (799976) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (800986) DET_PROBE: cycles=796000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (800986) KTRACE: cycles=796000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (801986) DET_PROBE: cycles=797000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (801986) KTRACE: cycles=797000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (802996) DET_PROBE: cycles=798000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (802996) KTRACE: cycles=798000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (803996) DET_PROBE: cycles=799000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (803996) KTRACE: cycles=799000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (805006) DET_PROBE: cycles=800000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (805006) KTRACE: cycles=800000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (805006) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (806016) DET_PROBE: cycles=801000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (806016) KTRACE: cycles=801000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (807016) DET_PROBE: cycles=802000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (807016) KTRACE: cycles=802000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (808026) DET_PROBE: cycles=803000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (808026) KTRACE: cycles=803000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (809026) DET_PROBE: cycles=804000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (809026) KTRACE: cycles=804000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (810036) DET_PROBE: cycles=805000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (810036) KTRACE: cycles=805000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (810036) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (811046) DET_PROBE: cycles=806000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (811046) KTRACE: cycles=806000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (812046) DET_PROBE: cycles=807000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (812046) KTRACE: cycles=807000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (813056) DET_PROBE: cycles=808000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (813056) KTRACE: cycles=808000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (814056) DET_PROBE: cycles=809000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (814056) KTRACE: cycles=809000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (815056) DET_PROBE: cycles=810000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (815056) KTRACE: cycles=810000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (815066) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (816076) DET_PROBE: cycles=811000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (816076) KTRACE: cycles=811000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (817076) DET_PROBE: cycles=812000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (817076) KTRACE: cycles=812000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (818086) DET_PROBE: cycles=813000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (818086) KTRACE: cycles=813000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (819086) DET_PROBE: cycles=814000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (819086) KTRACE: cycles=814000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (820086) DET_PROBE: cycles=815000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (820086) KTRACE: cycles=815000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (820096) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (821106) DET_PROBE: cycles=816000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (821106) KTRACE: cycles=816000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (822106) DET_PROBE: cycles=817000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (822106) KTRACE: cycles=817000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (823106) DET_PROBE: cycles=818000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (823106) KTRACE: cycles=818000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (824116) DET_PROBE: cycles=819000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (824116) KTRACE: cycles=819000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (825116) DET_PROBE: cycles=820000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (825116) KTRACE: cycles=820000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (825126) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (826136) DET_PROBE: cycles=821000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (826136) KTRACE: cycles=821000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (827136) DET_PROBE: cycles=822000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (827136) KTRACE: cycles=822000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (828136) DET_PROBE: cycles=823000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (828136) KTRACE: cycles=823000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (829146) DET_PROBE: cycles=824000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (829146) KTRACE: cycles=824000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (830146) DET_PROBE: cycles=825000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (830146) KTRACE: cycles=825000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (830156) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (831156) DET_PROBE: cycles=826000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (831156) KTRACE: cycles=826000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (832166) DET_PROBE: cycles=827000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (832166) KTRACE: cycles=827000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (833166) DET_PROBE: cycles=828000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (833166) KTRACE: cycles=828000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (834176) DET_PROBE: cycles=829000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (834176) KTRACE: cycles=829000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (835176) DET_PROBE: cycles=830000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (835176) KTRACE: cycles=830000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (835186) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (836186) DET_PROBE: cycles=831000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (836186) KTRACE: cycles=831000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (837196) DET_PROBE: cycles=832000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (837196) KTRACE: cycles=832000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (838196) DET_PROBE: cycles=833000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (838196) KTRACE: cycles=833000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (839206) DET_PROBE: cycles=834000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (839206) KTRACE: cycles=834000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (840206) DET_PROBE: cycles=835000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (840206) KTRACE: cycles=835000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (840206) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (841216) DET_PROBE: cycles=836000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (841216) KTRACE: cycles=836000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (842226) DET_PROBE: cycles=837000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (842226) KTRACE: cycles=837000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (843226) DET_PROBE: cycles=838000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (843226) KTRACE: cycles=838000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (844226) DET_PROBE: cycles=839000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (844226) KTRACE: cycles=839000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (845236) DET_PROBE: cycles=840000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (845236) KTRACE: cycles=840000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (845236) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (846246) DET_PROBE: cycles=841000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (846246) KTRACE: cycles=841000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (847256) DET_PROBE: cycles=842000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (847256) KTRACE: cycles=842000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (848256) DET_PROBE: cycles=843000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (848256) KTRACE: cycles=843000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (849256) DET_PROBE: cycles=844000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (849256) KTRACE: cycles=844000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (850266) DET_PROBE: cycles=845000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (850266) KTRACE: cycles=845000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (850266) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (851276) DET_PROBE: cycles=846000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (851276) KTRACE: cycles=846000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (852276) DET_PROBE: cycles=847000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (852276) KTRACE: cycles=847000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (853286) DET_PROBE: cycles=848000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (853286) KTRACE: cycles=848000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (854286) DET_PROBE: cycles=849000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (854286) KTRACE: cycles=849000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (855296) DET_PROBE: cycles=850000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (855296) KTRACE: cycles=850000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (855296) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (856306) DET_PROBE: cycles=851000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (856306) KTRACE: cycles=851000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (857306) DET_PROBE: cycles=852000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (857306) KTRACE: cycles=852000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (858316) DET_PROBE: cycles=853000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (858316) KTRACE: cycles=853000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (859316) DET_PROBE: cycles=854000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (859316) KTRACE: cycles=854000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (860326) DET_PROBE: cycles=855000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (860326) KTRACE: cycles=855000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (860326) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (861336) DET_PROBE: cycles=856000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (861336) KTRACE: cycles=856000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (862336) DET_PROBE: cycles=857000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (862336) KTRACE: cycles=857000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (863346) DET_PROBE: cycles=858000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (863346) KTRACE: cycles=858000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (864346) DET_PROBE: cycles=859000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (864346) KTRACE: cycles=859000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (865346) DET_PROBE: cycles=860000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (865346) KTRACE: cycles=860000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (865356) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (866366) DET_PROBE: cycles=861000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (866366) KTRACE: cycles=861000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (867366) DET_PROBE: cycles=862000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (867366) KTRACE: cycles=862000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (868376) DET_PROBE: cycles=863000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (868376) KTRACE: cycles=863000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (869376) DET_PROBE: cycles=864000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (869376) KTRACE: cycles=864000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (870376) DET_PROBE: cycles=865000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (870376) KTRACE: cycles=865000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (870386) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (871396) DET_PROBE: cycles=866000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (871396) KTRACE: cycles=866000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (872396) DET_PROBE: cycles=867000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (872396) KTRACE: cycles=867000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (873396) DET_PROBE: cycles=868000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (873396) KTRACE: cycles=868000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (874406) DET_PROBE: cycles=869000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (874406) KTRACE: cycles=869000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (875406) DET_PROBE: cycles=870000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (875406) KTRACE: cycles=870000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (875416) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (876426) DET_PROBE: cycles=871000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (876426) KTRACE: cycles=871000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (877426) DET_PROBE: cycles=872000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (877426) KTRACE: cycles=872000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (878426) DET_PROBE: cycles=873000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (878426) KTRACE: cycles=873000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (879436) DET_PROBE: cycles=874000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (879436) KTRACE: cycles=874000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (880436) DET_PROBE: cycles=875000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (880436) KTRACE: cycles=875000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (880446) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (881446) DET_PROBE: cycles=876000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (881446) KTRACE: cycles=876000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (882456) DET_PROBE: cycles=877000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (882456) KTRACE: cycles=877000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (883456) DET_PROBE: cycles=878000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (883456) KTRACE: cycles=878000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (884466) DET_PROBE: cycles=879000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (884466) KTRACE: cycles=879000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (885466) DET_PROBE: cycles=880000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (885466) KTRACE: cycles=880000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (885476) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (886476) DET_PROBE: cycles=881000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (886476) KTRACE: cycles=881000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (887486) DET_PROBE: cycles=882000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (887486) KTRACE: cycles=882000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (888486) DET_PROBE: cycles=883000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (888486) KTRACE: cycles=883000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (889496) DET_PROBE: cycles=884000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (889496) KTRACE: cycles=884000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (890496) DET_PROBE: cycles=885000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (890496) KTRACE: cycles=885000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (890496) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (891506) DET_PROBE: cycles=886000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (891506) KTRACE: cycles=886000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (892516) DET_PROBE: cycles=887000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (892516) KTRACE: cycles=887000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (893516) DET_PROBE: cycles=888000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (893516) KTRACE: cycles=888000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (894516) DET_PROBE: cycles=889000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (894516) KTRACE: cycles=889000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (895526) DET_PROBE: cycles=890000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (895526) KTRACE: cycles=890000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (895526) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (896536) DET_PROBE: cycles=891000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (896536) KTRACE: cycles=891000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (897546) DET_PROBE: cycles=892000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (897546) KTRACE: cycles=892000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (898546) DET_PROBE: cycles=893000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (898546) KTRACE: cycles=893000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (899546) DET_PROBE: cycles=894000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (899546) KTRACE: cycles=894000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (900556) DET_PROBE: cycles=895000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (900556) KTRACE: cycles=895000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (900556) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (901566) DET_PROBE: cycles=896000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (901566) KTRACE: cycles=896000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (902566) DET_PROBE: cycles=897000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (902566) KTRACE: cycles=897000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (903576) DET_PROBE: cycles=898000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (903576) KTRACE: cycles=898000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (904576) DET_PROBE: cycles=899000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (904576) KTRACE: cycles=899000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (905586) DET_PROBE: cycles=900000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (905586) KTRACE: cycles=900000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (905586) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (906596) DET_PROBE: cycles=901000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (906596) KTRACE: cycles=901000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (907596) DET_PROBE: cycles=902000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (907596) KTRACE: cycles=902000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (908606) DET_PROBE: cycles=903000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (908606) KTRACE: cycles=903000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (909606) DET_PROBE: cycles=904000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (909606) KTRACE: cycles=904000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (910616) DET_PROBE: cycles=905000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (910616) KTRACE: cycles=905000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (910616) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (911626) DET_PROBE: cycles=906000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (911626) KTRACE: cycles=906000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (912626) DET_PROBE: cycles=907000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (912626) KTRACE: cycles=907000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (913636) DET_PROBE: cycles=908000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (913636) KTRACE: cycles=908000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (914636) DET_PROBE: cycles=909000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (914636) KTRACE: cycles=909000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (915636) DET_PROBE: cycles=910000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (915636) KTRACE: cycles=910000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (915646) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (916656) DET_PROBE: cycles=911000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (916656) KTRACE: cycles=911000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (917656) DET_PROBE: cycles=912000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (917656) KTRACE: cycles=912000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (918666) DET_PROBE: cycles=913000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (918666) KTRACE: cycles=913000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (919666) DET_PROBE: cycles=914000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (919666) KTRACE: cycles=914000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (920666) DET_PROBE: cycles=915000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (920666) KTRACE: cycles=915000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (920676) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (921686) DET_PROBE: cycles=916000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (921686) KTRACE: cycles=916000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (922686) DET_PROBE: cycles=917000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (922686) KTRACE: cycles=917000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (923686) DET_PROBE: cycles=918000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (923686) KTRACE: cycles=918000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (924696) DET_PROBE: cycles=919000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (924696) KTRACE: cycles=919000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (925696) DET_PROBE: cycles=920000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (925696) KTRACE: cycles=920000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (925706) KERNEL_METRICS: jitter_max=13050 us exec_max=86 us deadline_miss=0 overrun=0[0m
+[0;32mI (926716) DET_PROBE: cycles=921000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (926716) KTRACE: cycles=921000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (927716) DET_PROBE: cycles=922000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (927716) KTRACE: cycles=922000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (928716) DET_PROBE: cycles=923000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (928716) KTRACE: cycles=923000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m
+[0;32mI (929726) DET_PROBE: cycles=924000 jitter(min/avg/max)=6/7/86 us[0m
+[0;32mI (929726) KTRACE: cycles=924000 jitter(min/avg/max)=328/1005/14050 us exec(min/avg/max)=6/7/86 us[0m

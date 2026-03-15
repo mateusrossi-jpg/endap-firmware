@@ -1,0 +1,1545 @@
+[1/17] Building C object esp-idf/scheduler/CMakeFiles/__idf_scheduler.dir/scheduler.c.obj
+FAILED: esp-idf/scheduler/CMakeFiles/__idf_scheduler.dir/scheduler.c.obj 
+/home/mateus/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-gcc -DESP_PLATFORM -DIDF_VER=\"v5.1.2\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE -D_GNU_SOURCE -D_POSIX_READER_WRITER_LOCKS -I/home/mateus/dev/projects/ENDAP/build/config -I/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include -I/home/mateus/esp/esp-idf/components/newlib/platform_include -I/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/include/freertos -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/include -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/arch/xtensa/include -I/home/mateus/esp/esp-idf/components/esp_hw_support/include -I/home/mateus/esp/esp-idf/components/esp_hw_support/include/soc -I/home/mateus/esp/esp-idf/components/esp_hw_support/include/soc/esp32 -I/home/mateus/esp/esp-idf/components/esp_hw_support/port/esp32/. -I/home/mateus/esp/esp-idf/components/esp_hw_support/port/esp32/private_include -I/home/mateus/esp/esp-idf/components/heap/include -I/home/mateus/esp/esp-idf/components/log/include -I/home/mateus/esp/esp-idf/components/soc/include -I/home/mateus/esp/esp-idf/components/soc/esp32 -I/home/mateus/esp/esp-idf/components/soc/esp32/include -I/home/mateus/esp/esp-idf/components/hal/esp32/include -I/home/mateus/esp/esp-idf/components/hal/include -I/home/mateus/esp/esp-idf/components/hal/platform_port/include -I/home/mateus/esp/esp-idf/components/esp_rom/include -I/home/mateus/esp/esp-idf/components/esp_rom/include/esp32 -I/home/mateus/esp/esp-idf/components/esp_rom/esp32 -I/home/mateus/esp/esp-idf/components/esp_common/include -I/home/mateus/esp/esp-idf/components/esp_system/include -I/home/mateus/esp/esp-idf/components/esp_system/port/soc -I/home/mateus/esp/esp-idf/components/esp_system/port/include/private -I/home/mateus/esp/esp-idf/components/xtensa/include -I/home/mateus/esp/esp-idf/components/xtensa/esp32/include -I/home/mateus/esp/esp-idf/components/esp_timer/include -I/home/mateus/esp/esp-idf/components/lwip/include -I/home/mateus/esp/esp-idf/components/lwip/include/apps -I/home/mateus/esp/esp-idf/components/lwip/include/apps/sntp -I/home/mateus/esp/esp-idf/components/lwip/lwip/src/include -I/home/mateus/esp/esp-idf/components/lwip/port/include -I/home/mateus/esp/esp-idf/components/lwip/port/freertos/include -I/home/mateus/esp/esp-idf/components/lwip/port/esp32xx/include -I/home/mateus/esp/esp-idf/components/lwip/port/esp32xx/include/arch -I/home/mateus/dev/projects/ENDAP/components/data/io_image/include -I/home/mateus/esp/esp-idf/components/driver/include -I/home/mateus/esp/esp-idf/components/driver/deprecated -I/home/mateus/esp/esp-idf/components/driver/analog_comparator/include -I/home/mateus/esp/esp-idf/components/driver/dac/include -I/home/mateus/esp/esp-idf/components/driver/gpio/include -I/home/mateus/esp/esp-idf/components/driver/gptimer/include -I/home/mateus/esp/esp-idf/components/driver/i2c/include -I/home/mateus/esp/esp-idf/components/driver/i2s/include -I/home/mateus/esp/esp-idf/components/driver/ledc/include -I/home/mateus/esp/esp-idf/components/driver/mcpwm/include -I/home/mateus/esp/esp-idf/components/driver/parlio/include -I/home/mateus/esp/esp-idf/components/driver/pcnt/include -I/home/mateus/esp/esp-idf/components/driver/rmt/include -I/home/mateus/esp/esp-idf/components/driver/sdio_slave/include -I/home/mateus/esp/esp-idf/components/driver/sdmmc/include -I/home/mateus/esp/esp-idf/components/driver/sigma_delta/include -I/home/mateus/esp/esp-idf/components/driver/spi/include -I/home/mateus/esp/esp-idf/components/driver/temperature_sensor/include -I/home/mateus/esp/esp-idf/components/driver/touch_sensor/include -I/home/mateus/esp/esp-idf/components/driver/twai/include -I/home/mateus/esp/esp-idf/components/driver/uart/include -I/home/mateus/esp/esp-idf/components/driver/usb_serial_jtag/include -I/home/mateus/esp/esp-idf/components/driver/touch_sensor/esp32/include -I/home/mateus/esp/esp-idf/components/esp_pm/include -I/home/mateus/esp/esp-idf/components/esp_ringbuf/include -mlongcalls -Wno-frame-address  -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fmacro-prefix-map=/home/mateus/dev/projects/ENDAP=. -fmacro-prefix-map=/home/mateus/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -DconfigENABLE_FREERTOS_DEBUG_OCDAWARE=1 -std=gnu17 -Wno-old-style-declaration -MD -MT esp-idf/scheduler/CMakeFiles/__idf_scheduler.dir/scheduler.c.obj -MF esp-idf/scheduler/CMakeFiles/__idf_scheduler.dir/scheduler.c.obj.d -o esp-idf/scheduler/CMakeFiles/__idf_scheduler.dir/scheduler.c.obj -c /home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:3:20: error: static declaration of 'scheduler_run_io' follows non-static declaration
+    3 | static inline void scheduler_run_io(void){}
+      |                    ^~~~~~~~~~~~~~~~
+In file included from /home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:1:
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include/scheduler.h:4:6: note: previous declaration of 'scheduler_run_io' with type 'void(void)'
+    4 | void scheduler_run_io(void);
+      |      ^~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:4:20: error: static declaration of 'scheduler_run_fieldbus' follows non-static declaration
+    4 | static inline void scheduler_run_fieldbus(void){}
+      |                    ^~~~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include/scheduler.h:6:6: note: previous declaration of 'scheduler_run_fieldbus' with type 'void(void)'
+    6 | void scheduler_run_fieldbus(void);
+      |      ^~~~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:5:20: error: static declaration of 'scheduler_run_automation' follows non-static declaration
+    5 | static inline void scheduler_run_automation(void){}
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include/scheduler.h:8:6: note: previous declaration of 'scheduler_run_automation' with type 'void(void)'
+    8 | void scheduler_run_automation(void);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:6:20: error: static declaration of 'scheduler_run_events' follows non-static declaration
+    6 | static inline void scheduler_run_events(void){}
+      |                    ^~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include/scheduler.h:10:6: note: previous declaration of 'scheduler_run_events' with type 'void(void)'
+   10 | void scheduler_run_events(void);
+      |      ^~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:7:20: error: static declaration of 'scheduler_run_diagnostics' follows non-static declaration
+    7 | static inline void scheduler_run_diagnostics(void){}
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include/scheduler.h:12:6: note: previous declaration of 'scheduler_run_diagnostics' with type 'void(void)'
+   12 | void scheduler_run_diagnostics(void);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~
+[2/17] Building C object esp-idf/determinism_probe/CMakeFiles/__idf_determinism_probe.dir/determinism_probe.c.obj
+FAILED: esp-idf/determinism_probe/CMakeFiles/__idf_determinism_probe.dir/determinism_probe.c.obj 
+/home/mateus/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-gcc -DESP_PLATFORM -DIDF_VER=\"v5.1.2\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE -D_GNU_SOURCE -D_POSIX_READER_WRITER_LOCKS -I/home/mateus/dev/projects/ENDAP/build/config -I/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe -I/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/include -I/home/mateus/esp/esp-idf/components/newlib/platform_include -I/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/include/freertos -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/include -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/arch/xtensa/include -I/home/mateus/esp/esp-idf/components/esp_hw_support/include -I/home/mateus/esp/esp-idf/components/esp_hw_support/include/soc -I/home/mateus/esp/esp-idf/components/esp_hw_support/include/soc/esp32 -I/home/mateus/esp/esp-idf/components/esp_hw_support/port/esp32/. -I/home/mateus/esp/esp-idf/components/esp_hw_support/port/esp32/private_include -I/home/mateus/esp/esp-idf/components/heap/include -I/home/mateus/esp/esp-idf/components/log/include -I/home/mateus/esp/esp-idf/components/soc/include -I/home/mateus/esp/esp-idf/components/soc/esp32 -I/home/mateus/esp/esp-idf/components/soc/esp32/include -I/home/mateus/esp/esp-idf/components/hal/esp32/include -I/home/mateus/esp/esp-idf/components/hal/include -I/home/mateus/esp/esp-idf/components/hal/platform_port/include -I/home/mateus/esp/esp-idf/components/esp_rom/include -I/home/mateus/esp/esp-idf/components/esp_rom/include/esp32 -I/home/mateus/esp/esp-idf/components/esp_rom/esp32 -I/home/mateus/esp/esp-idf/components/esp_common/include -I/home/mateus/esp/esp-idf/components/esp_system/include -I/home/mateus/esp/esp-idf/components/esp_system/port/soc -I/home/mateus/esp/esp-idf/components/esp_system/port/include/private -I/home/mateus/esp/esp-idf/components/xtensa/include -I/home/mateus/esp/esp-idf/components/xtensa/esp32/include -I/home/mateus/esp/esp-idf/components/esp_timer/include -I/home/mateus/esp/esp-idf/components/lwip/include -I/home/mateus/esp/esp-idf/components/lwip/include/apps -I/home/mateus/esp/esp-idf/components/lwip/include/apps/sntp -I/home/mateus/esp/esp-idf/components/lwip/lwip/src/include -I/home/mateus/esp/esp-idf/components/lwip/port/include -I/home/mateus/esp/esp-idf/components/lwip/port/freertos/include -I/home/mateus/esp/esp-idf/components/lwip/port/esp32xx/include -I/home/mateus/esp/esp-idf/components/lwip/port/esp32xx/include/arch -I/home/mateus/esp/esp-idf/components/driver/include -I/home/mateus/esp/esp-idf/components/driver/deprecated -I/home/mateus/esp/esp-idf/components/driver/analog_comparator/include -I/home/mateus/esp/esp-idf/components/driver/dac/include -I/home/mateus/esp/esp-idf/components/driver/gpio/include -I/home/mateus/esp/esp-idf/components/driver/gptimer/include -I/home/mateus/esp/esp-idf/components/driver/i2c/include -I/home/mateus/esp/esp-idf/components/driver/i2s/include -I/home/mateus/esp/esp-idf/components/driver/ledc/include -I/home/mateus/esp/esp-idf/components/driver/mcpwm/include -I/home/mateus/esp/esp-idf/components/driver/parlio/include -I/home/mateus/esp/esp-idf/components/driver/pcnt/include -I/home/mateus/esp/esp-idf/components/driver/rmt/include -I/home/mateus/esp/esp-idf/components/driver/sdio_slave/include -I/home/mateus/esp/esp-idf/components/driver/sdmmc/include -I/home/mateus/esp/esp-idf/components/driver/sigma_delta/include -I/home/mateus/esp/esp-idf/components/driver/spi/include -I/home/mateus/esp/esp-idf/components/driver/temperature_sensor/include -I/home/mateus/esp/esp-idf/components/driver/touch_sensor/include -I/home/mateus/esp/esp-idf/components/driver/twai/include -I/home/mateus/esp/esp-idf/components/driver/uart/include -I/home/mateus/esp/esp-idf/components/driver/usb_serial_jtag/include -I/home/mateus/esp/esp-idf/components/driver/touch_sensor/esp32/include -I/home/mateus/esp/esp-idf/components/esp_pm/include -I/home/mateus/esp/esp-idf/components/esp_ringbuf/include -mlongcalls -Wno-frame-address  -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fmacro-prefix-map=/home/mateus/dev/projects/ENDAP=. -fmacro-prefix-map=/home/mateus/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -DconfigENABLE_FREERTOS_DEBUG_OCDAWARE=1 -std=gnu17 -Wno-old-style-declaration -MD -MT esp-idf/determinism_probe/CMakeFiles/__idf_determinism_probe.dir/determinism_probe.c.obj -MF esp-idf/determinism_probe/CMakeFiles/__idf_determinism_probe.dir/determinism_probe.c.obj.d -o esp-idf/determinism_probe/CMakeFiles/__idf_determinism_probe.dir/determinism_probe.c.obj -c /home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c
+In file included from /home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:2:
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c: In function 'determinism_probe_cycle_end':
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'long unsigned int' [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'long unsigned int' [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:39:1: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   39 |         max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:39:1: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   39 |         max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:39:1: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'long unsigned int' [-Werror=format=]
+   39 |         max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:39:1: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   39 |         max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:39:1: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   39 |         max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:39:1: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   39 |         max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:39:1: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'long unsigned int' [-Werror=format=]
+   39 |         max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:39:1: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   39 |         max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'long unsigned int' [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:34:9: note: in expansion of macro 'ESP_LOGI'
+   34 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+cc1: some warnings being treated as errors
+[3/17] Building C object esp-idf/kernel_trace/CMakeFiles/__idf_kernel_trace.dir/kernel_trace.c.obj
+FAILED: esp-idf/kernel_trace/CMakeFiles/__idf_kernel_trace.dir/kernel_trace.c.obj 
+/home/mateus/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-gcc -DESP_PLATFORM -DIDF_VER=\"v5.1.2\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE -D_GNU_SOURCE -D_POSIX_READER_WRITER_LOCKS -I/home/mateus/dev/projects/ENDAP/build/config -I/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/include -I/home/mateus/esp/esp-idf/components/newlib/platform_include -I/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/include/freertos -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/include -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/arch/xtensa/include -I/home/mateus/esp/esp-idf/components/esp_hw_support/include -I/home/mateus/esp/esp-idf/components/esp_hw_support/include/soc -I/home/mateus/esp/esp-idf/components/esp_hw_support/include/soc/esp32 -I/home/mateus/esp/esp-idf/components/esp_hw_support/port/esp32/. -I/home/mateus/esp/esp-idf/components/esp_hw_support/port/esp32/private_include -I/home/mateus/esp/esp-idf/components/heap/include -I/home/mateus/esp/esp-idf/components/log/include -I/home/mateus/esp/esp-idf/components/soc/include -I/home/mateus/esp/esp-idf/components/soc/esp32 -I/home/mateus/esp/esp-idf/components/soc/esp32/include -I/home/mateus/esp/esp-idf/components/hal/esp32/include -I/home/mateus/esp/esp-idf/components/hal/include -I/home/mateus/esp/esp-idf/components/hal/platform_port/include -I/home/mateus/esp/esp-idf/components/esp_rom/include -I/home/mateus/esp/esp-idf/components/esp_rom/include/esp32 -I/home/mateus/esp/esp-idf/components/esp_rom/esp32 -I/home/mateus/esp/esp-idf/components/esp_common/include -I/home/mateus/esp/esp-idf/components/esp_system/include -I/home/mateus/esp/esp-idf/components/esp_system/port/soc -I/home/mateus/esp/esp-idf/components/esp_system/port/include/private -I/home/mateus/esp/esp-idf/components/xtensa/include -I/home/mateus/esp/esp-idf/components/xtensa/esp32/include -I/home/mateus/esp/esp-idf/components/esp_timer/include -I/home/mateus/esp/esp-idf/components/lwip/include -I/home/mateus/esp/esp-idf/components/lwip/include/apps -I/home/mateus/esp/esp-idf/components/lwip/include/apps/sntp -I/home/mateus/esp/esp-idf/components/lwip/lwip/src/include -I/home/mateus/esp/esp-idf/components/lwip/port/include -I/home/mateus/esp/esp-idf/components/lwip/port/freertos/include -I/home/mateus/esp/esp-idf/components/lwip/port/esp32xx/include -I/home/mateus/esp/esp-idf/components/lwip/port/esp32xx/include/arch -mlongcalls -Wno-frame-address  -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fmacro-prefix-map=/home/mateus/dev/projects/ENDAP=. -fmacro-prefix-map=/home/mateus/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -DconfigENABLE_FREERTOS_DEBUG_OCDAWARE=1 -std=gnu17 -Wno-old-style-declaration -MD -MT esp-idf/kernel_trace/CMakeFiles/__idf_kernel_trace.dir/kernel_trace.c.obj -MF esp-idf/kernel_trace/CMakeFiles/__idf_kernel_trace.dir/kernel_trace.c.obj.d -o esp-idf/kernel_trace/CMakeFiles/__idf_kernel_trace.dir/kernel_trace.c.obj -c /home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c
+In file included from /home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:2:
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c: In function 'kernel_trace_cycle_end':
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'long unsigned int' [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 10 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 11 has type 'long unsigned int' [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 12 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'long unsigned int' [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 10 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 11 has type 'long unsigned int' [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 12 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'long unsigned int' [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 10 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 11 has type 'long unsigned int' [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 12 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'long unsigned int' [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 10 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 11 has type 'long unsigned int' [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:61:1: error: format '%u' expects argument of type 'unsigned int', but argument 12 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+   61 |         exec_max);
+      | ^       ~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'long unsigned int' [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 10 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 11 has type 'long unsigned int' [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 12 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:53:9: note: in expansion of macro 'ESP_LOGI'
+   53 |         ESP_LOGI(TAG,
+      |         ^~~~~~~~
+cc1: some warnings being treated as errors
+[4/17] Building C object esp-idf/watchdog/CMakeFiles/__idf_watchdog.dir/watchdog.c.obj
+[5/17] Performing build step for 'bootloader'
+[1/1] cd /home/mateus/dev/projects/ENDAP/build/bootloader/esp-idf/esptool_py && /home/mateus/.espressif/python_env/idf5.1_py3.12_env/bin/python /home/mateus/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 /home/mateus/dev/projects/ENDAP/build/bootloader/bootloader.bin
+Bootloader binary size 0x6810 bytes. 0x7f0 bytes (7%) free.
+[6/17] Building C object esp-idf/control_loop/CMakeFiles/__idf_control_loop.dir/control_loop.c.obj
+FAILED: esp-idf/control_loop/CMakeFiles/__idf_control_loop.dir/control_loop.c.obj 
+/home/mateus/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-gcc -DESP_PLATFORM -DIDF_VER=\"v5.1.2\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE -D_GNU_SOURCE -D_POSIX_READER_WRITER_LOCKS -I/home/mateus/dev/projects/ENDAP/build/config -I/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/include -I/home/mateus/esp/esp-idf/components/newlib/platform_include -I/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/home/mateus/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/include/freertos -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/include -I/home/mateus/esp/esp-idf/components/freertos/esp_additions/arch/xtensa/include -I/home/mateus/esp/esp-idf/components/esp_hw_support/include -I/home/mateus/esp/esp-idf/components/esp_hw_support/include/soc -I/home/mateus/esp/esp-idf/components/esp_hw_support/include/soc/esp32 -I/home/mateus/esp/esp-idf/components/esp_hw_support/port/esp32/. -I/home/mateus/esp/esp-idf/components/esp_hw_support/port/esp32/private_include -I/home/mateus/esp/esp-idf/components/heap/include -I/home/mateus/esp/esp-idf/components/log/include -I/home/mateus/esp/esp-idf/components/soc/include -I/home/mateus/esp/esp-idf/components/soc/esp32 -I/home/mateus/esp/esp-idf/components/soc/esp32/include -I/home/mateus/esp/esp-idf/components/hal/esp32/include -I/home/mateus/esp/esp-idf/components/hal/include -I/home/mateus/esp/esp-idf/components/hal/platform_port/include -I/home/mateus/esp/esp-idf/components/esp_rom/include -I/home/mateus/esp/esp-idf/components/esp_rom/include/esp32 -I/home/mateus/esp/esp-idf/components/esp_rom/esp32 -I/home/mateus/esp/esp-idf/components/esp_common/include -I/home/mateus/esp/esp-idf/components/esp_system/include -I/home/mateus/esp/esp-idf/components/esp_system/port/soc -I/home/mateus/esp/esp-idf/components/esp_system/port/include/private -I/home/mateus/esp/esp-idf/components/xtensa/include -I/home/mateus/esp/esp-idf/components/xtensa/esp32/include -I/home/mateus/esp/esp-idf/components/esp_timer/include -I/home/mateus/esp/esp-idf/components/lwip/include -I/home/mateus/esp/esp-idf/components/lwip/include/apps -I/home/mateus/esp/esp-idf/components/lwip/include/apps/sntp -I/home/mateus/esp/esp-idf/components/lwip/lwip/src/include -I/home/mateus/esp/esp-idf/components/lwip/port/include -I/home/mateus/esp/esp-idf/components/lwip/port/freertos/include -I/home/mateus/esp/esp-idf/components/lwip/port/esp32xx/include -I/home/mateus/esp/esp-idf/components/lwip/port/esp32xx/include/arch -I/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include -I/home/mateus/dev/projects/ENDAP/components/kernel/watchdog/include -I/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe -I/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/include -I/home/mateus/esp/esp-idf/components/driver/include -I/home/mateus/esp/esp-idf/components/driver/deprecated -I/home/mateus/esp/esp-idf/components/driver/analog_comparator/include -I/home/mateus/esp/esp-idf/components/driver/dac/include -I/home/mateus/esp/esp-idf/components/driver/gpio/include -I/home/mateus/esp/esp-idf/components/driver/gptimer/include -I/home/mateus/esp/esp-idf/components/driver/i2c/include -I/home/mateus/esp/esp-idf/components/driver/i2s/include -I/home/mateus/esp/esp-idf/components/driver/ledc/include -I/home/mateus/esp/esp-idf/components/driver/mcpwm/include -I/home/mateus/esp/esp-idf/components/driver/parlio/include -I/home/mateus/esp/esp-idf/components/driver/pcnt/include -I/home/mateus/esp/esp-idf/components/driver/rmt/include -I/home/mateus/esp/esp-idf/components/driver/sdio_slave/include -I/home/mateus/esp/esp-idf/components/driver/sdmmc/include -I/home/mateus/esp/esp-idf/components/driver/sigma_delta/include -I/home/mateus/esp/esp-idf/components/driver/spi/include -I/home/mateus/esp/esp-idf/components/driver/temperature_sensor/include -I/home/mateus/esp/esp-idf/components/driver/touch_sensor/include -I/home/mateus/esp/esp-idf/components/driver/twai/include -I/home/mateus/esp/esp-idf/components/driver/uart/include -I/home/mateus/esp/esp-idf/components/driver/usb_serial_jtag/include -I/home/mateus/esp/esp-idf/components/driver/touch_sensor/esp32/include -I/home/mateus/esp/esp-idf/components/esp_pm/include -I/home/mateus/esp/esp-idf/components/esp_ringbuf/include -I/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/include -I/home/mateus/dev/projects/ENDAP/components/observability/kernel_metrics -I/home/mateus/dev/projects/ENDAP/components/observability/kernel_metrics/include -mlongcalls -Wno-frame-address  -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fmacro-prefix-map=/home/mateus/dev/projects/ENDAP=. -fmacro-prefix-map=/home/mateus/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -DconfigENABLE_FREERTOS_DEBUG_OCDAWARE=1 -std=gnu17 -Wno-old-style-declaration -MD -MT esp-idf/control_loop/CMakeFiles/__idf_control_loop.dir/control_loop.c.obj -MF esp-idf/control_loop/CMakeFiles/__idf_control_loop.dir/control_loop.c.obj.d -o esp-idf/control_loop/CMakeFiles/__idf_control_loop.dir/control_loop.c.obj -c /home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c
+In file included from /home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:6:
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c: In function 'control_task':
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 10 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:268:27: note: in expansion of macro 'LOG_COLOR'
+  268 | #define LOG_COLOR_E       LOG_COLOR(LOG_COLOR_RED)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_E'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:410:86: note: in expansion of macro 'LOG_FORMAT'
+  410 |         if (level==ESP_LOG_ERROR )          { esp_log_write(ESP_LOG_ERROR,      tag, LOG_FORMAT(E, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 10 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:269:27: note: in expansion of macro 'LOG_COLOR'
+  269 | #define LOG_COLOR_W       LOG_COLOR(LOG_COLOR_BROWN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_W'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:411:86: note: in expansion of macro 'LOG_FORMAT'
+  411 |         else if (level==ESP_LOG_WARN )      { esp_log_write(ESP_LOG_WARN,       tag, LOG_FORMAT(W, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:178:1: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  178 |             phase_events_max,phase_diag_max);
+      | ^          
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:178:1: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  178 |             phase_events_max,phase_diag_max);
+      | ^          
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:178:1: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  178 |             phase_events_max,phase_diag_max);
+      | ^          
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:178:1: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  178 |             phase_events_max,phase_diag_max);
+      | ^          
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:178:1: error: format '%u' expects argument of type 'unsigned int', but argument 10 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  178 |             phase_events_max,phase_diag_max);
+      | ^          
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:178:1: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  178 |             phase_events_max,phase_diag_max);
+      | ^          
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:178:1: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  178 |             phase_events_max,phase_diag_max);
+      | ^          
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:178:1: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  178 |             phase_events_max,phase_diag_max);
+      | ^          
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:178:1: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  178 |             phase_events_max,phase_diag_max);
+      | ^          
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:178:1: error: format '%u' expects argument of type 'unsigned int', but argument 10 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  178 |             phase_events_max,phase_diag_max);
+      | ^          
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:59: note: in definition of macro 'LOG_FORMAT'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                                           ^~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 6 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 7 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 8 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 9 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:265:27: error: format '%u' expects argument of type 'unsigned int', but argument 10 has type 'uint32_t' {aka 'long unsigned int'} [-Werror=format=]
+  265 | #define LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:270:27: note: in expansion of macro 'LOG_COLOR'
+  270 | #define LOG_COLOR_I       LOG_COLOR(LOG_COLOR_GREEN)
+      |                           ^~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:282:37: note: in expansion of macro 'LOG_COLOR_I'
+  282 | #define LOG_FORMAT(letter, format)  LOG_COLOR_ ## letter #letter " (%" PRIu32 ") %s: " format LOG_RESET_COLOR "\n"
+      |                                     ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:414:86: note: in expansion of macro 'LOG_FORMAT'
+  414 |         else                                { esp_log_write(ESP_LOG_INFO,       tag, LOG_FORMAT(I, format), esp_log_timestamp(), tag, ##__VA_ARGS__); } \
+      |                                                                                      ^~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:432:41: note: in expansion of macro 'ESP_LOG_LEVEL'
+  432 |         if ( LOG_LOCAL_LEVEL >= level ) ESP_LOG_LEVEL(level, tag, format, ##__VA_ARGS__); \
+      |                                         ^~~~~~~~~~~~~
+/home/mateus/esp/esp-idf/components/log/include/esp_log.h:342:38: note: in expansion of macro 'ESP_LOG_LEVEL_LOCAL'
+  342 | #define ESP_LOGI( tag, format, ... ) ESP_LOG_LEVEL_LOCAL(ESP_LOG_INFO,    tag, format, ##__VA_ARGS__)
+      |                                      ^~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/control_loop/control_loop.c:175:13: note: in expansion of macro 'ESP_LOGI'
+  175 |             ESP_LOGI(TAG,
+      |             ^~~~~~~~
+cc1: some warnings being treated as errors
+ninja: build stopped: subcommand failed.

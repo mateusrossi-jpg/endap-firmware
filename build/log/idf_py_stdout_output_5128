@@ -1,0 +1,15 @@
+[0/1] Re-running CMake...
+-- Component directory /home/mateus/dev/projects/ENDAP/components/comm does not contain a CMakeLists.txt file. No component will be added
+-- Component directory /home/mateus/dev/projects/ENDAP/components/data does not contain a CMakeLists.txt file. No component will be added
+-- Component directory /home/mateus/dev/projects/ENDAP/components/hal does not contain a CMakeLists.txt file. No component will be added
+-- Component directory /home/mateus/dev/projects/ENDAP/components/kernel does not contain a CMakeLists.txt file. No component will be added
+-- Component directory /home/mateus/dev/projects/ENDAP/components/observability does not contain a CMakeLists.txt file. No component will be added
+-- Component directory /home/mateus/dev/projects/ENDAP/components/runtime does not contain a CMakeLists.txt file. No component will be added
+-- Component directory /home/mateus/dev/projects/ENDAP/components/util does not contain a CMakeLists.txt file. No component will be added
+-- git rev-parse returned 'fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).'
+-- Could not use 'git describe' to determine PROJECT_VER.
+-- Building ESP-IDF components for target esp32
+-- Configuring incomplete, errors occurred!
+FAILED: build.ninja 
+/usr/bin/cmake --regenerate-during-build -S/home/mateus/dev/projects/ENDAP -B/home/mateus/dev/projects/ENDAP/build

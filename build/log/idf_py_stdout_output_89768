@@ -1,0 +1,84 @@
+[1/19] Building C object esp-idf/scheduler/CMakeFiles/__idf_scheduler.dir/scheduler.c.obj
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:8:1: warning: ignoring attribute 'section (".iram1.5")' because it conflicts with previous 'section (".iram1.0")' [-Wattributes]
+    8 | {
+      | ^
+In file included from /home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:1:
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include/scheduler.h:6:16: note: previous declaration here
+    6 | void IRAM_ATTR scheduler_run_io(void);
+      |                ^~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:17:1: warning: ignoring attribute 'section (".iram1.6")' because it conflicts with previous 'section (".iram1.1")' [-Wattributes]
+   17 | {
+      | ^
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include/scheduler.h:8:16: note: previous declaration here
+    8 | void IRAM_ATTR scheduler_run_fieldbus(void);
+      |                ^~~~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:26:1: warning: ignoring attribute 'section (".iram1.7")' because it conflicts with previous 'section (".iram1.2")' [-Wattributes]
+   26 | {
+      | ^
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include/scheduler.h:10:16: note: previous declaration here
+   10 | void IRAM_ATTR scheduler_run_automation(void);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:35:1: warning: ignoring attribute 'section (".iram1.8")' because it conflicts with previous 'section (".iram1.3")' [-Wattributes]
+   35 | {
+      | ^
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include/scheduler.h:12:16: note: previous declaration here
+   12 | void IRAM_ATTR scheduler_run_events(void);
+      |                ^~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/scheduler.c:44:1: warning: ignoring attribute 'section (".iram1.9")' because it conflicts with previous 'section (".iram1.4")' [-Wattributes]
+   44 | {
+      | ^
+/home/mateus/dev/projects/ENDAP/components/kernel/scheduler/include/scheduler.h:14:16: note: previous declaration here
+   14 | void IRAM_ATTR scheduler_run_diagnostics(void);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~
+[2/19] Building C object esp-idf/kernel_trace/CMakeFiles/__idf_kernel_trace.dir/kernel_trace.c.obj
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:24:1: warning: ignoring attribute 'section (".iram1.2")' because it conflicts with previous 'section (".iram1.0")' [-Wattributes]
+   24 | {
+      | ^
+In file included from /home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:1:
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/include/kernel_trace.h:7:16: note: previous declaration here
+    7 | void IRAM_ATTR kernel_trace_cycle_start(uint64_t now);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/kernel_trace.c:52:1: warning: ignoring attribute 'section (".iram1.3")' because it conflicts with previous 'section (".iram1.1")' [-Wattributes]
+   52 | {
+      | ^
+/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace/include/kernel_trace.h:8:16: note: previous declaration here
+    8 | void IRAM_ATTR kernel_trace_cycle_end(uint64_t now);
+      |                ^~~~~~~~~~~~~~~~~~~~~~
+[3/19] Building C object esp-idf/watchdog/CMakeFiles/__idf_watchdog.dir/watchdog.c.obj
+[4/19] Building C object esp-idf/determinism_probe/CMakeFiles/__idf_determinism_probe.dir/determinism_probe.c.obj
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:17:1: warning: ignoring attribute 'section (".iram1.2")' because it conflicts with previous 'section (".iram1.0")' [-Wattributes]
+   17 | {
+      | ^
+In file included from /home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:1:
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/include/determinism_probe.h:7:16: note: previous declaration here
+    7 | void IRAM_ATTR determinism_probe_cycle_start(uint64_t now);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/determinism_probe.c:22:1: warning: ignoring attribute 'section (".iram1.3")' because it conflicts with previous 'section (".iram1.1")' [-Wattributes]
+   22 | {
+      | ^
+/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe/include/determinism_probe.h:9:16: note: previous declaration here
+    9 | void IRAM_ATTR determinism_probe_cycle_end(uint64_t now);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+[5/19] Linking C static library esp-idf/scheduler/libscheduler.a
+[6/19] Linking C static library esp-idf/kernel_trace/libkernel_trace.a
+[7/19] Linking C static library esp-idf/determinism_probe/libdeterminism_probe.a
+[8/19] Linking C static library esp-idf/watchdog/libwatchdog.a
+[9/19] Performing build step for 'bootloader'
+[1/1] cd /home/mateus/dev/projects/ENDAP/build/bootloader/esp-idf/esptool_py && /home/mateus/.espressif/python_env/idf5.1_py3.12_env/bin/python /home/mateus/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 /home/mateus/dev/projects/ENDAP/build/bootloader/bootloader.bin
+Bootloader binary size 0x6810 bytes. 0x7f0 bytes (7%) free.
+[10/19] Building C object esp-idf/control_loop/CMakeFiles/__idf_control_loop.dir/control_loop.c.obj
+[11/19] No install step for 'bootloader'
+[12/19] Building C object esp-idf/core/CMakeFiles/__idf_core.dir/core_boot.c.obj
+[13/19] Linking C static library esp-idf/control_loop/libcontrol_loop.a
+[14/19] Completed 'bootloader'
+[15/19] Linking C static library esp-idf/core/libcore.a
+[16/19] Generating ld/sections.ld
+[17/19] Linking CXX executable ENDAP.elf
+[18/19] Generating binary image from built executable
+esptool.py v4.11.0
+Creating esp32 image...
+Merged 2 ELF sections
+Successfully created esp32 image.
+Generated /home/mateus/dev/projects/ENDAP/build/ENDAP.bin
+[19/19] cd /home/mateus/dev/projects/ENDAP/build/esp-idf/esptool_py && /home/mateus/.espressif/python_env/idf5.1_py3.12_env/bin/python /home/mateus/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/mateus/dev/projects/ENDAP/build/partition_table/partition-table.bin /home/mateus/dev/projects/ENDAP/build/ENDAP.bin
+ENDAP.bin binary size 0x36280 bytes. Smallest app partition is 0x100000 bytes. 0xc9d80 bytes (79%) free.
