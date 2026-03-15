@@ -1147,4 +1147,377 @@ entry 0x4008064c
 [0;32mI (479628) KTRACE: cycles=477184 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
 [0;32mI (480656) DET_PROBE: cycles=478208 jitter(min/avg/max)=0/28/188 us[0m
 [0;32mI (480656) KTRACE: cycles=478208 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
-[0;32mI (481684) DET_PROB
+[0;32mI (481684) DET_PROBE: cycles=479232 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (481684) KTRACE: cycles=479232 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (482456) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (482456) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (482716) DET_PROBE: cycles=480256 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (482716) KTRACE: cycles=480256 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (483744) DET_PROBE: cycles=481280 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (483744) KTRACE: cycles=481280 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (484772) DET_PROBE: cycles=482304 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (484772) KTRACE: cycles=482304 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (485800) DET_PROBE: cycles=483328 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (485800) KTRACE: cycles=483328 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (486828) DET_PROBE: cycles=484352 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (486828) KTRACE: cycles=484352 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (487480) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (487856) DET_PROBE: cycles=485376 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (487856) KTRACE: cycles=485376 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (488884) DET_PROBE: cycles=486400 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (488884) KTRACE: cycles=486400 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (489912) DET_PROBE: cycles=487424 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (489912) KTRACE: cycles=487424 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (490940) DET_PROBE: cycles=488448 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (490940) KTRACE: cycles=488448 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (491968) DET_PROBE: cycles=489472 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (491968) KTRACE: cycles=489472 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (492500) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (492500) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (493000) DET_PROBE: cycles=490496 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (493000) KTRACE: cycles=490496 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (494028) DET_PROBE: cycles=491520 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (494028) KTRACE: cycles=491520 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (495056) DET_PROBE: cycles=492544 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (495056) KTRACE: cycles=492544 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (496084) DET_PROBE: cycles=493568 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (496084) KTRACE: cycles=493568 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (497112) DET_PROBE: cycles=494592 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (497112) KTRACE: cycles=494592 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (497524) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (498140) DET_PROBE: cycles=495616 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (498140) KTRACE: cycles=495616 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (499168) DET_PROBE: cycles=496640 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (499168) KTRACE: cycles=496640 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (500196) DET_PROBE: cycles=497664 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (500196) KTRACE: cycles=497664 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (501224) DET_PROBE: cycles=498688 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (501224) KTRACE: cycles=498688 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (502252) DET_PROBE: cycles=499712 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (502252) KTRACE: cycles=499712 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (502544) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (502544) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (503284) DET_PROBE: cycles=500736 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (503284) KTRACE: cycles=500736 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (504312) DET_PROBE: cycles=501760 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (504312) KTRACE: cycles=501760 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (505340) DET_PROBE: cycles=502784 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (505340) KTRACE: cycles=502784 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (506368) DET_PROBE: cycles=503808 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (506368) KTRACE: cycles=503808 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (507396) DET_PROBE: cycles=504832 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (507396) KTRACE: cycles=504832 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (507568) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (508424) DET_PROBE: cycles=505856 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (508424) KTRACE: cycles=505856 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (509452) DET_PROBE: cycles=506880 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (509452) KTRACE: cycles=506880 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (510480) DET_PROBE: cycles=507904 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (510480) KTRACE: cycles=507904 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (511508) DET_PROBE: cycles=508928 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (511508) KTRACE: cycles=508928 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (512536) DET_PROBE: cycles=509952 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (512536) KTRACE: cycles=509952 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (512588) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (512588) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (513568) DET_PROBE: cycles=510976 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (513568) KTRACE: cycles=510976 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (514596) DET_PROBE: cycles=512000 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (514596) KTRACE: cycles=512000 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (515624) DET_PROBE: cycles=513024 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (515624) KTRACE: cycles=513024 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (516652) DET_PROBE: cycles=514048 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (516652) KTRACE: cycles=514048 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (517608) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (517680) DET_PROBE: cycles=515072 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (517680) KTRACE: cycles=515072 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (518708) DET_PROBE: cycles=516096 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (518708) KTRACE: cycles=516096 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (519736) DET_PROBE: cycles=517120 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (519736) KTRACE: cycles=517120 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (520764) DET_PROBE: cycles=518144 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (520764) KTRACE: cycles=518144 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (521792) DET_PROBE: cycles=519168 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (521792) KTRACE: cycles=519168 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (522628) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (522628) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (522824) DET_PROBE: cycles=520192 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (522824) KTRACE: cycles=520192 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (523852) DET_PROBE: cycles=521216 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (523852) KTRACE: cycles=521216 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (524880) DET_PROBE: cycles=522240 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (524880) KTRACE: cycles=522240 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (525908) DET_PROBE: cycles=523264 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (525908) KTRACE: cycles=523264 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (526936) DET_PROBE: cycles=524288 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (526936) KTRACE: cycles=524288 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (527652) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (527964) DET_PROBE: cycles=525312 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (527964) KTRACE: cycles=525312 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (528992) DET_PROBE: cycles=526336 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (528992) KTRACE: cycles=526336 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (530020) DET_PROBE: cycles=527360 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (530020) KTRACE: cycles=527360 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (531048) DET_PROBE: cycles=528384 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (531048) KTRACE: cycles=528384 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (532076) DET_PROBE: cycles=529408 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (532076) KTRACE: cycles=529408 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (532672) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (532672) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (533108) DET_PROBE: cycles=530432 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (533108) KTRACE: cycles=530432 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (534136) DET_PROBE: cycles=531456 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (534136) KTRACE: cycles=531456 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (535164) DET_PROBE: cycles=532480 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (535164) KTRACE: cycles=532480 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (536192) DET_PROBE: cycles=533504 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (536192) KTRACE: cycles=533504 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (537220) DET_PROBE: cycles=534528 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (537220) KTRACE: cycles=534528 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (537696) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (538248) DET_PROBE: cycles=535552 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (538248) KTRACE: cycles=535552 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (539276) DET_PROBE: cycles=536576 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (539276) KTRACE: cycles=536576 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (540304) DET_PROBE: cycles=537600 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (540304) KTRACE: cycles=537600 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (541332) DET_PROBE: cycles=538624 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (541332) KTRACE: cycles=538624 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (542360) DET_PROBE: cycles=539648 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (542360) KTRACE: cycles=539648 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (542716) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (542716) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (543392) DET_PROBE: cycles=540672 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (543392) KTRACE: cycles=540672 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (544420) DET_PROBE: cycles=541696 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (544420) KTRACE: cycles=541696 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (545448) DET_PROBE: cycles=542720 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (545448) KTRACE: cycles=542720 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (546476) DET_PROBE: cycles=543744 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (546476) KTRACE: cycles=543744 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (547504) DET_PROBE: cycles=544768 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (547504) KTRACE: cycles=544768 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (547740) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (548532) DET_PROBE: cycles=545792 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (548532) KTRACE: cycles=545792 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (549560) DET_PROBE: cycles=546816 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (549560) KTRACE: cycles=546816 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (550588) DET_PROBE: cycles=547840 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (550588) KTRACE: cycles=547840 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (551616) DET_PROBE: cycles=548864 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (551616) KTRACE: cycles=548864 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (552644) DET_PROBE: cycles=549888 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (552644) KTRACE: cycles=549888 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (552760) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (552760) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (553676) DET_PROBE: cycles=550912 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (553676) KTRACE: cycles=550912 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (554704) DET_PROBE: cycles=551936 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (554704) KTRACE: cycles=551936 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (555732) DET_PROBE: cycles=552960 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (555732) KTRACE: cycles=552960 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (556760) DET_PROBE: cycles=553984 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (556760) KTRACE: cycles=553984 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (557780) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (557788) DET_PROBE: cycles=555008 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (557788) KTRACE: cycles=555008 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (558817) DET_PROBE: cycles=556032 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (558817) KTRACE: cycles=556032 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (559845) DET_PROBE: cycles=557056 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (559845) KTRACE: cycles=557056 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (560873) DET_PROBE: cycles=558080 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (560873) KTRACE: cycles=558080 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (561901) DET_PROBE: cycles=559104 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (561901) KTRACE: cycles=559104 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (562801) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (562801) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (562933) DET_PROBE: cycles=560128 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (562933) KTRACE: cycles=560128 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (563961) DET_PROBE: cycles=561152 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (563961) KTRACE: cycles=561152 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (564989) DET_PROBE: cycles=562176 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (564989) KTRACE: cycles=562176 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (566017) DET_PROBE: cycles=563200 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (566017) KTRACE: cycles=563200 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (567045) DET_PROBE: cycles=564224 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (567045) KTRACE: cycles=564224 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (567825) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (568073) DET_PROBE: cycles=565248 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (568073) KTRACE: cycles=565248 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (569101) DET_PROBE: cycles=566272 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (569101) KTRACE: cycles=566272 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (570129) DET_PROBE: cycles=567296 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (570129) KTRACE: cycles=567296 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (571157) DET_PROBE: cycles=568320 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (571157) KTRACE: cycles=568320 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (572185) DET_PROBE: cycles=569344 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (572185) KTRACE: cycles=569344 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (572845) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (572845) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (573217) DET_PROBE: cycles=570368 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (573217) KTRACE: cycles=570368 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (574245) DET_PROBE: cycles=571392 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (574245) KTRACE: cycles=571392 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (575273) DET_PROBE: cycles=572416 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (575273) KTRACE: cycles=572416 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (576301) DET_PROBE: cycles=573440 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (576301) KTRACE: cycles=573440 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (577329) DET_PROBE: cycles=574464 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (577329) KTRACE: cycles=574464 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (577869) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (578357) DET_PROBE: cycles=575488 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (578357) KTRACE: cycles=575488 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (579385) DET_PROBE: cycles=576512 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (579385) KTRACE: cycles=576512 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (580413) DET_PROBE: cycles=577536 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (580413) KTRACE: cycles=577536 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (581441) DET_PROBE: cycles=578560 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (581441) KTRACE: cycles=578560 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (582469) DET_PROBE: cycles=579584 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (582469) KTRACE: cycles=579584 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (582889) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (582889) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (583501) DET_PROBE: cycles=580608 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (583501) KTRACE: cycles=580608 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (584529) DET_PROBE: cycles=581632 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (584529) KTRACE: cycles=581632 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (585557) DET_PROBE: cycles=582656 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (585557) KTRACE: cycles=582656 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (586585) DET_PROBE: cycles=583680 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (586585) KTRACE: cycles=583680 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (587613) DET_PROBE: cycles=584704 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (587613) KTRACE: cycles=584704 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (587913) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (588641) DET_PROBE: cycles=585728 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (588641) KTRACE: cycles=585728 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (589669) DET_PROBE: cycles=586752 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (589669) KTRACE: cycles=586752 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (590697) DET_PROBE: cycles=587776 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (590697) KTRACE: cycles=587776 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (591725) DET_PROBE: cycles=588800 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (591725) KTRACE: cycles=588800 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (592753) DET_PROBE: cycles=589824 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (592753) KTRACE: cycles=589824 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (592933) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (592933) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (593785) DET_PROBE: cycles=590848 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (593785) KTRACE: cycles=590848 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (594813) DET_PROBE: cycles=591872 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (594813) KTRACE: cycles=591872 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (595841) DET_PROBE: cycles=592896 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (595841) KTRACE: cycles=592896 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (596869) DET_PROBE: cycles=593920 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (596869) KTRACE: cycles=593920 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (597897) DET_PROBE: cycles=594944 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (597897) KTRACE: cycles=594944 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (597957) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (598925) DET_PROBE: cycles=595968 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (598925) KTRACE: cycles=595968 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (599953) DET_PROBE: cycles=596992 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (599953) KTRACE: cycles=596992 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (600981) DET_PROBE: cycles=598016 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (600981) KTRACE: cycles=598016 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (602009) DET_PROBE: cycles=599040 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (602009) KTRACE: cycles=599040 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (602973) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (602973) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (603041) DET_PROBE: cycles=600064 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (603041) KTRACE: cycles=600064 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (604069) DET_PROBE: cycles=601088 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (604069) KTRACE: cycles=601088 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (605097) DET_PROBE: cycles=602112 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (605097) KTRACE: cycles=602112 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (606125) DET_PROBE: cycles=603136 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (606125) KTRACE: cycles=603136 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (607153) DET_PROBE: cycles=604160 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (607153) KTRACE: cycles=604160 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (607997) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (608181) DET_PROBE: cycles=605184 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (608181) KTRACE: cycles=605184 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (609209) DET_PROBE: cycles=606208 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (609209) KTRACE: cycles=606208 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (610237) DET_PROBE: cycles=607232 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (610237) KTRACE: cycles=607232 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (611265) DET_PROBE: cycles=608256 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (611265) KTRACE: cycles=608256 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (612293) DET_PROBE: cycles=609280 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (612293) KTRACE: cycles=609280 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (613017) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (613017) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (613325) DET_PROBE: cycles=610304 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (613325) KTRACE: cycles=610304 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (614353) DET_PROBE: cycles=611328 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (614353) KTRACE: cycles=611328 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (615381) DET_PROBE: cycles=612352 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (615381) KTRACE: cycles=612352 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (616409) DET_PROBE: cycles=613376 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (616409) KTRACE: cycles=613376 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (617437) DET_PROBE: cycles=614400 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (617437) KTRACE: cycles=614400 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (618041) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (618465) DET_PROBE: cycles=615424 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (618465) KTRACE: cycles=615424 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (619493) DET_PROBE: cycles=616448 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (619493) KTRACE: cycles=616448 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (620521) DET_PROBE: cycles=617472 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (620521) KTRACE: cycles=617472 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (621549) DET_PROBE: cycles=618496 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (621549) KTRACE: cycles=618496 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (622577) DET_PROBE: cycles=619520 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (622577) KTRACE: cycles=619520 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (623061) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (623061) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (623609) DET_PROBE: cycles=620544 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (623609) KTRACE: cycles=620544 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (624637) DET_PROBE: cycles=621568 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (624637) KTRACE: cycles=621568 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (625665) DET_PROBE: cycles=622592 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (625665) KTRACE: cycles=622592 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (626693) DET_PROBE: cycles=623616 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (626693) KTRACE: cycles=623616 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (627721) DET_PROBE: cycles=624640 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (627721) KTRACE: cycles=624640 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (628085) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (628749) DET_PROBE: cycles=625664 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (628749) KTRACE: cycles=625664 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (629777) DET_PROBE: cycles=626688 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (629777) KTRACE: cycles=626688 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (630805) DET_PROBE: cycles=627712 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (630805) KTRACE: cycles=627712 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (631833) DET_PROBE: cycles=628736 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (631833) KTRACE: cycles=628736 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (632861) DET_PROBE: cycles=629760 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (632861) KTRACE: cycles=629760 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (633105) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (633105) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (633893) DET_PROBE: cycles=630784 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (633893) KTRACE: cycles=630784 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (634921) DET_PROBE: cycles=631808 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (634921) KTRACE: cycles=631808 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (635949) DET_PROBE: cycles=632832 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (635949) KTRACE: cycles=632832 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (636977) DET_PROBE: cycles=633856 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (636977) KTRACE: cycles=633856 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (638005) DET_PROBE: cycles=634880 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (638005) KTRACE: cycles=634880 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (638129) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (639033) DET_PROBE: cycles=635904 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (639033) KTRACE: cycles=635904 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (640061) DET_PROBE: cycles=636928 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (640061) KTRACE: cycles=636928 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (641089) DET_PROBE: cycles=637952 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (641089) KTRACE: cycles=637952 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (642117) DET_PROBE: cycles=638976 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (642117) KTRACE: cycles=638976 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (643145) RS485_LATENCY: <100us=100% 100-200us=0% 200-500us=0% >500us=0%[0m
+[0;32mI (643145) DET_PROBE: cycles=640000 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (643148) KTRACE: cycles=640000 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (643158) CTRL_LOOP: jitter(min/avg/max)=50/1015/1017 exec(min/max)=28/18446744073709550649[0m
+[0;32mI (644190) DET_PROBE: cycles=641024 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (644190) KTRACE: cycles=641024 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (645218) DET_PROBE: cycles=642048 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (645218) KTRACE: cycles=642048 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (646246) DET_PROBE: cycles=643072 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (646246) KTRACE: cycles=643072 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m
+[0;32mI (647274) DET_PROBE: cycles=644096 jitter(min/avg/max)=0/28/188 us[0m
+[0;32mI (647274) KTRACE: cycles=644096 jitter(min/avg/max)=34/999/1000 us exec(min/avg/max)=0/28/188 us[0m

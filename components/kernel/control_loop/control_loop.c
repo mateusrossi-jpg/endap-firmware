@@ -185,7 +185,14 @@ static void IRAM_ATTR control_loop_run(void *arg)
 
             phase_table[i]();
 
-            uint64_t dt = read_time() - t_before;
+            uint64_t t_after = read_time();
+
+            uint64_t dt;
+
+            if (t_after >= t_before)
+                dt = t_after - t_before;
+            else
+                dt = 0;
 
             if (dt > *phase_max_table[i])
                 *phase_max_table[i] = (uint32_t)dt;
@@ -195,7 +202,12 @@ static void IRAM_ATTR control_loop_run(void *arg)
 
         uint64_t end = read_time();
 
-        uint64_t exec = end - start;
+        uint64_t exec;
+
+        if (end >= start)
+            exec = end - start;
+        else
+            exec = 0;
 
         if (exec < exec_min) exec_min = exec;
         if (exec > exec_max) exec_max = exec;
@@ -277,15 +289,15 @@ void control_loop_start(void)
     ESP_ERROR_CHECK(gptimer_set_alarm_action(loop_timer, &alarm_config));
 
     control_task_handle = xTaskCreateStaticPinnedToCore(
-    control_loop_run,
-    "control_loop",
-    4096,
-    NULL,
-    configMAX_PRIORITIES - 1,
-    control_stack,
-    &control_task_buffer,
-    1
-);
+        control_loop_run,
+        "control_loop",
+        4096,
+        NULL,
+        configMAX_PRIORITIES - 1,
+        control_stack,
+        &control_task_buffer,
+        1
+    );
 
     ESP_ERROR_CHECK(gptimer_enable(loop_timer));
     ESP_ERROR_CHECK(gptimer_start(loop_timer));
