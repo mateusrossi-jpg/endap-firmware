@@ -4402,6 +4402,173 @@
     {
         "children": [
             {
+                "children": [],
+                "depends_on": null,
+                "help": "Keeps the Wi-Fi stack available for AP fallback, dashboard access and\ncluster transport over UDP.",
+                "id": "ENDAP_WIFI_ENABLED",
+                "name": "ENDAP_WIFI_ENABLED",
+                "range": null,
+                "title": "Enable Wi-Fi support",
+                "type": "bool"
+            },
+            {
+                "children": [],
+                "depends_on": null,
+                "help": "Enables the Ethernet manager and allows the cluster transport to run\nover an Ethernet link when a supported backend is configured.",
+                "id": "ENDAP_ETHERNET_ENABLED",
+                "name": "ENDAP_ETHERNET_ENABLED",
+                "range": null,
+                "title": "Enable Ethernet support",
+                "type": "bool"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": "<choice ENDAP_ETHERNET_BACKEND>",
+                        "help": null,
+                        "id": "ENDAP_ETH_BACKEND_NONE",
+                        "name": "ENDAP_ETH_BACKEND_NONE",
+                        "range": null,
+                        "title": "No Ethernet backend",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "<choice ENDAP_ETHERNET_BACKEND>",
+                        "help": null,
+                        "id": "ENDAP_ETH_BACKEND_W5500",
+                        "name": "ENDAP_ETH_BACKEND_W5500",
+                        "range": null,
+                        "title": "W5500 over SPI",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "<choice ENDAP_ETHERNET_BACKEND>",
+                        "help": null,
+                        "id": "ENDAP_ETH_BACKEND_LAN8720",
+                        "name": "ENDAP_ETH_BACKEND_LAN8720",
+                        "range": null,
+                        "title": "LAN8720 over RMII (planned)",
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": null,
+                "help": "Selects which physical Ethernet backend is described by the current\ndevice profile.",
+                "id": "endap-product-profile-ethernet-backend",
+                "name": "ENDAP_ETHERNET_BACKEND",
+                "title": "Ethernet backend",
+                "type": "choice"
+            },
+            {
+                "children": [],
+                "depends_on": "ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500",
+                "help": "ESP32 SPI host used by the W5500. Use 2 for HSPI/SPI2 and 3 for\nVSPI/SPI3.",
+                "id": "ENDAP_W5500_SPI_HOST",
+                "name": "ENDAP_W5500_SPI_HOST",
+                "range": [
+                    2,
+                    3
+                ],
+                "title": "W5500 SPI host",
+                "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": "ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500",
+                "help": null,
+                "id": "ENDAP_W5500_CLOCK_MHZ",
+                "name": "ENDAP_W5500_CLOCK_MHZ",
+                "range": [
+                    8,
+                    36
+                ],
+                "title": "W5500 SPI clock (MHz)",
+                "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": "ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500",
+                "help": "Logical PHY address reported to the ESP-IDF Ethernet layer.",
+                "id": "ENDAP_W5500_PHY_ADDR",
+                "name": "ENDAP_W5500_PHY_ADDR",
+                "range": [
+                    0,
+                    31
+                ],
+                "title": "W5500 PHY address",
+                "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": "ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500",
+                "help": null,
+                "id": "ENDAP_W5500_MOSI_GPIO",
+                "name": "ENDAP_W5500_MOSI_GPIO",
+                "range": null,
+                "title": "W5500 MOSI GPIO",
+                "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": "ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500",
+                "help": null,
+                "id": "ENDAP_W5500_MISO_GPIO",
+                "name": "ENDAP_W5500_MISO_GPIO",
+                "range": null,
+                "title": "W5500 MISO GPIO",
+                "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": "ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500",
+                "help": null,
+                "id": "ENDAP_W5500_SCLK_GPIO",
+                "name": "ENDAP_W5500_SCLK_GPIO",
+                "range": null,
+                "title": "W5500 SCLK GPIO",
+                "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": "ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500",
+                "help": null,
+                "id": "ENDAP_W5500_CS_GPIO",
+                "name": "ENDAP_W5500_CS_GPIO",
+                "range": null,
+                "title": "W5500 CS GPIO",
+                "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": "ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500",
+                "help": null,
+                "id": "ENDAP_W5500_INT_GPIO",
+                "name": "ENDAP_W5500_INT_GPIO",
+                "range": null,
+                "title": "W5500 INT GPIO",
+                "type": "int"
+            },
+            {
+                "children": [],
+                "depends_on": "ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500",
+                "help": null,
+                "id": "ENDAP_W5500_RESET_GPIO",
+                "name": "ENDAP_W5500_RESET_GPIO",
+                "range": null,
+                "title": "W5500 RESET GPIO",
+                "type": "int"
+            }
+        ],
+        "depends_on": null,
+        "id": "endap-product-profile",
+        "title": "ENDAP Product Profile",
+        "type": "menu"
+    },
+    {
+        "children": [
+            {
                 "children": [
                     {
                         "children": [],
@@ -12257,10 +12424,7 @@
                                 "help": "ESP32 only supports GPIO0 to input the RMII clock.",
                                 "id": "ETH_RMII_CLK_IN_GPIO",
                                 "name": "ETH_RMII_CLK_IN_GPIO",
-                                "range": [
-                                    0,
-                                    0
-                                ],
+                                "range": null,
                                 "title": null,
                                 "type": "int"
                             },
@@ -12290,10 +12454,7 @@
                                 "help": "Set the size of each buffer used by Ethernet MAC DMA.",
                                 "id": "ETH_DMA_BUFFER_SIZE",
                                 "name": "ETH_DMA_BUFFER_SIZE",
-                                "range": [
-                                    256,
-                                    1600
-                                ],
+                                "range": null,
                                 "title": "Ethernet DMA buffer size (Byte)",
                                 "type": "int"
                             },
@@ -12303,10 +12464,7 @@
                                 "help": "Number of DMA receive buffers. Each buffer's size is ETH_DMA_BUFFER_SIZE.\nLarger number of buffers could increase throughput somehow.",
                                 "id": "ETH_DMA_RX_BUFFER_NUM",
                                 "name": "ETH_DMA_RX_BUFFER_NUM",
-                                "range": [
-                                    3,
-                                    30
-                                ],
+                                "range": null,
                                 "title": "Amount of Ethernet DMA Rx buffers",
                                 "type": "int"
                             },
@@ -12316,10 +12474,7 @@
                                 "help": "Number of DMA transmit buffers. Each buffer's size is ETH_DMA_BUFFER_SIZE.\nLarger number of buffers could increase throughput somehow.",
                                 "id": "ETH_DMA_TX_BUFFER_NUM",
                                 "name": "ETH_DMA_TX_BUFFER_NUM",
-                                "range": [
-                                    3,
-                                    30
-                                ],
+                                "range": null,
                                 "title": "Amount of Ethernet DMA Tx buffers",
                                 "type": "int"
                             },

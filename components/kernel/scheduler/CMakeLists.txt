@@ -6,7 +6,12 @@ idf_component_register(
     PRIV_REQUIRES 
     	io_image
     	driver
-    	fieldbus
-    	control_kernel
+	fieldbus
+	automation
+	control_kernel
 	event_bus
+	io_driver
+	event_set
+	io_command
+	state
 )

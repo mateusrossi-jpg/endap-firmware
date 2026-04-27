@@ -1,8 +1,8 @@
 #ifndef WATCHDOG_H
 #define WATCHDOG_H
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 /* ============================================================
    API

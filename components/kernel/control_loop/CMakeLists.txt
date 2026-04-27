@@ -8,4 +8,5 @@ idf_component_register(
     	kernel_trace
     	kernel_metrics
     	phase_monitor
+        phase_load_test
 )

@@ -1,21 +1,33 @@
 #include "state.h"
+
 #include <string.h>
 
-//#include "pdo_pipeline.h"
-//#include "state_journal.h"
+#include "esp_attr.h"
+
+#include "event_bus.h"
 #include "snapshot.h"
 
 /* ============================================================
-STORAGE
+   OUTPUT HOOK (WEAK - OVERRIDE PELO IO_DRIVER)
+
+   Hook chamado apenas na via normal de escrita do estado.
+   Não é usado no import silencioso de snapshot.
 ============================================================ */
 
-static bool     bool_values[STATE_MAX_ENTRIES];
-static int32_t  int_values[STATE_MAX_ENTRIES];
-static bool     dirty_flags[STATE_MAX_ENTRIES];
-
+__attribute__((weak)) void state_output_changed(uint16_t id, int32_t value)
+{
+    /* default: não faz nada */
+}
 
 /* ============================================================
-INTERNAL GUARDS
+   STORAGE
+============================================================ */
+
+static int32_t int_values[STATE_MAX_ENTRIES] __attribute__((aligned(4)));
+static bool dirty_flags[STATE_MAX_ENTRIES];
+
+/* ============================================================
+   INTERNAL
 ============================================================ */
 
 static inline bool state_valid_id(uint16_t id)
@@ -23,161 +35,176 @@ static inline bool state_valid_id(uint16_t id)
     return (id < STATE_MAX_ENTRIES);
 }
 
-
 /* ============================================================
-INIT
+   INIT
 ============================================================ */
 
 void state_init(void)
 {
-    memset(bool_values, 0, sizeof(bool_values));
     memset(int_values, 0, sizeof(int_values));
     memset(dirty_flags, 0, sizeof(dirty_flags));
 }
 
-
 /* ============================================================
-BOOL
+   BOOL API
 ============================================================ */
 
-bool state_set_bool(uint16_t id, bool value)
+bool IRAM_ATTR state_set_bool(uint16_t id, bool value)
 {
-    if(!state_valid_id(id))
+    return state_set_int(id, value ? 1 : 0);
+}
+
+bool IRAM_ATTR state_get_bool(uint16_t id, bool *out)
+{
+    int32_t value;
+
+    if (out == NULL)
         return false;
 
-    if(bool_values[id] != value)
-    {
-        bool_values[id] = value;
+    if (!state_get_int(id, &value))
+        return false;
 
-        dirty_flags[id] = true;
-
-        snapshot_mark_dirty();
-    }
-
+    *out = (value != 0);
     return true;
 }
 
-
-bool state_get_bool(uint16_t id, bool *out)
-{
-    if(!state_valid_id(id) || out == NULL)
-        return false;
-
-    *out = bool_values[id];
-
-    return true;
-}
-
-
 /* ============================================================
-INT
+   SET INT (🔥 VIA NORMAL / OFICIAL DE ESCRITA)
+
+   Contrato:
+   - esta é a via normal de mutação de estado em runtime
+   - usada por caminhos controlados do sistema
+   - gera side effects quando o valor muda
 ============================================================ */
 
-bool state_set_int(uint16_t id, int32_t value)
+bool IRAM_ATTR state_set_int(uint16_t id, int32_t value)
 {
-    if(!state_valid_id(id))
+    if (!state_valid_id(id))
         return false;
 
-    if(int_values[id] != value)
+    if (int_values[id] != value)
     {
         int_values[id] = value;
-
         dirty_flags[id] = true;
 
+        /* marca persistência pendente */
         snapshot_mark_dirty();
 
-     //   pdo_pipeline_push(id,value);
+        endap_event_t ev = {
+            .type = EVENT_STATE_CHANGE,
+            .source = id,
+            .data = value
+        };
 
-    //    state_journal_append(id,value);
+        /* notifica runtime/event-driven */
+        event_bus_publish(ev);
+
+        /* hook imediato para integração com IO */
+        state_output_changed(id, value);
     }
 
     return true;
 }
 
+/* ============================================================
+   GET INT
+============================================================ */
 
-bool state_get_int(uint16_t id, int32_t *out)
+bool IRAM_ATTR state_get_int(uint16_t id, int32_t *out)
 {
-    if(!state_valid_id(id) || out == NULL)
+    if (!state_valid_id(id) || out == NULL)
         return false;
 
     *out = int_values[id];
-
     return true;
 }
 
-
 /* ============================================================
-DIRTY ENGINE
+   DIRTY ENGINE
 ============================================================ */
 
-bool state_is_dirty(uint16_t id)
+bool IRAM_ATTR state_is_dirty(uint16_t id)
 {
-    if(!state_valid_id(id))
+    if (!state_valid_id(id))
         return false;
 
     return dirty_flags[id];
 }
 
-
-void state_clear_dirty(uint16_t id)
+void IRAM_ATTR state_clear_dirty(uint16_t id)
 {
-    if(!state_valid_id(id))
+    if (!state_valid_id(id))
         return;
 
     dirty_flags[id] = false;
 }
 
-
 /* ============================================================
-SNAPSHOT EXPORT (FULL)
+   SNAPSHOT EXPORT
 ============================================================ */
 
-uint16_t state_export_snapshot(int32_t *buffer, uint16_t max_entries)
+uint16_t state_export_entries(state_entry_t *out, uint16_t max)
 {
-    if(buffer == NULL)
+    if (out == NULL || max == 0)
         return 0;
 
-    uint16_t count = STATE_MAX_ENTRIES;
+    uint16_t count = 0;
 
-    if(max_entries < count)
-        count = max_entries;
+    for (uint16_t id = 0; id < STATE_MAX_ENTRIES; id++)
+    {
+        int32_t val = int_values[id];
 
-    if(count == 0)
-        return 0;
+        if (val == 0 && !dirty_flags[id])
+            continue;
 
-    memcpy(
-        buffer,
-        int_values,
-        count * sizeof(int32_t)
-    );
+        if (count >= max)
+            break;
+
+        out[count].id = id;
+        out[count].value = val;
+        count++;
+    }
 
     return count;
 }
 
+uint16_t state_export_snapshot(int32_t *buffer, uint16_t max_entries)
+{
+    uint16_t count;
+
+    if (buffer == NULL || max_entries == 0)
+        return 0;
+
+    count = (max_entries < STATE_MAX_ENTRIES) ? max_entries : STATE_MAX_ENTRIES;
+    memcpy(buffer, int_values, sizeof(int32_t) * count);
+    return count;
+}
 
 /* ============================================================
-SNAPSHOT IMPORT
+   SNAPSHOT IMPORT (🔥 VIA SILENCIOSA DE RESTORE)
+
+   Contrato:
+   - uso previsto: boot/recovery
+   - não publica eventos
+   - não aciona output hook
+   - não marca snapshot dirty
+   - limpa dirty_flags após restore
 ============================================================ */
 
 void state_import_snapshot(const int32_t *buffer, uint16_t entries)
 {
-    if(buffer == NULL)
+    uint16_t count;
+
+    if (buffer == NULL)
         return;
 
-    if(entries > STATE_MAX_ENTRIES)
-        entries = STATE_MAX_ENTRIES;
+    count = (entries < STATE_MAX_ENTRIES) ? entries : STATE_MAX_ENTRIES;
 
-    for(uint16_t i = 0; i < entries; i++)
-    {
-        int32_t new_value = buffer[i];
+    memcpy(int_values, buffer, sizeof(int32_t) * count);
+    memset(dirty_flags, 0, sizeof(dirty_flags));
+}
 
-        if(int_values[i] != new_value)
-        {
-            int_values[i] = new_value;
-
-            dirty_flags[i] = true;
-
-        //    pdo_pipeline_push(i,new_value);
-        }
-    }
+void state_process_snapshot(void)
+{
+    /* reservado para processamento fora do caminho crítico */
 }

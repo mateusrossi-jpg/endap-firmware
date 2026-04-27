@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define PARSER_MAX_FRAME 128
+#define PARSER_MAX_FRAME 192
 
 void parser_init(void);
 

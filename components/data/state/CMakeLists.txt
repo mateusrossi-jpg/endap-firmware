@@ -3,5 +3,8 @@ idf_component_register(
     INCLUDE_DIRS "include"
     REQUIRES
         io_image
-    PRIV_REQUIRES snapshot
+    PRIV_REQUIRES
+        event_bus
+    	snapshot
+    	phase_monitor
 )

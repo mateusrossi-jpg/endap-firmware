@@ -7,12 +7,26 @@ idf_component_register(
         rs485_engine
         control_loop
         control_kernel
-        scheduler
         watchdog
-        runtime_monitor
         fieldbus
         state
         nvs_flash
         driver
         automation
+        failsafe
+        cluster
+        device_profile
+        esp_event
+        esp_netif
+        network_ready
+        wifi_manager
+        ethernet_manager
+        node_identity
+        http_server
+        io_driver
+        io_command
+        input_learning
+        io_binding
+        dashboard
+        snapshot
 )

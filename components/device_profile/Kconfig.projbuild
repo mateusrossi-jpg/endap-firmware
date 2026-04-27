@@ -1,0 +1,89 @@
+menu "ENDAP Product Profile"
+
+config ENDAP_WIFI_ENABLED
+    bool "Enable Wi-Fi support"
+    default y
+    help
+        Keeps the Wi-Fi stack available for AP fallback, dashboard access and
+        cluster transport over UDP.
+
+config ENDAP_ETHERNET_ENABLED
+    bool "Enable Ethernet support"
+    default n
+    help
+        Enables the Ethernet manager and allows the cluster transport to run
+        over an Ethernet link when a supported backend is configured.
+
+choice ENDAP_ETHERNET_BACKEND
+    prompt "Ethernet backend"
+    default ENDAP_ETH_BACKEND_W5500 if ENDAP_ETHERNET_ENABLED
+    default ENDAP_ETH_BACKEND_NONE
+    help
+        Selects which physical Ethernet backend is described by the current
+        device profile.
+
+config ENDAP_ETH_BACKEND_NONE
+    bool "No Ethernet backend"
+
+config ENDAP_ETH_BACKEND_W5500
+    bool "W5500 over SPI"
+
+config ENDAP_ETH_BACKEND_LAN8720
+    bool "LAN8720 over RMII (planned)"
+
+endchoice
+
+config ENDAP_W5500_SPI_HOST
+    int "W5500 SPI host"
+    range 2 3
+    default 2
+    depends on ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500
+    help
+        ESP32 SPI host used by the W5500. Use 2 for HSPI/SPI2 and 3 for
+        VSPI/SPI3.
+
+config ENDAP_W5500_CLOCK_MHZ
+    int "W5500 SPI clock (MHz)"
+    range 8 36
+    default 20
+    depends on ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500
+
+config ENDAP_W5500_PHY_ADDR
+    int "W5500 PHY address"
+    range 0 31
+    default 1
+    depends on ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500
+    help
+        Logical PHY address reported to the ESP-IDF Ethernet layer.
+
+config ENDAP_W5500_MOSI_GPIO
+    int "W5500 MOSI GPIO"
+    default -1
+    depends on ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500
+
+config ENDAP_W5500_MISO_GPIO
+    int "W5500 MISO GPIO"
+    default -1
+    depends on ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500
+
+config ENDAP_W5500_SCLK_GPIO
+    int "W5500 SCLK GPIO"
+    default -1
+    depends on ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500
+
+config ENDAP_W5500_CS_GPIO
+    int "W5500 CS GPIO"
+    default -1
+    depends on ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500
+
+config ENDAP_W5500_INT_GPIO
+    int "W5500 INT GPIO"
+    default -1
+    depends on ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500
+
+config ENDAP_W5500_RESET_GPIO
+    int "W5500 RESET GPIO"
+    default -1
+    depends on ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500
+
+endmenu

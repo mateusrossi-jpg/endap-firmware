@@ -1,10 +1,7 @@
 #include "control_kernel.h"
 
 #include "deterministic_snapshot.h"
-#include "watchdog.h"
-
 #include "runtime_monitor.h"
-#include "watchdog_ids.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -22,10 +19,14 @@ static uint32_t last_cycle_time_us = 0;
 
 void control_kernel_init(void)
 {
+    /* ownership oficial do runtime_monitor_init() */
     runtime_monitor_init();
+
+    /* placeholder controlado para extensão futura */
     deterministic_snapshot_init();
 
     system_fault_active = 0;
+    last_cycle_time_us = 0;
 }
 
 /* ========================================================= */
@@ -34,12 +35,6 @@ void control_kernel_init(void)
 
 void control_kernel_task(void)
 {
-    /* ============================================= */
-    /* WATCHDOG                                      */
-    /* ============================================= */
-
-    watchdog_feed(WD_CONTROL_LOOP);
-
     /* ============================================= */
     /* SNAPSHOT DETERMINÍSTICO                       */
     /* ============================================= */
@@ -51,6 +46,9 @@ void control_kernel_task(void)
     /* ============================================= */
 
     runtime_monitor_tick();
+
+    last_cycle_time_us = runtime_monitor_get_last_cycle_us();
+    system_fault_active = runtime_monitor_is_fault();
 }
 
 /* ========================================================= */

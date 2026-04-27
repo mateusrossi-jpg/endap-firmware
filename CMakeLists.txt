@@ -16,7 +16,19 @@ set(EXTRA_COMPONENT_DIRS
     components/runtime/latency_histogram
     components/runtime/event_bus
     components/runtime/automation
-
+    components/runtime/failsafe
+    components/runtime/network/network_ready
+    components/runtime/network/wifi_manager
+    components/runtime/network/ethernet_manager
+    components/runtime/network/runtime_network
+    components/runtime/network/captive_dns
+    components/runtime/http_server
+    components/runtime/input_learning
+    components/runtime/io_binding
+    components/runtime/io_driver
+    components/runtime/event_set
+    components/runtime/io_command
+     
     components/data/io_image
     components/data/state
 
@@ -29,10 +41,17 @@ set(EXTRA_COMPONENT_DIRS
 
     components/util/logger
     
+    components/cluster
+    components/cluster/node_identity
+    
     components/observability/determinism_probe
     components/observability/kernel_trace
     components/observability/kernel_metrics
+    components/observability/phase_load_test
     components/observability/phase_monitor
+    
+    components/dashboard
+    components/security/auth
 )
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)

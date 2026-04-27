@@ -1,10 +1,10 @@
 #include "control_loop.h"
 
-#include <inttypes.h>
 #include <limits.h>
 
 #include "esp_log.h"
 #include "esp_system.h"
+#include "esp_timer.h"
 
 #include "driver/gptimer.h"
 
@@ -18,18 +18,18 @@
 #include "determinism_probe.h"
 #include "kernel_trace.h"
 #include "kernel_metrics.h"
+#include "kernel_phase_metrics.h"
+#include "phase_load_test.h"
 #include "phase_monitor.h"
 
 #define TAG "CTRL_LOOP"
 
 #define LOOP_PERIOD_US 1000
-#define LOOP_WARN_US   3000
 #define BOOT_IGNORE_CYCLES 2000
-
 #define DEADLINE_FAULT_THRESHOLD 200
 
 /* ============================================================
-   STATIC TASK (NO HEAP)
+   STATIC TASK
 ============================================================ */
 
 static StackType_t control_stack[4096];
@@ -59,6 +59,7 @@ static uint64_t exec_min = UINT64_MAX;
 static uint64_t exec_max = 0;
 
 static uint32_t deadline_miss = 0;
+static uint32_t consecutive_deadline_miss = 0;
 static uint32_t overrun_count = 0;
 
 /* ============================================================
@@ -66,6 +67,7 @@ static uint32_t overrun_count = 0;
 ============================================================ */
 
 static uint32_t phase_io_max = 0;
+static uint32_t phase_io_apply_max = 0;
 static uint32_t phase_fieldbus_max = 0;
 static uint32_t phase_automation_max = 0;
 static uint32_t phase_events_max = 0;
@@ -74,6 +76,7 @@ static uint32_t phase_diag_max = 0;
 static uint32_t *phase_max_table[] =
 {
     &phase_io_max,
+    &phase_io_apply_max,
     &phase_fieldbus_max,
     &phase_automation_max,
     &phase_events_max,
@@ -81,7 +84,7 @@ static uint32_t *phase_max_table[] =
 };
 
 /* ============================================================
-   SCHEDULER TABLE (CONST = DETERMINISTIC)
+   SCHEDULER TABLE
 ============================================================ */
 
 typedef void (*phase_fn_t)(void);
@@ -89,6 +92,7 @@ typedef void (*phase_fn_t)(void);
 static const phase_fn_t phase_table[] =
 {
     scheduler_run_io,
+    scheduler_run_io_apply,
     scheduler_run_fieldbus,
     scheduler_run_automation,
     scheduler_run_events,
@@ -96,6 +100,15 @@ static const phase_fn_t phase_table[] =
 };
 
 #define PHASE_COUNT (sizeof(phase_table) / sizeof(phase_fn_t))
+
+/* ============================================================
+   SAFE TIME DIFF (🔥 CRÍTICO)
+============================================================ */
+
+static inline uint64_t IRAM_ATTR safe_time_diff(uint64_t start, uint64_t end)
+{
+    return (end >= start) ? (end - start) : 0;
+}
 
 /* ============================================================
    TIMER ISR
@@ -107,25 +120,28 @@ static bool IRAM_ATTR timer_callback(
     void *user_ctx)
 {
     BaseType_t hp = pdFALSE;
-
     vTaskNotifyGiveFromISR(control_task_handle, &hp);
-
-    return hp == pdTRUE;
+    return (hp == pdTRUE);
 }
 
 /* ============================================================
    FAST TIMER READ
 ============================================================ */
 
-static inline IRAM_ATTR uint64_t read_time(void)
+static inline uint64_t IRAM_ATTR read_time(void)
 {
     uint64_t t;
     gptimer_get_raw_count(loop_timer, &t);
     return t;
 }
 
+static inline uint64_t monotonic_time_us(void)
+{
+    return (uint64_t)esp_timer_get_time();
+}
+
 /* ============================================================
-   CONTROL LOOP TASK
+   CONTROL LOOP
 ============================================================ */
 
 static void IRAM_ATTR control_loop_run(void *arg)
@@ -137,16 +153,16 @@ static void IRAM_ATTR control_loop_run(void *arg)
         while (ulTaskNotifyTake(pdTRUE, 0))
             overrun_count++;
 
-        uint64_t start = read_time();
+        uint64_t start = monotonic_time_us();
 
         if (expected_cycle_time == 0)
             expected_cycle_time = start;
 
         int64_t jitter = (int64_t)start - (int64_t)expected_cycle_time;
-
         if (jitter < 0)
             jitter = -jitter;
 
+        /* proteção contra glitch */
         if (jitter > 1000000)
         {
             expected_cycle_time = start + LOOP_PERIOD_US;
@@ -155,21 +171,39 @@ static void IRAM_ATTR control_loop_run(void *arg)
 
         cycle_counter++;
 
+        /* ============================================================
+           JITTER STATS
+        ============================================================ */
+
         if (cycle_counter > BOOT_IGNORE_CYCLES)
         {
             uint64_t j = (uint64_t)jitter;
 
-            if (j < jitter_min) jitter_min = j;
-            if (j > jitter_max) jitter_max = j;
+            if (j < LOOP_PERIOD_US)
+            {
+                if (j < jitter_min)
+                    jitter_min = j;
 
-            jitter_sum += j;
-            jitter_samples++;
+                if (j > jitter_max)
+                    jitter_max = j;
+
+                jitter_sum += j;
+                jitter_samples++;
+            }
         }
+
+        /* ============================================================
+           DRIFT CORRECTION (🔥 MELHORADO)
+        ============================================================ */
 
         if (start > expected_cycle_time)
         {
             uint64_t diff = start - expected_cycle_time;
             expected_cycle_time += ((diff / LOOP_PERIOD_US) + 1) * LOOP_PERIOD_US;
+        }
+        else
+        {
+            expected_cycle_time += LOOP_PERIOD_US;
         }
 
         determinism_probe_cycle_start(start);
@@ -184,15 +218,11 @@ static void IRAM_ATTR control_loop_run(void *arg)
             uint64_t t_before = read_time();
 
             phase_table[i]();
+            phase_load_test_apply(i);
 
             uint64_t t_after = read_time();
 
-            uint64_t dt;
-
-            if (t_after >= t_before)
-                dt = t_after - t_before;
-            else
-                dt = 0;
+            uint64_t dt = safe_time_diff(t_before, t_after);
 
             if (dt > *phase_max_table[i])
                 *phase_max_table[i] = (uint32_t)dt;
@@ -200,39 +230,46 @@ static void IRAM_ATTR control_loop_run(void *arg)
             phase_monitor_check(i, (uint32_t)dt);
         }
 
-        uint64_t end = read_time();
+        uint64_t end = monotonic_time_us();
+        uint64_t exec = safe_time_diff(start, end);
 
-        uint64_t exec;
+        if (exec < exec_min)
+            exec_min = exec;
 
-        if (end >= start)
-            exec = end - start;
-        else
-            exec = 0;
+        if (exec > exec_max)
+            exec_max = exec;
 
-        if (exec < exec_min) exec_min = exec;
-        if (exec > exec_max) exec_max = exec;
+        /* ============================================================
+           DEADLINE MONITOR
+        ============================================================ */
 
         if (exec > LOOP_PERIOD_US)
         {
             deadline_miss++;
+            consecutive_deadline_miss++;
 
-            ESP_LOGE(TAG,
-                "deadline miss exec=%" PRIu64 " us",
-                exec);
-
-            if (deadline_miss > DEADLINE_FAULT_THRESHOLD)
+            /* Only escalate to a hard fault when misses are sustained, not cumulative across the whole uptime. */
+            if (consecutive_deadline_miss > DEADLINE_FAULT_THRESHOLD)
             {
-                ESP_LOGE(TAG,"KERNEL FAULT: too many deadline misses");
-                esp_system_abort("control loop deadline fault");
+                esp_system_abort("deadline fault");
             }
+        }
+        else
+        {
+            consecutive_deadline_miss = 0;
         }
 
         determinism_probe_cycle_end(end);
         kernel_trace_cycle_end(end);
 
+        /* ============================================================
+           METRICS UPDATE (sem logging no loop crítico)
+        ============================================================ */
+
         if (jitter_samples && (cycle_counter % 5000) == 0)
         {
-            uint64_t avg = jitter_sum / jitter_samples;
+            uint32_t io_phase_max =
+                (phase_io_max > phase_io_apply_max) ? phase_io_max : phase_io_apply_max;
 
             kernel_metrics_update(
                 jitter_max,
@@ -241,14 +278,26 @@ static void IRAM_ATTR control_loop_run(void *arg)
                 overrun_count
             );
 
-            ESP_LOGI(TAG,
-                "jitter(min/avg/max)=%" PRIu64 "/%" PRIu64 "/%" PRIu64
-                " exec(min/max)=%" PRIu64 "/%" PRIu64,
-                jitter_min,
-                avg,
-                jitter_max,
-                exec_min,
-                exec_max);
+            kernel_phase_metrics_update(
+                io_phase_max,
+                phase_fieldbus_max,
+                phase_automation_max,
+                phase_events_max,
+                phase_diag_max
+            );
+
+            jitter_sum = 0;
+            jitter_samples = 0;
+            jitter_min = UINT64_MAX;
+            jitter_max = 0;
+            exec_min = UINT64_MAX;
+            exec_max = 0;
+            phase_io_max = 0;
+            phase_io_apply_max = 0;
+            phase_fieldbus_max = 0;
+            phase_automation_max = 0;
+            phase_events_max = 0;
+            phase_diag_max = 0;
         }
 
         watchdog_feed(WD_CONTROL_LOOP);
@@ -256,12 +305,12 @@ static void IRAM_ATTR control_loop_run(void *arg)
 }
 
 /* ============================================================
-   CONTROL LOOP START
+   START
 ============================================================ */
 
 void control_loop_start(void)
 {
-    ESP_LOGI(TAG,"Initializing control loop");
+    ESP_LOGI(TAG, "Initializing control loop");
 
     gptimer_config_t timer_config =
     {
@@ -302,5 +351,20 @@ void control_loop_start(void)
     ESP_ERROR_CHECK(gptimer_enable(loop_timer));
     ESP_ERROR_CHECK(gptimer_start(loop_timer));
 
-    ESP_LOGI(TAG,"Control loop started (1ms)");
+    ESP_LOGI(TAG, "Control loop started (1ms)");
+}
+
+void control_loop_get_metrics(control_loop_metrics_t *m)
+{
+    kernel_metrics_snapshot_t snapshot = {0};
+
+    if (!m)
+        return;
+
+    kernel_metrics_get(&snapshot);
+
+    m->max_jitter = snapshot.max_jitter;
+    m->max_exec_time = snapshot.max_exec_time;
+    m->deadline_miss = snapshot.deadline_miss;
+    m->overrun_count = snapshot.overrun_count;
 }

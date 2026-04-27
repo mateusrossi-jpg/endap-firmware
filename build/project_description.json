@@ -1,7 +1,7 @@
 {
     "version":            "1",
     "project_name":       "ENDAP",
-    "project_version":    "kernel-v1-3-g9fb2fe6-dirty",
+    "project_version":    "kernel-v1-4-g2ea6f31-dirty",
     "project_path":       "/home/mateus/dev/projects/ENDAP",
     "idf_path":           "/home/mateus/esp/esp-idf",
     "build_dir":          "/home/mateus/dev/projects/ENDAP/build",
@@ -22,11 +22,11 @@
     "c_compiler":         "/home/mateus/.espressif/tools/xtensa-esp32-elf/esp-12.2.0_20230208/xtensa-esp32-elf/bin/xtensa-esp32-elf-gcc",
     "config_environment" : {
         "COMPONENT_KCONFIGS" : "/home/mateus/esp/esp-idf/components/app_trace/Kconfig;/home/mateus/esp/esp-idf/components/bt/Kconfig;/home/mateus/esp/esp-idf/components/driver/Kconfig;/home/mateus/esp/esp-idf/components/efuse/Kconfig;/home/mateus/esp/esp-idf/components/esp-tls/Kconfig;/home/mateus/esp/esp-idf/components/esp_adc/Kconfig;/home/mateus/esp/esp-idf/components/esp_coex/Kconfig;/home/mateus/esp/esp-idf/components/esp_common/Kconfig;/home/mateus/esp/esp-idf/components/esp_eth/Kconfig;/home/mateus/esp/esp-idf/components/esp_event/Kconfig;/home/mateus/esp/esp-idf/components/esp_gdbstub/Kconfig;/home/mateus/esp/esp-idf/components/esp_http_client/Kconfig;/home/mateus/esp/esp-idf/components/esp_http_server/Kconfig;/home/mateus/esp/esp-idf/components/esp_https_ota/Kconfig;/home/mateus/esp/esp-idf/components/esp_https_server/Kconfig;/home/mateus/esp/esp-idf/components/esp_hw_support/Kconfig;/home/mateus/esp/esp-idf/components/esp_lcd/Kconfig;/home/mateus/esp/esp-idf/components/esp_netif/Kconfig;/home/mateus/esp/esp-idf/components/esp_partition/Kconfig;/home/mateus/esp/esp-idf/components/esp_phy/Kconfig;/home/mateus/esp/esp-idf/components/esp_pm/Kconfig;/home/mateus/esp/esp-idf/components/esp_psram/Kconfig;/home/mateus/esp/esp-idf/components/esp_ringbuf/Kconfig;/home/mateus/esp/esp-idf/components/esp_system/Kconfig;/home/mateus/esp/esp-idf/components/esp_timer/Kconfig;/home/mateus/esp/esp-idf/components/esp_wifi/Kconfig;/home/mateus/esp/esp-idf/components/espcoredump/Kconfig;/home/mateus/esp/esp-idf/components/fatfs/Kconfig;/home/mateus/esp/esp-idf/components/freertos/Kconfig;/home/mateus/esp/esp-idf/components/hal/Kconfig;/home/mateus/esp/esp-idf/components/heap/Kconfig;/home/mateus/esp/esp-idf/components/ieee802154/Kconfig;/home/mateus/esp/esp-idf/components/log/Kconfig;/home/mateus/esp/esp-idf/components/lwip/Kconfig;/home/mateus/esp/esp-idf/components/mbedtls/Kconfig;/home/mateus/esp/esp-idf/components/mqtt/esp-mqtt/Kconfig;/home/mateus/esp/esp-idf/components/newlib/Kconfig;/home/mateus/esp/esp-idf/components/nvs_flash/Kconfig;/home/mateus/esp/esp-idf/components/openthread/Kconfig;/home/mateus/esp/esp-idf/components/protocomm/Kconfig;/home/mateus/esp/esp-idf/components/pthread/Kconfig;/home/mateus/esp/esp-idf/components/soc/Kconfig;/home/mateus/esp/esp-idf/components/spi_flash/Kconfig;/home/mateus/esp/esp-idf/components/spiffs/Kconfig;/home/mateus/esp/esp-idf/components/tcp_transport/Kconfig;/home/mateus/esp/esp-idf/components/ulp/Kconfig;/home/mateus/esp/esp-idf/components/unity/Kconfig;/home/mateus/esp/esp-idf/components/usb/Kconfig;/home/mateus/esp/esp-idf/components/vfs/Kconfig;/home/mateus/esp/esp-idf/components/wear_levelling/Kconfig;/home/mateus/esp/esp-idf/components/wifi_provisioning/Kconfig",
-        "COMPONENT_KCONFIGS_PROJBUILD" : "/home/mateus/esp/esp-idf/components/bootloader/Kconfig.projbuild;/home/mateus/esp/esp-idf/components/esp_app_format/Kconfig.projbuild;/home/mateus/esp/esp-idf/components/esp_rom/Kconfig.projbuild;/home/mateus/esp/esp-idf/components/esptool_py/Kconfig.projbuild;/home/mateus/esp/esp-idf/components/partition_table/Kconfig.projbuild"
+        "COMPONENT_KCONFIGS_PROJBUILD" : "/home/mateus/esp/esp-idf/components/bootloader/Kconfig.projbuild;/home/mateus/esp/esp-idf/components/esp_app_format/Kconfig.projbuild;/home/mateus/esp/esp-idf/components/esp_rom/Kconfig.projbuild;/home/mateus/esp/esp-idf/components/esptool_py/Kconfig.projbuild;/home/mateus/esp/esp-idf/components/partition_table/Kconfig.projbuild;/home/mateus/dev/projects/ENDAP/components/device_profile/Kconfig.projbuild"
     },
     "common_component_reqs": [ "cxx", "newlib", "freertos", "esp_hw_support", "heap", "log", "soc", "hal", "esp_rom", "esp_common", "esp_system", "xtensa" ],
-    "build_components" : [ "app_trace", "app_update", "automation", "bootloader", "bootloader_support", "bt", "cmock", "console", "control_kernel", "control_loop", "core", "cxx", "determinism_probe", "deterministic_snapshot", "driver", "efuse", "esp-tls", "esp_adc", "esp_app_format", "esp_coex", "esp_common", "esp_eth", "esp_event", "esp_gdbstub", "esp_hid", "esp_http_client", "esp_http_server", "esp_https_ota", "esp_https_server", "esp_hw_support", "esp_lcd", "esp_local_ctrl", "esp_mm", "esp_netif", "esp_netif_stack", "esp_partition", "esp_phy", "esp_pm", "esp_psram", "esp_ringbuf", "esp_rom", "esp_system", "esp_timer", "esp_wifi", "espcoredump", "esptool_py", "event_bus", "fatfs", "fieldbus", "freertos", "hal", "hal_layer", "hal_led", "heap", "http_parser", "idf_test", "ieee802154", "io_image", "json", "kernel_metrics", "kernel_trace", "latency_histogram", "log", "logger", "lwip", "main", "mbedtls", "mqtt", "newlib", "nvs_flash", "openthread", "parser", "partition_table", "perfmon", "phase_monitor", "protobuf-c", "protocol", "protocomm", "pthread", "rs485", "rs485_engine", "rs485_master", "runtime_monitor", "scheduler", "sdmmc", "snapshot", "soc", "spi_flash", "spiffs", "state", "tcp_transport", "ulp", "unity", "usb", "vfs", "watchdog", "wear_levelling", "wifi_provisioning", "wpa_supplicant", "xtensa", "" ],
-    "build_component_paths" : [ "/home/mateus/esp/esp-idf/components/app_trace", "/home/mateus/esp/esp-idf/components/app_update", "/home/mateus/dev/projects/ENDAP/components/runtime/automation", "/home/mateus/esp/esp-idf/components/bootloader", "/home/mateus/esp/esp-idf/components/bootloader_support", "/home/mateus/esp/esp-idf/components/bt", "/home/mateus/esp/esp-idf/components/cmock", "/home/mateus/esp/esp-idf/components/console", "/home/mateus/dev/projects/ENDAP/components/kernel/control_kernel", "/home/mateus/dev/projects/ENDAP/components/kernel/control_loop", "/home/mateus/dev/projects/ENDAP/components/kernel/core", "/home/mateus/esp/esp-idf/components/cxx", "/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe", "/home/mateus/dev/projects/ENDAP/components/runtime/deterministic_snapshot", "/home/mateus/esp/esp-idf/components/driver", "/home/mateus/esp/esp-idf/components/efuse", "/home/mateus/esp/esp-idf/components/esp-tls", "/home/mateus/esp/esp-idf/components/esp_adc", "/home/mateus/esp/esp-idf/components/esp_app_format", "/home/mateus/esp/esp-idf/components/esp_coex", "/home/mateus/esp/esp-idf/components/esp_common", "/home/mateus/esp/esp-idf/components/esp_eth", "/home/mateus/esp/esp-idf/components/esp_event", "/home/mateus/esp/esp-idf/components/esp_gdbstub", "/home/mateus/esp/esp-idf/components/esp_hid", "/home/mateus/esp/esp-idf/components/esp_http_client", "/home/mateus/esp/esp-idf/components/esp_http_server", "/home/mateus/esp/esp-idf/components/esp_https_ota", "/home/mateus/esp/esp-idf/components/esp_https_server", "/home/mateus/esp/esp-idf/components/esp_hw_support", "/home/mateus/esp/esp-idf/components/esp_lcd", "/home/mateus/esp/esp-idf/components/esp_local_ctrl", "/home/mateus/esp/esp-idf/components/esp_mm", "/home/mateus/esp/esp-idf/components/esp_netif", "/home/mateus/esp/esp-idf/components/esp_netif_stack", "/home/mateus/esp/esp-idf/components/esp_partition", "/home/mateus/esp/esp-idf/components/esp_phy", "/home/mateus/esp/esp-idf/components/esp_pm", "/home/mateus/esp/esp-idf/components/esp_psram", "/home/mateus/esp/esp-idf/components/esp_ringbuf", "/home/mateus/esp/esp-idf/components/esp_rom", "/home/mateus/esp/esp-idf/components/esp_system", "/home/mateus/esp/esp-idf/components/esp_timer", "/home/mateus/esp/esp-idf/components/esp_wifi", "/home/mateus/esp/esp-idf/components/espcoredump", "/home/mateus/esp/esp-idf/components/esptool_py", "/home/mateus/dev/projects/ENDAP/components/runtime/event_bus", "/home/mateus/esp/esp-idf/components/fatfs", "/home/mateus/dev/projects/ENDAP/components/runtime/fieldbus", "/home/mateus/esp/esp-idf/components/freertos", "/home/mateus/esp/esp-idf/components/hal", "/home/mateus/dev/projects/ENDAP/components/hal/hal_layer", "/home/mateus/dev/projects/ENDAP/components/hal/hal_led", "/home/mateus/esp/esp-idf/components/heap", "/home/mateus/esp/esp-idf/components/http_parser", "/home/mateus/esp/esp-idf/components/idf_test", "/home/mateus/esp/esp-idf/components/ieee802154", "/home/mateus/dev/projects/ENDAP/components/data/io_image", "/home/mateus/esp/esp-idf/components/json", "/home/mateus/dev/projects/ENDAP/components/observability/kernel_metrics", "/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace", "/home/mateus/dev/projects/ENDAP/components/runtime/latency_histogram", "/home/mateus/esp/esp-idf/components/log", "/home/mateus/dev/projects/ENDAP/components/util/logger", "/home/mateus/esp/esp-idf/components/lwip", "/home/mateus/dev/projects/ENDAP/main", "/home/mateus/esp/esp-idf/components/mbedtls", "/home/mateus/esp/esp-idf/components/mqtt", "/home/mateus/esp/esp-idf/components/newlib", "/home/mateus/esp/esp-idf/components/nvs_flash", "/home/mateus/esp/esp-idf/components/openthread", "/home/mateus/dev/projects/ENDAP/components/comm/parser", "/home/mateus/esp/esp-idf/components/partition_table", "/home/mateus/esp/esp-idf/components/perfmon", "/home/mateus/dev/projects/ENDAP/components/observability/phase_monitor", "/home/mateus/esp/esp-idf/components/protobuf-c", "/home/mateus/dev/projects/ENDAP/components/comm/protocol", "/home/mateus/esp/esp-idf/components/protocomm", "/home/mateus/esp/esp-idf/components/pthread", "/home/mateus/dev/projects/ENDAP/components/hal/rs485", "/home/mateus/dev/projects/ENDAP/components/runtime/rs485_engine", "/home/mateus/dev/projects/ENDAP/components/runtime/rs485_master", "/home/mateus/dev/projects/ENDAP/components/runtime/runtime_monitor", "/home/mateus/dev/projects/ENDAP/components/kernel/scheduler", "/home/mateus/esp/esp-idf/components/sdmmc", "/home/mateus/dev/projects/ENDAP/components/runtime/snapshot", "/home/mateus/esp/esp-idf/components/soc", "/home/mateus/esp/esp-idf/components/spi_flash", "/home/mateus/esp/esp-idf/components/spiffs", "/home/mateus/dev/projects/ENDAP/components/data/state", "/home/mateus/esp/esp-idf/components/tcp_transport", "/home/mateus/esp/esp-idf/components/ulp", "/home/mateus/esp/esp-idf/components/unity", "/home/mateus/esp/esp-idf/components/usb", "/home/mateus/esp/esp-idf/components/vfs", "/home/mateus/dev/projects/ENDAP/components/kernel/watchdog", "/home/mateus/esp/esp-idf/components/wear_levelling", "/home/mateus/esp/esp-idf/components/wifi_provisioning", "/home/mateus/esp/esp-idf/components/wpa_supplicant", "/home/mateus/esp/esp-idf/components/xtensa", "" ],
+    "build_components" : [ "app_trace", "app_update", "auth", "automation", "bootloader", "bootloader_support", "bt", "captive_dns", "cluster", "cmock", "console", "control_kernel", "control_loop", "core", "cxx", "dashboard", "determinism_probe", "deterministic_snapshot", "device_profile", "driver", "efuse", "esp-tls", "esp_adc", "esp_app_format", "esp_coex", "esp_common", "esp_eth", "esp_event", "esp_gdbstub", "esp_hid", "esp_http_client", "esp_http_server", "esp_https_ota", "esp_https_server", "esp_hw_support", "esp_lcd", "esp_local_ctrl", "esp_mm", "esp_netif", "esp_netif_stack", "esp_partition", "esp_phy", "esp_pm", "esp_psram", "esp_ringbuf", "esp_rom", "esp_system", "esp_timer", "esp_wifi", "espcoredump", "esptool_py", "ethernet_manager", "event_bus", "event_set", "failsafe", "fatfs", "fieldbus", "freertos", "hal", "hal_layer", "hal_led", "heap", "http_parser", "http_server", "idf_test", "ieee802154", "input_learning", "io_binding", "io_command", "io_driver", "io_image", "json", "kernel_metrics", "kernel_trace", "latency_histogram", "log", "logger", "lwip", "main", "mbedtls", "mqtt", "network_ready", "newlib", "node_identity", "nvs_flash", "openthread", "parser", "partition_table", "perfmon", "phase_load_test", "phase_monitor", "protobuf-c", "protocol", "protocomm", "pthread", "rs485", "rs485_engine", "rs485_master", "runtime_monitor", "runtime_network", "scheduler", "sdmmc", "snapshot", "soc", "spi_flash", "spiffs", "state", "tcp_transport", "ulp", "unity", "usb", "vfs", "watchdog", "wear_levelling", "wifi_manager", "wifi_provisioning", "wpa_supplicant", "xtensa", "" ],
+    "build_component_paths" : [ "/home/mateus/esp/esp-idf/components/app_trace", "/home/mateus/esp/esp-idf/components/app_update", "/home/mateus/dev/projects/ENDAP/components/security/auth", "/home/mateus/dev/projects/ENDAP/components/runtime/automation", "/home/mateus/esp/esp-idf/components/bootloader", "/home/mateus/esp/esp-idf/components/bootloader_support", "/home/mateus/esp/esp-idf/components/bt", "/home/mateus/dev/projects/ENDAP/components/runtime/network/captive_dns", "/home/mateus/dev/projects/ENDAP/components/cluster", "/home/mateus/esp/esp-idf/components/cmock", "/home/mateus/esp/esp-idf/components/console", "/home/mateus/dev/projects/ENDAP/components/kernel/control_kernel", "/home/mateus/dev/projects/ENDAP/components/kernel/control_loop", "/home/mateus/dev/projects/ENDAP/components/kernel/core", "/home/mateus/esp/esp-idf/components/cxx", "/home/mateus/dev/projects/ENDAP/components/dashboard", "/home/mateus/dev/projects/ENDAP/components/observability/determinism_probe", "/home/mateus/dev/projects/ENDAP/components/runtime/deterministic_snapshot", "/home/mateus/dev/projects/ENDAP/components/device_profile", "/home/mateus/esp/esp-idf/components/driver", "/home/mateus/esp/esp-idf/components/efuse", "/home/mateus/esp/esp-idf/components/esp-tls", "/home/mateus/esp/esp-idf/components/esp_adc", "/home/mateus/esp/esp-idf/components/esp_app_format", "/home/mateus/esp/esp-idf/components/esp_coex", "/home/mateus/esp/esp-idf/components/esp_common", "/home/mateus/esp/esp-idf/components/esp_eth", "/home/mateus/esp/esp-idf/components/esp_event", "/home/mateus/esp/esp-idf/components/esp_gdbstub", "/home/mateus/esp/esp-idf/components/esp_hid", "/home/mateus/esp/esp-idf/components/esp_http_client", "/home/mateus/esp/esp-idf/components/esp_http_server", "/home/mateus/esp/esp-idf/components/esp_https_ota", "/home/mateus/esp/esp-idf/components/esp_https_server", "/home/mateus/esp/esp-idf/components/esp_hw_support", "/home/mateus/esp/esp-idf/components/esp_lcd", "/home/mateus/esp/esp-idf/components/esp_local_ctrl", "/home/mateus/esp/esp-idf/components/esp_mm", "/home/mateus/esp/esp-idf/components/esp_netif", "/home/mateus/esp/esp-idf/components/esp_netif_stack", "/home/mateus/esp/esp-idf/components/esp_partition", "/home/mateus/esp/esp-idf/components/esp_phy", "/home/mateus/esp/esp-idf/components/esp_pm", "/home/mateus/esp/esp-idf/components/esp_psram", "/home/mateus/esp/esp-idf/components/esp_ringbuf", "/home/mateus/esp/esp-idf/components/esp_rom", "/home/mateus/esp/esp-idf/components/esp_system", "/home/mateus/esp/esp-idf/components/esp_timer", "/home/mateus/esp/esp-idf/components/esp_wifi", "/home/mateus/esp/esp-idf/components/espcoredump", "/home/mateus/esp/esp-idf/components/esptool_py", "/home/mateus/dev/projects/ENDAP/components/runtime/network/ethernet_manager", "/home/mateus/dev/projects/ENDAP/components/runtime/event_bus", "/home/mateus/dev/projects/ENDAP/components/runtime/event_set", "/home/mateus/dev/projects/ENDAP/components/runtime/failsafe", "/home/mateus/esp/esp-idf/components/fatfs", "/home/mateus/dev/projects/ENDAP/components/runtime/fieldbus", "/home/mateus/esp/esp-idf/components/freertos", "/home/mateus/esp/esp-idf/components/hal", "/home/mateus/dev/projects/ENDAP/components/hal/hal_layer", "/home/mateus/dev/projects/ENDAP/components/hal/hal_led", "/home/mateus/esp/esp-idf/components/heap", "/home/mateus/esp/esp-idf/components/http_parser", "/home/mateus/dev/projects/ENDAP/components/runtime/http_server", "/home/mateus/esp/esp-idf/components/idf_test", "/home/mateus/esp/esp-idf/components/ieee802154", "/home/mateus/dev/projects/ENDAP/components/runtime/input_learning", "/home/mateus/dev/projects/ENDAP/components/runtime/io_binding", "/home/mateus/dev/projects/ENDAP/components/runtime/io_command", "/home/mateus/dev/projects/ENDAP/components/runtime/io_driver", "/home/mateus/dev/projects/ENDAP/components/data/io_image", "/home/mateus/esp/esp-idf/components/json", "/home/mateus/dev/projects/ENDAP/components/observability/kernel_metrics", "/home/mateus/dev/projects/ENDAP/components/observability/kernel_trace", "/home/mateus/dev/projects/ENDAP/components/runtime/latency_histogram", "/home/mateus/esp/esp-idf/components/log", "/home/mateus/dev/projects/ENDAP/components/util/logger", "/home/mateus/esp/esp-idf/components/lwip", "/home/mateus/dev/projects/ENDAP/main", "/home/mateus/esp/esp-idf/components/mbedtls", "/home/mateus/esp/esp-idf/components/mqtt", "/home/mateus/dev/projects/ENDAP/components/runtime/network/network_ready", "/home/mateus/esp/esp-idf/components/newlib", "/home/mateus/dev/projects/ENDAP/components/cluster/node_identity", "/home/mateus/esp/esp-idf/components/nvs_flash", "/home/mateus/esp/esp-idf/components/openthread", "/home/mateus/dev/projects/ENDAP/components/comm/parser", "/home/mateus/esp/esp-idf/components/partition_table", "/home/mateus/esp/esp-idf/components/perfmon", "/home/mateus/dev/projects/ENDAP/components/observability/phase_load_test", "/home/mateus/dev/projects/ENDAP/components/observability/phase_monitor", "/home/mateus/esp/esp-idf/components/protobuf-c", "/home/mateus/dev/projects/ENDAP/components/comm/protocol", "/home/mateus/esp/esp-idf/components/protocomm", "/home/mateus/esp/esp-idf/components/pthread", "/home/mateus/dev/projects/ENDAP/components/hal/rs485", "/home/mateus/dev/projects/ENDAP/components/runtime/rs485_engine", "/home/mateus/dev/projects/ENDAP/components/runtime/rs485_master", "/home/mateus/dev/projects/ENDAP/components/runtime/runtime_monitor", "/home/mateus/dev/projects/ENDAP/components/runtime/network/runtime_network", "/home/mateus/dev/projects/ENDAP/components/kernel/scheduler", "/home/mateus/esp/esp-idf/components/sdmmc", "/home/mateus/dev/projects/ENDAP/components/runtime/snapshot", "/home/mateus/esp/esp-idf/components/soc", "/home/mateus/esp/esp-idf/components/spi_flash", "/home/mateus/esp/esp-idf/components/spiffs", "/home/mateus/dev/projects/ENDAP/components/data/state", "/home/mateus/esp/esp-idf/components/tcp_transport", "/home/mateus/esp/esp-idf/components/ulp", "/home/mateus/esp/esp-idf/components/unity", "/home/mateus/esp/esp-idf/components/usb", "/home/mateus/esp/esp-idf/components/vfs", "/home/mateus/dev/projects/ENDAP/components/kernel/watchdog", "/home/mateus/esp/esp-idf/components/wear_levelling", "/home/mateus/dev/projects/ENDAP/components/runtime/network/wifi_manager", "/home/mateus/esp/esp-idf/components/wifi_provisioning", "/home/mateus/esp/esp-idf/components/wpa_supplicant", "/home/mateus/esp/esp-idf/components/xtensa", "" ],
     "build_component_info" : {
         "app_trace": {
             "alias": "idf::app_trace",
@@ -58,6 +58,21 @@
             "sources": [ "/home/mateus/esp/esp-idf/components/app_update/esp_ota_ops.c", "/home/mateus/esp/esp-idf/components/app_update/esp_ota_app_desc.c" ],
             "include_dirs": [ "include" ]
         },
+        "auth": {
+            "alias": "idf::auth",
+            "target": "___idf_auth",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/security/auth",
+            "type": "LIBRARY",
+            "lib": "__idf_auth",
+            "reqs": [ "nvs_flash", "mbedtls", "esp_hw_support" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/auth/libauth.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/security/auth/auth.c" ],
+            "include_dirs": [ "include" ]
+        },
         "automation": {
             "alias": "idf::automation",
             "target": "___idf_automation",
@@ -65,8 +80,8 @@
             "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/automation",
             "type": "LIBRARY",
             "lib": "__idf_automation",
-            "reqs": [ "event_bus", "state" ],
-            "priv_reqs": [],
+            "reqs": [ "event_bus", "state", "cluster", "device_profile", "failsafe", "nvs_flash", "protocol" ],
+            "priv_reqs": [ "esp_timer" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/automation/libautomation.a",
@@ -118,6 +133,36 @@
             "sources": [],
             "include_dirs": []
         },
+        "captive_dns": {
+            "alias": "idf::captive_dns",
+            "target": "___idf_captive_dns",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/network/captive_dns",
+            "type": "LIBRARY",
+            "lib": "__idf_captive_dns",
+            "reqs": [ "lwip" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/captive_dns/libcaptive_dns.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/network/captive_dns/captive_dns.c" ],
+            "include_dirs": [ "include" ]
+        },
+        "cluster": {
+            "alias": "idf::cluster",
+            "target": "___idf_cluster",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/cluster",
+            "type": "LIBRARY",
+            "lib": "__idf_cluster",
+            "reqs": [ "device_profile", "esp_timer", "failsafe", "network_ready", "nvs_flash", "node_identity", "protocol", "state" ],
+            "priv_reqs": [ "rs485_engine" ],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/cluster/libcluster.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/cluster/cluster_manager.c", "/home/mateus/dev/projects/ENDAP/components/cluster/cluster_discovery.c", "/home/mateus/dev/projects/ENDAP/components/cluster/cluster_events.c", "/home/mateus/dev/projects/ENDAP/components/cluster/cluster_failover.c", "/home/mateus/dev/projects/ENDAP/components/cluster/cluster_io.c", "/home/mateus/dev/projects/ENDAP/components/cluster/node_registry.c", "/home/mateus/dev/projects/ENDAP/components/cluster/cluster_self_test.c", "/home/mateus/dev/projects/ENDAP/components/cluster/cluster_transport.c" ],
+            "include_dirs": [ ".", "include" ]
+        },
         "cmock": {
             "alias": "idf::cmock",
             "target": "___idf_cmock",
@@ -156,7 +201,7 @@
             "type": "LIBRARY",
             "lib": "__idf_control_kernel",
             "reqs": [],
-            "priv_reqs": [ "runtime_monitor", "snapshot", "io_image", "deterministic_snapshot", "watchdog", "hal" ],
+            "priv_reqs": [ "runtime_monitor", "deterministic_snapshot" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/control_kernel/libcontrol_kernel.a",
@@ -170,7 +215,7 @@
             "dir": "/home/mateus/dev/projects/ENDAP/components/kernel/control_loop",
             "type": "LIBRARY",
             "lib": "__idf_control_loop",
-            "reqs": [ "scheduler", "watchdog", "determinism_probe", "kernel_trace", "kernel_metrics", "phase_monitor" ],
+            "reqs": [ "scheduler", "watchdog", "determinism_probe", "kernel_trace", "kernel_metrics", "phase_monitor", "phase_load_test" ],
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
@@ -185,7 +230,7 @@
             "dir": "/home/mateus/dev/projects/ENDAP/components/kernel/core",
             "type": "LIBRARY",
             "lib": "__idf_core",
-            "reqs": [ "rs485", "rs485_master", "rs485_engine", "control_loop", "control_kernel", "scheduler", "watchdog", "runtime_monitor", "fieldbus", "state", "nvs_flash", "driver", "automation" ],
+            "reqs": [ "rs485", "rs485_master", "rs485_engine", "control_loop", "control_kernel", "watchdog", "fieldbus", "state", "nvs_flash", "driver", "automation", "failsafe", "cluster", "device_profile", "esp_event", "esp_netif", "network_ready", "wifi_manager", "ethernet_manager", "node_identity", "http_server", "io_driver", "io_command", "input_learning", "io_binding", "dashboard", "snapshot" ],
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
@@ -207,6 +252,21 @@
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/cxx/libcxx.a",
             "sources": [ "/home/mateus/esp/esp-idf/components/cxx/cxx_exception_stubs.cpp", "/home/mateus/esp/esp-idf/components/cxx/cxx_guards.cpp" ],
             "include_dirs": []
+        },
+        "dashboard": {
+            "alias": "idf::dashboard",
+            "target": "___idf_dashboard",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/dashboard",
+            "type": "LIBRARY",
+            "lib": "__idf_dashboard",
+            "reqs": [ "esp_http_server", "state", "kernel_metrics", "io_command" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/dashboard/libdashboard.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/dashboard/src/dashboard.c", "/home/mateus/dev/projects/ENDAP/build/index.html.S" ],
+            "include_dirs": [ "include" ]
         },
         "determinism_probe": {
             "alias": "idf::determinism_probe",
@@ -236,6 +296,21 @@
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/deterministic_snapshot/libdeterministic_snapshot.a",
             "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/deterministic_snapshot/deterministic_snapshot.c" ],
+            "include_dirs": [ "include" ]
+        },
+        "device_profile": {
+            "alias": "idf::device_profile",
+            "target": "___idf_device_profile",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/device_profile",
+            "type": "LIBRARY",
+            "lib": "__idf_device_profile",
+            "reqs": [ "driver", "state", "nvs_flash" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/device_profile/libdevice_profile.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/device_profile/device_profile.c" ],
             "include_dirs": [ "include" ]
         },
         "driver": {
@@ -355,7 +430,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/esp_eth/libesp_eth.a",
-            "sources": [ "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_phy_802_3.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_netif_glue.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_mac_esp.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_phy_dp83848.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_phy_ip101.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_phy_ksz80xx.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_phy_lan87xx.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_phy_rtl8201.c" ],
+            "sources": [ "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_phy_802_3.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_netif_glue.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_mac_w5500.c", "/home/mateus/esp/esp-idf/components/esp_eth/src/esp_eth_phy_w5500.c" ],
             "include_dirs": [ "include" ]
         },
         "esp_event": {
@@ -718,6 +793,21 @@
             "sources": [],
             "include_dirs": []
         },
+        "ethernet_manager": {
+            "alias": "idf::ethernet_manager",
+            "target": "___idf_ethernet_manager",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/network/ethernet_manager",
+            "type": "LIBRARY",
+            "lib": "__idf_ethernet_manager",
+            "reqs": [ "device_profile", "network_ready", "driver", "esp_event", "esp_netif", "esp_eth", "esp_hw_support" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/ethernet_manager/libethernet_manager.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/network/ethernet_manager/ethernet_manager.c" ],
+            "include_dirs": [ "include" ]
+        },
         "event_bus": {
             "alias": "idf::event_bus",
             "target": "___idf_event_bus",
@@ -731,6 +821,36 @@
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/event_bus/libevent_bus.a",
             "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/event_bus/event_bus.c" ],
+            "include_dirs": [ "include" ]
+        },
+        "event_set": {
+            "alias": "idf::event_set",
+            "target": "___idf_event_set",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/event_set",
+            "type": "LIBRARY",
+            "lib": "__idf_event_set",
+            "reqs": [ "state" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/event_set/libevent_set.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/event_set/event_set.c" ],
+            "include_dirs": [ "include" ]
+        },
+        "failsafe": {
+            "alias": "idf::failsafe",
+            "target": "___idf_failsafe",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/failsafe",
+            "type": "LIBRARY",
+            "lib": "__idf_failsafe",
+            "reqs": [ "device_profile", "io_binding", "nvs_flash", "state" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/failsafe/libfailsafe.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/failsafe/failsafe.c" ],
             "include_dirs": [ "include" ]
         },
         "fatfs": {
@@ -756,7 +876,7 @@
             "type": "LIBRARY",
             "lib": "__idf_fieldbus",
             "reqs": [],
-            "priv_reqs": [ "rs485_master", "rs485_engine", "parser", "latency_histogram" ],
+            "priv_reqs": [ "rs485_master", "rs485_engine", "parser", "latency_histogram", "device_profile" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/fieldbus/libfieldbus.a",
@@ -790,7 +910,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/hal/libhal.a",
-            "sources": [ "/home/mateus/esp/esp-idf/components/hal/mpu_hal.c", "/home/mateus/esp/esp-idf/components/hal/efuse_hal.c", "/home/mateus/esp/esp-idf/components/hal/esp32/efuse_hal.c", "/home/mateus/esp/esp-idf/components/hal/wdt_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/mmu_hal.c", "/home/mateus/esp/esp-idf/components/hal/esp32/cache_hal_esp32.c", "/home/mateus/esp/esp-idf/components/hal/rtc_io_hal.c", "/home/mateus/esp/esp-idf/components/hal/gpio_hal.c", "/home/mateus/esp/esp-idf/components/hal/uart_hal.c", "/home/mateus/esp/esp-idf/components/hal/uart_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/adc_hal_common.c", "/home/mateus/esp/esp-idf/components/hal/adc_oneshot_hal.c", "/home/mateus/esp/esp-idf/components/hal/esp32/clk_tree_hal.c", "/home/mateus/esp/esp-idf/components/hal/spi_flash_hal.c", "/home/mateus/esp/esp-idf/components/hal/spi_flash_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/spi_flash_encrypt_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/timer_hal.c", "/home/mateus/esp/esp-idf/components/hal/ledc_hal.c", "/home/mateus/esp/esp-idf/components/hal/ledc_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/i2c_hal.c", "/home/mateus/esp/esp-idf/components/hal/i2c_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/rmt_hal.c", "/home/mateus/esp/esp-idf/components/hal/pcnt_hal.c", "/home/mateus/esp/esp-idf/components/hal/mcpwm_hal.c", "/home/mateus/esp/esp-idf/components/hal/twai_hal.c", "/home/mateus/esp/esp-idf/components/hal/twai_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/i2s_hal.c", "/home/mateus/esp/esp-idf/components/hal/sdm_hal.c", "/home/mateus/esp/esp-idf/components/hal/emac_hal.c", "/home/mateus/esp/esp-idf/components/hal/adc_hal.c", "/home/mateus/esp/esp-idf/components/hal/sha_hal.c", "/home/mateus/esp/esp-idf/components/hal/aes_hal.c", "/home/mateus/esp/esp-idf/components/hal/brownout_hal.c", "/home/mateus/esp/esp-idf/components/hal/spi_hal.c", "/home/mateus/esp/esp-idf/components/hal/spi_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/spi_slave_hal.c", "/home/mateus/esp/esp-idf/components/hal/spi_slave_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/sdio_slave_hal.c", "/home/mateus/esp/esp-idf/components/hal/touch_sensor_hal.c", "/home/mateus/esp/esp-idf/components/hal/esp32/touch_sensor_hal.c", "/home/mateus/esp/esp-idf/components/hal/esp32/gpio_hal_workaround.c" ],
+            "sources": [ "/home/mateus/esp/esp-idf/components/hal/mpu_hal.c", "/home/mateus/esp/esp-idf/components/hal/efuse_hal.c", "/home/mateus/esp/esp-idf/components/hal/esp32/efuse_hal.c", "/home/mateus/esp/esp-idf/components/hal/wdt_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/mmu_hal.c", "/home/mateus/esp/esp-idf/components/hal/esp32/cache_hal_esp32.c", "/home/mateus/esp/esp-idf/components/hal/rtc_io_hal.c", "/home/mateus/esp/esp-idf/components/hal/gpio_hal.c", "/home/mateus/esp/esp-idf/components/hal/uart_hal.c", "/home/mateus/esp/esp-idf/components/hal/uart_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/adc_hal_common.c", "/home/mateus/esp/esp-idf/components/hal/adc_oneshot_hal.c", "/home/mateus/esp/esp-idf/components/hal/esp32/clk_tree_hal.c", "/home/mateus/esp/esp-idf/components/hal/spi_flash_hal.c", "/home/mateus/esp/esp-idf/components/hal/spi_flash_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/spi_flash_encrypt_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/timer_hal.c", "/home/mateus/esp/esp-idf/components/hal/ledc_hal.c", "/home/mateus/esp/esp-idf/components/hal/ledc_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/i2c_hal.c", "/home/mateus/esp/esp-idf/components/hal/i2c_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/rmt_hal.c", "/home/mateus/esp/esp-idf/components/hal/pcnt_hal.c", "/home/mateus/esp/esp-idf/components/hal/mcpwm_hal.c", "/home/mateus/esp/esp-idf/components/hal/twai_hal.c", "/home/mateus/esp/esp-idf/components/hal/twai_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/i2s_hal.c", "/home/mateus/esp/esp-idf/components/hal/sdm_hal.c", "/home/mateus/esp/esp-idf/components/hal/adc_hal.c", "/home/mateus/esp/esp-idf/components/hal/sha_hal.c", "/home/mateus/esp/esp-idf/components/hal/aes_hal.c", "/home/mateus/esp/esp-idf/components/hal/brownout_hal.c", "/home/mateus/esp/esp-idf/components/hal/spi_hal.c", "/home/mateus/esp/esp-idf/components/hal/spi_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/spi_slave_hal.c", "/home/mateus/esp/esp-idf/components/hal/spi_slave_hal_iram.c", "/home/mateus/esp/esp-idf/components/hal/sdio_slave_hal.c", "/home/mateus/esp/esp-idf/components/hal/touch_sensor_hal.c", "/home/mateus/esp/esp-idf/components/hal/esp32/touch_sensor_hal.c", "/home/mateus/esp/esp-idf/components/hal/esp32/gpio_hal_workaround.c" ],
             "include_dirs": [ "esp32/include", "include", "platform_port/include" ]
         },
         "hal_layer": {
@@ -853,6 +973,21 @@
             "sources": [ "/home/mateus/esp/esp-idf/components/http_parser/http_parser.c" ],
             "include_dirs": [ "." ]
         },
+        "http_server": {
+            "alias": "idf::http_server",
+            "target": "___idf_http_server",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/http_server",
+            "type": "LIBRARY",
+            "lib": "__idf_http_server",
+            "reqs": [ "esp_http_server", "state", "event_set", "io_command", "automation", "dashboard", "wifi_manager", "network_ready", "cluster", "device_profile", "failsafe", "fieldbus", "io_driver", "input_learning", "io_binding", "auth", "nvs_flash", "kernel_metrics", "phase_load_test", "phase_monitor", "rs485", "rs485_engine", "rs485_master" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/http_server/libhttp_server.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/http_server/http_server.c" ],
+            "include_dirs": [ "include" ]
+        },
         "idf_test": {
             "alias": "idf::idf_test",
             "target": "___idf_idf_test",
@@ -881,6 +1016,66 @@
             "managed_priv_reqs": [],
             "file": "",
             "sources": [],
+            "include_dirs": [ "include" ]
+        },
+        "input_learning": {
+            "alias": "idf::input_learning",
+            "target": "___idf_input_learning",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/input_learning",
+            "type": "LIBRARY",
+            "lib": "__idf_input_learning",
+            "reqs": [ "device_profile", "event_bus", "io_binding" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/input_learning/libinput_learning.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/input_learning/input_learning.c" ],
+            "include_dirs": [ "include" ]
+        },
+        "io_binding": {
+            "alias": "idf::io_binding",
+            "target": "___idf_io_binding",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/io_binding",
+            "type": "LIBRARY",
+            "lib": "__idf_io_binding",
+            "reqs": [ "nvs_flash", "device_profile" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/io_binding/libio_binding.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/io_binding/io_binding.c" ],
+            "include_dirs": [ "include" ]
+        },
+        "io_command": {
+            "alias": "idf::io_command",
+            "target": "___idf_io_command",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/io_command",
+            "type": "LIBRARY",
+            "lib": "__idf_io_command",
+            "reqs": [],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/io_command/libio_command.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/io_command/io_command.c" ],
+            "include_dirs": [ "include" ]
+        },
+        "io_driver": {
+            "alias": "idf::io_driver",
+            "target": "___idf_io_driver",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/io_driver",
+            "type": "LIBRARY",
+            "lib": "__idf_io_driver",
+            "reqs": [ "driver", "state", "device_profile", "failsafe", "io_image", "cluster" ],
+            "priv_reqs": [ "http_server" ],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/io_driver/libio_driver.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/io_driver/io_driver.c" ],
             "include_dirs": [ "include" ]
         },
         "io_image": {
@@ -925,7 +1120,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/kernel_metrics/libkernel_metrics.a",
-            "sources": [ "/home/mateus/dev/projects/ENDAP/components/observability/kernel_metrics/kernel_metrics.c", "/home/mateus/dev/projects/ENDAP/components/observability/kernel_metrics/kernel_metrics_api.c", "/home/mateus/dev/projects/ENDAP/components/observability/kernel_metrics/kernel_phase_metrics.c" ],
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/observability/kernel_metrics/kernel_metrics.c", "/home/mateus/dev/projects/ENDAP/components/observability/kernel_metrics/kernel_phase_metrics.c" ],
             "include_dirs": [ ".", "include" ]
         },
         "kernel_trace": {
@@ -1048,6 +1243,21 @@
             "sources": [ "/home/mateus/esp/esp-idf/components/mqtt/esp-mqtt/mqtt_client.c", "/home/mateus/esp/esp-idf/components/mqtt/esp-mqtt/lib/mqtt_msg.c", "/home/mateus/esp/esp-idf/components/mqtt/esp-mqtt/lib/mqtt_outbox.c", "/home/mateus/esp/esp-idf/components/mqtt/esp-mqtt/lib/platform_esp32_idf.c" ],
             "include_dirs": [ "/home/mateus/esp/esp-idf/components/mqtt/esp-mqtt/include" ]
         },
+        "network_ready": {
+            "alias": "idf::network_ready",
+            "target": "___idf_network_ready",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/network/network_ready",
+            "type": "LIBRARY",
+            "lib": "__idf_network_ready",
+            "reqs": [],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/network_ready/libnetwork_ready.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/network/network_ready/network_ready.c" ],
+            "include_dirs": [ "include" ]
+        },
         "newlib": {
             "alias": "idf::newlib",
             "target": "___idf_newlib",
@@ -1062,6 +1272,21 @@
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/newlib/libnewlib.a",
             "sources": [ "/home/mateus/esp/esp-idf/components/newlib/abort.c", "/home/mateus/esp/esp-idf/components/newlib/assert.c", "/home/mateus/esp/esp-idf/components/newlib/heap.c", "/home/mateus/esp/esp-idf/components/newlib/locks.c", "/home/mateus/esp/esp-idf/components/newlib/poll.c", "/home/mateus/esp/esp-idf/components/newlib/pthread.c", "/home/mateus/esp/esp-idf/components/newlib/random.c", "/home/mateus/esp/esp-idf/components/newlib/reent_init.c", "/home/mateus/esp/esp-idf/components/newlib/newlib_init.c", "/home/mateus/esp/esp-idf/components/newlib/syscalls.c", "/home/mateus/esp/esp-idf/components/newlib/termios.c", "/home/mateus/esp/esp-idf/components/newlib/stdatomic.c", "/home/mateus/esp/esp-idf/components/newlib/time.c", "/home/mateus/esp/esp-idf/components/newlib/sysconf.c", "/home/mateus/esp/esp-idf/components/newlib/realpath.c", "/home/mateus/esp/esp-idf/components/newlib/port/esp_time_impl.c" ],
             "include_dirs": [ "platform_include" ]
+        },
+        "node_identity": {
+            "alias": "idf::node_identity",
+            "target": "___idf_node_identity",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/cluster/node_identity",
+            "type": "LIBRARY",
+            "lib": "__idf_node_identity",
+            "reqs": [ "esp_wifi", "esp_netif" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/node_identity/libnode_identity.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/cluster/node_identity/node_identity.c" ],
+            "include_dirs": [ "include" ]
         },
         "nvs_flash": {
             "alias": "idf::nvs_flash",
@@ -1136,6 +1361,21 @@
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/perfmon/libperfmon.a",
             "sources": [ "/home/mateus/esp/esp-idf/components/perfmon/xtensa_perfmon_access.c", "/home/mateus/esp/esp-idf/components/perfmon/xtensa_perfmon_apis.c", "/home/mateus/esp/esp-idf/components/perfmon/xtensa_perfmon_masks.c" ],
+            "include_dirs": [ "include" ]
+        },
+        "phase_load_test": {
+            "alias": "idf::phase_load_test",
+            "target": "___idf_phase_load_test",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/observability/phase_load_test",
+            "type": "LIBRARY",
+            "lib": "__idf_phase_load_test",
+            "reqs": [],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/phase_load_test/libphase_load_test.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/observability/phase_load_test/phase_load_test.c" ],
             "include_dirs": [ "include" ]
         },
         "phase_monitor": {
@@ -1235,8 +1475,8 @@
             "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/rs485_engine",
             "type": "LIBRARY",
             "lib": "__idf_rs485_engine",
-            "reqs": [],
-            "priv_reqs": [ "esp_timer" ],
+            "reqs": [ "rs485", "parser" ],
+            "priv_reqs": [ "esp_timer", "node_identity" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/rs485_engine/librs485_engine.a",
@@ -1273,6 +1513,21 @@
             "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/runtime_monitor/runtime_monitor.c" ],
             "include_dirs": [ "include" ]
         },
+        "runtime_network": {
+            "alias": "idf::runtime_network",
+            "target": "___idf_runtime_network",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/network/runtime_network",
+            "type": "LIBRARY",
+            "lib": "__idf_runtime_network",
+            "reqs": [ "protocol" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/runtime_network/libruntime_network.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/network/runtime_network/runtime_network.c" ],
+            "include_dirs": [ "include" ]
+        },
         "scheduler": {
             "alias": "idf::scheduler",
             "target": "___idf_scheduler",
@@ -1281,7 +1536,7 @@
             "type": "LIBRARY",
             "lib": "__idf_scheduler",
             "reqs": [],
-            "priv_reqs": [ "io_image", "driver", "fieldbus", "control_kernel", "event_bus" ],
+            "priv_reqs": [ "io_image", "driver", "fieldbus", "automation", "control_kernel", "event_bus", "io_driver", "event_set", "io_command", "state" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/scheduler/libscheduler.a",
@@ -1310,7 +1565,7 @@
             "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/snapshot",
             "type": "LIBRARY",
             "lib": "__idf_snapshot",
-            "reqs": [],
+            "reqs": [ "nvs_flash" ],
             "priv_reqs": [ "state", "logger", "event_bus" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
@@ -1371,7 +1626,7 @@
             "type": "LIBRARY",
             "lib": "__idf_state",
             "reqs": [ "io_image" ],
-            "priv_reqs": [ "snapshot" ],
+            "priv_reqs": [ "event_bus", "snapshot", "phase_monitor" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/state/libstate.a",
@@ -1482,6 +1737,21 @@
             "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/wear_levelling/libwear_levelling.a",
             "sources": [ "/home/mateus/esp/esp-idf/components/wear_levelling/Partition.cpp", "/home/mateus/esp/esp-idf/components/wear_levelling/SPI_Flash.cpp", "/home/mateus/esp/esp-idf/components/wear_levelling/WL_Ext_Perf.cpp", "/home/mateus/esp/esp-idf/components/wear_levelling/WL_Ext_Safe.cpp", "/home/mateus/esp/esp-idf/components/wear_levelling/WL_Flash.cpp", "/home/mateus/esp/esp-idf/components/wear_levelling/crc32.cpp", "/home/mateus/esp/esp-idf/components/wear_levelling/wear_levelling.cpp" ],
             "include_dirs": [ "include" ]
+        },
+        "wifi_manager": {
+            "alias": "idf::wifi_manager",
+            "target": "___idf_wifi_manager",
+            "prefix": "idf",
+            "dir": "/home/mateus/dev/projects/ENDAP/components/runtime/network/wifi_manager",
+            "type": "LIBRARY",
+            "lib": "__idf_wifi_manager",
+            "reqs": [ "network_ready", "node_identity", "esp_wifi", "esp_event", "esp_netif", "nvs_flash", "captive_dns" ],
+            "priv_reqs": [],
+            "managed_reqs": [],
+            "managed_priv_reqs": [],
+            "file": "/home/mateus/dev/projects/ENDAP/build/esp-idf/wifi_manager/libwifi_manager.a",
+            "sources": [ "/home/mateus/dev/projects/ENDAP/components/runtime/network/wifi_manager/wifi_manager.c" ],
+            "include_dirs": [ ".", "include" ]
         },
         "wifi_provisioning": {
             "alias": "idf::wifi_provisioning",

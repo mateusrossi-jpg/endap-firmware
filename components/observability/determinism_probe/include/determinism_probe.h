@@ -4,8 +4,9 @@
 #include <stdint.h>
 #include "esp_attr.h"
 
-void IRAM_ATTR determinism_probe_cycle_start(uint64_t now);
-
-void IRAM_ATTR determinism_probe_cycle_end(uint64_t now);
+void determinism_probe_init(void);
+void determinism_probe_cycle_start(uint64_t now);
+void determinism_probe_cycle_end(uint64_t now);
+void determinism_probe_process(void);
 
 #endif

@@ -1,3 +1,0 @@
-/tmp/kconfgen_tmpw7iu9g6m:808: warning: '0' is not a valid value for the bool symbol ESP_MAIN_TASK_AFFINITY_CPU0 (defined at /home/mateus/esp/esp-idf/components/esp_system/Kconfig:191). Assignment ignored.
-Compiler supported targets: xtensa-esp32-elf
-
