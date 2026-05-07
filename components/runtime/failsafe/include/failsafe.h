@@ -81,7 +81,6 @@ typedef struct
 void failsafe_init(void);
 bool failsafe_load(void);
 bool failsafe_save(void);
-int failsafe_sync_outputs(void);
 
 bool failsafe_action_from_code(const char *text, failsafe_action_t *out_action);
 const char *failsafe_action_to_code(failsafe_action_t action);

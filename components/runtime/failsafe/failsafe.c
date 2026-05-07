@@ -1,7 +1,6 @@
 #include "failsafe.h"
 
 #include "device_profile.h"
-#include "io_binding.h"
 #include "state.h"
 
 #include "esp_log.h"
@@ -184,34 +183,6 @@ static void failsafe_default_entry(failsafe_runtime_entry_t *entry, uint16_t out
     entry->last_applied_value = 0;
 }
 
-static bool failsafe_output_is_active(uint16_t output_id)
-{
-    return output_id != 0U &&
-           device_profile_is_valid_output(output_id) &&
-           io_binding_has_output(output_id);
-}
-
-static failsafe_runtime_entry_t *failsafe_ensure_entry(uint16_t output_id, bool require_active)
-{
-    failsafe_runtime_entry_t *entry = failsafe_find(output_id);
-
-    if (entry)
-        return entry;
-
-    if (output_id == 0U || !device_profile_is_valid_output(output_id))
-        return NULL;
-
-    if (require_active && !io_binding_has_output(output_id))
-        return NULL;
-
-    if (entry_count >= FAILSAFE_MAX_OUTPUTS)
-        return NULL;
-
-    failsafe_default_entry(&entries[entry_count], output_id);
-    entry_count++;
-    return &entries[entry_count - 1U];
-}
-
 static failsafe_reason_t failsafe_detect_boot_reason(void)
 {
     switch (esp_reset_reason())
@@ -288,7 +259,7 @@ static bool failsafe_apply_loaded_policy(const failsafe_policy_storage_t *policy
         return false;
     }
 
-    entry = failsafe_ensure_entry(policy->output_id, true);
+    entry = failsafe_find(policy->output_id);
     if (!entry)
         return false;
 
@@ -436,47 +407,24 @@ bool failsafe_load(void)
 void failsafe_init(void)
 {
     bool loaded;
-    io_binding_output_view_t outputs[IO_BINDING_MAX_OUTPUTS];
-    int count;
 
     entry_count = 0U;
     memset(entries, 0, sizeof(entries));
     boot_reason = failsafe_detect_boot_reason();
 
-    count = io_binding_export_outputs(outputs, IO_BINDING_MAX_OUTPUTS);
-    for (int i = 0; i < count; i++)
+    for (int i = 0; i < device_profile_output_count() && entry_count < FAILSAFE_MAX_OUTPUTS; i++)
     {
-        if (outputs[i].id == 0U)
-            continue;
-        (void)failsafe_ensure_entry(outputs[i].id, true);
-    }
-
-    loaded = failsafe_load();
-    (void)failsafe_sync_outputs();
-    if (!loaded)
-        (void)failsafe_save();
-}
-
-int failsafe_sync_outputs(void)
-{
-    io_binding_output_view_t outputs[IO_BINDING_MAX_OUTPUTS];
-    int count = io_binding_export_outputs(outputs, IO_BINDING_MAX_OUTPUTS);
-    int created = 0;
-
-    for (int i = 0; i < count; i++)
-    {
-        uint16_t output_id = outputs[i].id;
+        uint16_t output_id = device_profile_output_id_at(i);
         if (output_id == 0U)
             continue;
 
-        if (!failsafe_find(output_id) && failsafe_ensure_entry(output_id, true))
-            created++;
+        failsafe_default_entry(&entries[entry_count], output_id);
+        entry_count++;
     }
 
-    if (created > 0)
+    loaded = failsafe_load();
+    if (!loaded)
         (void)failsafe_save();
-
-    return created;
 }
 
 bool failsafe_action_from_code(const char *text, failsafe_action_t *out_action)
@@ -654,7 +602,7 @@ bool failsafe_set_output_policy(uint16_t output_id,
                                 int32_t safe_value,
                                 failsafe_recovery_t recovery_mode)
 {
-    failsafe_runtime_entry_t *entry = failsafe_ensure_entry(output_id, true);
+    failsafe_runtime_entry_t *entry = failsafe_find(output_id);
     failsafe_policy_storage_t next;
 
     if (!entry ||
@@ -689,7 +637,7 @@ bool failsafe_set_output_policy(uint16_t output_id,
 
 bool failsafe_get_output_policy(uint16_t output_id, failsafe_output_status_t *out)
 {
-    const failsafe_runtime_entry_t *entry = failsafe_ensure_entry(output_id, true);
+    const failsafe_runtime_entry_t *entry = failsafe_find_const(output_id);
 
     if (!entry || !out)
         return false;
@@ -726,25 +674,15 @@ bool failsafe_get_policy(uint16_t output_id, failsafe_output_status_t *out)
 
 int failsafe_export(failsafe_output_status_t *out, int max_outputs)
 {
-    int exported = 0;
-    int total_active = 0;
+    int copy_count = ((int)entry_count < max_outputs) ? (int)entry_count : max_outputs;
 
-    (void)failsafe_sync_outputs();
+    if (!out || max_outputs <= 0)
+        return (int)entry_count;
 
-    for (uint16_t i = 0U; i < entry_count; i++)
-    {
-        if (!failsafe_output_is_active(entries[i].policy.output_id))
-            continue;
+    for (int i = 0; i < copy_count; i++)
+        failsafe_fill_status(&entries[i], &out[i]);
 
-        total_active++;
-        if (out && max_outputs > 0 && exported < max_outputs)
-        {
-            failsafe_fill_status(&entries[i], &out[exported]);
-            exported++;
-        }
-    }
-
-    return (out && max_outputs > 0) ? exported : total_active;
+    return copy_count;
 }
 
 bool failsafe_startup_value(uint16_t output_id,
@@ -752,7 +690,7 @@ bool failsafe_startup_value(uint16_t output_id,
                             int32_t *out_value,
                             const char **out_origin)
 {
-    failsafe_runtime_entry_t *entry = failsafe_ensure_entry(output_id, true);
+    failsafe_runtime_entry_t *entry = failsafe_find(output_id);
     failsafe_action_t action;
     int32_t value;
 
@@ -790,7 +728,7 @@ bool failsafe_guard_command(uint16_t output_id,
                             int32_t *out_effective_value,
                             const char **out_reason)
 {
-    failsafe_runtime_entry_t *entry = failsafe_ensure_entry(output_id, true);
+    failsafe_runtime_entry_t *entry = failsafe_find(output_id);
 
     (void)source;
 
@@ -821,7 +759,7 @@ bool failsafe_apply_for_reason(uint16_t output_id,
                                failsafe_reason_t reason,
                                int32_t *out_safe_value)
 {
-    failsafe_runtime_entry_t *entry = failsafe_ensure_entry(output_id, true);
+    failsafe_runtime_entry_t *entry = failsafe_find(output_id);
     failsafe_action_t action;
     int32_t current_value = 0;
     int32_t applied_value;
@@ -851,15 +789,10 @@ int failsafe_apply_for_reason_all(failsafe_reason_t reason)
 {
     int applied = 0;
 
-    (void)failsafe_sync_outputs();
-
     for (uint16_t i = 0U; i < entry_count; i++)
     {
         int32_t safe_value = 0;
         uint16_t output_id = entries[i].policy.output_id;
-
-        if (!failsafe_output_is_active(output_id))
-            continue;
 
         if (!failsafe_apply_for_reason(output_id, reason, &safe_value))
             continue;
@@ -881,7 +814,7 @@ int failsafe_apply_for_reason_all(failsafe_reason_t reason)
 
 bool failsafe_clear_manual_reset(uint16_t output_id)
 {
-    failsafe_runtime_entry_t *entry = failsafe_ensure_entry(output_id, true);
+    failsafe_runtime_entry_t *entry = failsafe_find(output_id);
 
     if (!entry)
         return false;
@@ -895,7 +828,7 @@ bool failsafe_is_active(uint16_t output_id)
 {
     const failsafe_runtime_entry_t *entry = failsafe_find_const(output_id);
 
-    return entry && failsafe_output_is_active(output_id) && entry->active != 0U;
+    return entry && entry->active != 0U;
 }
 
 bool failsafe_trigger_comm_loss(uint16_t output_id, int32_t *out_safe_value)

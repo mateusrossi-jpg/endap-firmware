@@ -6,6 +6,7 @@
 #include "cluster_metrics.h"
 #include "device_profile.h"
 #include "io_map.h"
+#include "node_registry.h"
 #include "state.h"
 
 #include "esp_log.h"
@@ -131,6 +132,12 @@ static void cluster_self_test_run_once(void)
     cluster_self_test_set_phase("REMOTE_ONLINE");
     state_set_int(test_output_id, 1);
     cluster_io_set_owner(test_output_id, fake_node_id, fake_node_id);
+
+    if (!node_registry_configure(fake_node_id, "gateway", "self-test"))
+    {
+        ESP_LOGW(TAG, "Falha ao registrar no registry fake gateway %" PRIu32, fake_node_id);
+    }
+
     cluster_self_test_drive_heartbeats(fake_node_id, fake_ip, SELF_TEST_ONLINE_MS);
 
     cluster_self_test_set_phase("WAIT_OFFLINE");
@@ -149,6 +156,12 @@ static void cluster_self_test_run_once(void)
     cluster_io_set_owner(test_output_id, self_node_id, self_node_id);
     cluster_io_sync_all();
     cluster_manager_remove_node(fake_node_id);
+
+    if (!node_registry_revoke(fake_node_id))
+    {
+        ESP_LOGW(TAG, "Falha ao remover no registry fake %" PRIu32, fake_node_id);
+    }
+
     state_set_int(test_output_id, original_value);
 
     ESP_LOGI(TAG, "Self-test concluido");

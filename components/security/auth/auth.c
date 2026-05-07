@@ -103,7 +103,8 @@ static uint32_t auth_role_capability_mask(auth_role_t role)
                    AUTH_CAP_AUTOMATION_WRITE |
                    AUTH_CAP_REBOOT_RECOVERY |
                    AUTH_CAP_RUNTIME_DIAGNOSTICS |
-                   AUTH_CAP_SECURITY_ADMIN;
+                   AUTH_CAP_SECURITY_ADMIN |
+                   AUTH_CAP_FAILSAFE_WRITE;
 
         case AUTH_ROLE_INSTALLER:
             return AUTH_CAP_DASHBOARD_READ |
@@ -113,7 +114,8 @@ static uint32_t auth_role_capability_mask(auth_role_t role)
                    AUTH_CAP_TRANSPORT_WRITE |
                    AUTH_CAP_AUTOMATION_WRITE |
                    AUTH_CAP_REBOOT_RECOVERY |
-                   AUTH_CAP_RUNTIME_DIAGNOSTICS;
+                   AUTH_CAP_RUNTIME_DIAGNOSTICS |
+                   AUTH_CAP_FAILSAFE_WRITE;
 
         case AUTH_ROLE_OPERATOR:
             return AUTH_CAP_DASHBOARD_READ |

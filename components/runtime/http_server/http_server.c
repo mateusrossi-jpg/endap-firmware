@@ -504,6 +504,69 @@ static bool http_auth_require_allow_password_change(httpd_req_t *req)
     return http_auth_require_capability(req, 0U, true);
 }
 
+static esp_err_t http_auth_json_error(httpd_req_t *req,
+                                      const char *status,
+                                      const char *error)
+{
+    char json[112];
+
+    if (!req)
+        return ESP_FAIL;
+
+    http_set_private_json_headers(req);
+    if (status)
+        httpd_resp_set_status(req, status);
+
+    snprintf(json, sizeof(json), "{\"ok\":false,\"error\":\"%s\"}", error ? error : "error");
+    httpd_resp_sendstr(req, json);
+    return ESP_OK;
+}
+
+static bool http_auth_require_cap_json(httpd_req_t *req,
+                                       auth_capability_t capability,
+                                       bool allow_bootstrap_write)
+{
+    auth_status_t auth_status = {0};
+    char token[AUTH_SESSION_TOKEN_LEN + 1] = {0};
+    bool authenticated = false;
+
+    if (http_auth_token_from_request(req, token, sizeof(token)))
+        authenticated = auth_validate_session(token, &auth_status);
+    else
+        auth_get_status(NULL, &auth_status);
+
+    if (!authenticated)
+    {
+        if (auth_status.bootstrap_open)
+        {
+            if (allow_bootstrap_write)
+                return true;
+
+            (void)http_auth_json_error(req, "403 Forbidden", "bootstrap_read_only");
+            return false;
+        }
+
+        http_auth_clear_cookie(req);
+        (void)http_auth_json_error(req, "401 Unauthorized", "unauthorized");
+        return false;
+    }
+
+    if (auth_status.password_change_required)
+    {
+        (void)http_auth_json_error(req, "403 Forbidden", "password_change_required");
+        return false;
+    }
+
+    if (capability != 0U &&
+        !auth_role_has_capability(auth_status.role, capability))
+    {
+        (void)http_auth_json_error(req, "403 Forbidden", "forbidden");
+        return false;
+    }
+
+    return true;
+}
+
 static bool append_text(char *buf, size_t buf_size, size_t *offset, const char *text)
 {
     size_t len;
@@ -609,7 +672,8 @@ static bool append_auth_capabilities_object(char *buf,
                          offset,
                          "{\"dashboard_read\":%s,\"manual_io\":%s,\"node_admission\":%s,"
                          "\"profile_write\":%s,\"transport_write\":%s,\"automation_write\":%s,"
-                         "\"reboot_recovery\":%s,\"runtime_diagnostics\":%s,\"security_admin\":%s}",
+                         "\"reboot_recovery\":%s,\"runtime_diagnostics\":%s,\"security_admin\":%s,"
+                         "\"failsafe_write\":%s}",
                          (capabilities & AUTH_CAP_DASHBOARD_READ) ? "true" : "false",
                          (capabilities & AUTH_CAP_MANUAL_IO) ? "true" : "false",
                          (capabilities & AUTH_CAP_NODE_ADMISSION) ? "true" : "false",
@@ -618,7 +682,8 @@ static bool append_auth_capabilities_object(char *buf,
                          (capabilities & AUTH_CAP_AUTOMATION_WRITE) ? "true" : "false",
                          (capabilities & AUTH_CAP_REBOOT_RECOVERY) ? "true" : "false",
                          (capabilities & AUTH_CAP_RUNTIME_DIAGNOSTICS) ? "true" : "false",
-                         (capabilities & AUTH_CAP_SECURITY_ADMIN) ? "true" : "false");
+                         (capabilities & AUTH_CAP_SECURITY_ADMIN) ? "true" : "false",
+                         (capabilities & AUTH_CAP_FAILSAFE_WRITE) ? "true" : "false");
 }
 
 static size_t build_auth_status_json(char *buf,
@@ -2892,7 +2957,6 @@ static size_t build_failsafe_json(char *buf, size_t buf_size)
         return 0U;
 
     buf[0] = '\0';
-    (void)failsafe_sync_outputs();
     count = failsafe_export(failsafe_status_snapshot, FAILSAFE_MAX_OUTPUTS);
 
     if (!append_format(buf,
@@ -2905,12 +2969,6 @@ static size_t build_failsafe_json(char *buf, size_t buf_size)
     for (int i = 0; i < count; i++)
     {
         const failsafe_output_status_t *status = &failsafe_status_snapshot[i];
-        io_binding_output_view_t binding = {0};
-        bool has_binding = io_binding_get_output(status->output_id, &binding);
-        int32_t current_value = 0;
-        const char *backend_code = has_binding ? io_binding_backend_code(binding.backend) : "";
-
-        (void)state_get_int(status->output_id, &current_value);
 
         if (i > 0 && !append_text(buf, buf_size, &offset, ","))
             return 0U;
@@ -2918,50 +2976,8 @@ static size_t build_failsafe_json(char *buf, size_t buf_size)
         if (!append_format(buf,
                            buf_size,
                            &offset,
-                           "{\"id\":%u,\"output_id\":%u,\"name\":",
+                           "{\"output_id\":%u,\"enabled\":%u,\"boot_action\":",
                            status->output_id,
-                           status->output_id))
-            return 0U;
-
-        if (!append_json_string(buf, buf_size, &offset, has_binding ? binding.name : ""))
-            return 0U;
-
-        if (!append_text(buf, buf_size, &offset, ",\"alias\":"))
-            return 0U;
-
-        if (!append_json_string(buf, buf_size, &offset, has_binding ? binding.name : ""))
-            return 0U;
-
-        if (!append_text(buf, buf_size, &offset, ",\"role\":"))
-            return 0U;
-
-        if (!append_json_string(buf, buf_size, &offset, has_binding ? binding.role : ""))
-            return 0U;
-
-        if (!append_text(buf, buf_size, &offset, ",\"backend\":"))
-            return 0U;
-
-        if (!append_json_string(buf, buf_size, &offset, backend_code ? backend_code : ""))
-            return 0U;
-
-        if (!append_text(buf, buf_size, &offset, ",\"backend_name\":"))
-            return 0U;
-
-        if (!append_json_string(buf, buf_size, &offset, has_binding ? binding.backend_name : ""))
-            return 0U;
-
-        if (!append_text(buf, buf_size, &offset, ",\"address\":"))
-            return 0U;
-
-        if (!append_json_string(buf, buf_size, &offset, has_binding ? binding.address : ""))
-            return 0U;
-
-        if (!append_format(buf,
-                           buf_size,
-                           &offset,
-                           ",\"gpio\":%d,\"value\":%" PRId32 ",\"enabled\":%u,\"boot_action\":",
-                           has_binding ? binding.gpio : -1,
-                           current_value,
                            status->enabled ? 1U : 0U))
             return 0U;
 
@@ -3003,7 +3019,10 @@ static size_t build_failsafe_json(char *buf, size_t buf_size)
         if (!append_json_string(buf, buf_size, &offset, failsafe_reason_name(status->last_reason)))
             return 0U;
 
-        if (!append_text(buf, buf_size, &offset, ",\"startup_mode\":"))
+        if (!append_format(buf,
+                           buf_size,
+                           &offset,
+                           ",\"startup_mode\":"))
             return 0U;
 
         if (!append_json_string(buf, buf_size, &offset, failsafe_mode_to_code(status->startup_mode)))
@@ -5109,6 +5128,115 @@ static esp_err_t failsafe_json_error(httpd_req_t *req,
     return ESP_OK;
 }
 
+static bool failsafe_query_get_value(httpd_req_t *req,
+                                      const char *key,
+                                      char *out,
+                                      size_t out_size)
+{
+    char query[HTTP_QUERY_BUFFER_SIZE];
+
+    if (!req || !key || !out || out_size == 0U)
+        return false;
+
+    out[0] = '\0';
+
+    if (httpd_req_get_url_query_str(req, query, sizeof(query)) != ESP_OK)
+        return false;
+
+    return httpd_query_key_value(query, key, out, out_size) == ESP_OK;
+}
+
+static bool failsafe_body_or_query_value(httpd_req_t *req,
+                                           const char *body,
+                                           const char *key,
+                                           char *out,
+                                           size_t out_size)
+{
+    if (!out || out_size == 0U)
+        return false;
+
+    out[0] = '\0';
+
+    if (body && body[0] != '\0' &&
+        http_body_get_value(body, key, out, out_size))
+    {
+        return true;
+    }
+
+    return failsafe_query_get_value(req, key, out, out_size);
+}
+
+static bool failsafe_resolve_output_id_from_text(const char *text, uint16_t *out_output_id)
+{
+    const char *p = text;
+    int parsed = 0;
+
+    if (!text || !out_output_id)
+        return false;
+
+    while (*p != '\0' && !isdigit((unsigned char)*p))
+        p++;
+
+    if (*p == '\0' ||
+        !query_parse_int(p, 0, UINT16_MAX, &parsed))
+    {
+        return false;
+    }
+
+    if (device_profile_is_valid_output((uint16_t)parsed))
+    {
+        *out_output_id = (uint16_t)parsed;
+        return true;
+    }
+
+    /*
+     * Compatibilidade:
+     * - OUT1..OUT16 / 1..16: código visual/local da dashboard.
+     * - 0..15: slot zero-based usado por protótipos antigos.
+     * - 100..115: id oficial do io_map.
+     */
+    if (parsed >= 1 && parsed <= (int)ENDAP_MAX_OUTPUT_SLOTS)
+    {
+        uint16_t candidate = ENDAP_OUTPUT_ID((uint16_t)(parsed - 1));
+        if (device_profile_is_valid_output(candidate))
+        {
+            *out_output_id = candidate;
+            return true;
+        }
+    }
+
+    if (parsed >= 0 && parsed < (int)ENDAP_MAX_OUTPUT_SLOTS)
+    {
+        uint16_t candidate = ENDAP_OUTPUT_ID((uint16_t)parsed);
+        if (device_profile_is_valid_output(candidate))
+        {
+            *out_output_id = candidate;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static bool failsafe_request_output_id(httpd_req_t *req,
+                                       const char *body,
+                                       uint16_t *out_output_id)
+{
+    const char *keys[] = {"output_id", "id", "channel_id", "output", "global_code", "local_code"};
+    char text[32];
+
+    for (size_t i = 0U; i < sizeof(keys) / sizeof(keys[0]); i++)
+    {
+        if (!failsafe_body_or_query_value(req, body, keys[i], text, sizeof(text)))
+            continue;
+
+        if (failsafe_resolve_output_id_from_text(text, out_output_id))
+            return true;
+    }
+
+    return false;
+}
+
 static esp_err_t failsafe_handler(httpd_req_t *req)
 {
     char *json;
@@ -5136,7 +5264,6 @@ static esp_err_t failsafe_handler(httpd_req_t *req)
 static esp_err_t failsafe_save_handler(httpd_req_t *req)
 {
     char body[HTTP_BODY_BUFFER_SIZE] = {0};
-    char output_text[16] = {0};
     char enabled_text[16] = {0};
     char boot_text[32] = {0};
     char comm_loss_text[32] = {0};
@@ -5150,27 +5277,24 @@ static esp_err_t failsafe_save_handler(httpd_req_t *req)
     failsafe_action_t comm_loss_action;
     failsafe_action_t runtime_fault_action;
     failsafe_recovery_t recovery_mode;
-    int output_id = 0;
+    uint16_t output_id = 0U;
     int enabled = 1;
     int safe_value = 0;
     int manual_value = 0;
 
-    if (!http_auth_require_cap(req, AUTH_CAP_PROFILE_WRITE))
+    if (!http_auth_require_cap_json(req, AUTH_CAP_FAILSAFE_WRITE, false))
         return ESP_OK;
 
     http_set_private_json_headers(req);
 
-    if (!http_read_request_body(req, body, sizeof(body)) ||
-        !http_body_get_value(body, "output_id", output_text, sizeof(output_text)) ||
-        !query_parse_int(output_text, 0, UINT16_MAX, &output_id))
-    {
-        return failsafe_json_error(req, "400 Bad Request", "bad_request");
-    }
+    if (!http_read_request_body(req, body, sizeof(body)) && req->content_len > 0)
+        return failsafe_json_error(req, "400 Bad Request", "bad_request_body");
 
-    if (!failsafe_get_output_policy((uint16_t)output_id, &current))
-    {
+    if (!failsafe_request_output_id(req, body, &output_id))
+        return failsafe_json_error(req, "400 Bad Request", "invalid_or_missing_output_id");
+
+    if (!failsafe_get_output_policy(output_id, &current))
         return failsafe_json_error(req, "404 Not Found", "invalid_output");
-    }
 
     enabled = current.enabled ? 1 : 0;
     boot_action = current.boot_action;
@@ -5179,14 +5303,14 @@ static esp_err_t failsafe_save_handler(httpd_req_t *req)
     safe_value = current.safe_value ? 1 : 0;
     recovery_mode = current.recovery_mode;
 
-    if (http_body_get_value(body, "enabled", enabled_text, sizeof(enabled_text)) &&
+    if (failsafe_body_or_query_value(req, body, "enabled", enabled_text, sizeof(enabled_text)) &&
         !query_parse_int(enabled_text, 0, 1, &enabled))
     {
         return failsafe_json_error(req, "400 Bad Request", "invalid_enabled");
     }
 
-    if (!http_body_get_value(body, "boot_action", boot_text, sizeof(boot_text)))
-        (void)http_body_get_value(body, "startup_mode", boot_text, sizeof(boot_text));
+    if (!failsafe_body_or_query_value(req, body, "boot_action", boot_text, sizeof(boot_text)))
+        (void)failsafe_body_or_query_value(req, body, "startup_mode", boot_text, sizeof(boot_text));
 
     if (boot_text[0] != '\0' &&
         !failsafe_action_from_code(boot_text, &boot_action))
@@ -5194,8 +5318,8 @@ static esp_err_t failsafe_save_handler(httpd_req_t *req)
         return failsafe_json_error(req, "400 Bad Request", "invalid_boot_action");
     }
 
-    if (!http_body_get_value(body, "comm_loss_action", comm_loss_text, sizeof(comm_loss_text)))
-        (void)http_body_get_value(body, "comm_loss_mode", comm_loss_text, sizeof(comm_loss_text));
+    if (!failsafe_body_or_query_value(req, body, "comm_loss_action", comm_loss_text, sizeof(comm_loss_text)))
+        (void)failsafe_body_or_query_value(req, body, "comm_loss_mode", comm_loss_text, sizeof(comm_loss_text));
 
     if (comm_loss_text[0] != '\0' &&
         !failsafe_action_from_code(comm_loss_text, &comm_loss_action))
@@ -5203,26 +5327,26 @@ static esp_err_t failsafe_save_handler(httpd_req_t *req)
         return failsafe_json_error(req, "400 Bad Request", "invalid_comm_loss_action");
     }
 
-    if (http_body_get_value(body, "runtime_fault_action", runtime_fault_text, sizeof(runtime_fault_text)) &&
+    if (failsafe_body_or_query_value(req, body, "runtime_fault_action", runtime_fault_text, sizeof(runtime_fault_text)) &&
         !failsafe_action_from_code(runtime_fault_text, &runtime_fault_action))
     {
         return failsafe_json_error(req, "400 Bad Request", "invalid_runtime_fault_action");
     }
 
-    if (http_body_get_value(body, "safe_value", safe_value_text, sizeof(safe_value_text)) &&
+    if (failsafe_body_or_query_value(req, body, "safe_value", safe_value_text, sizeof(safe_value_text)) &&
         !query_parse_int(safe_value_text, 0, 1, &safe_value))
     {
         return failsafe_json_error(req, "400 Bad Request", "invalid_safe_value");
     }
 
-    if (http_body_get_value(body, "recovery_mode", recovery_text, sizeof(recovery_text)) &&
+    if (failsafe_body_or_query_value(req, body, "recovery_mode", recovery_text, sizeof(recovery_text)) &&
         !failsafe_recovery_from_code(recovery_text, &recovery_mode))
     {
         return failsafe_json_error(req, "400 Bad Request", "invalid_recovery_mode");
     }
     else if (!recovery_text[0] &&
-             (http_body_get_value(body, "manual_rearm", manual_text, sizeof(manual_text)) ||
-              http_body_get_value(body, "manual_reset_required", manual_text, sizeof(manual_text))))
+             (failsafe_body_or_query_value(req, body, "manual_rearm", manual_text, sizeof(manual_text)) ||
+              failsafe_body_or_query_value(req, body, "manual_reset_required", manual_text, sizeof(manual_text))))
     {
         if (!query_parse_int(manual_text, 0, 1, &manual_value))
             return failsafe_json_error(req, "400 Bad Request", "invalid_manual_reset");
@@ -5230,7 +5354,7 @@ static esp_err_t failsafe_save_handler(httpd_req_t *req)
         recovery_mode = manual_value ? FAILSAFE_RECOVERY_MANUAL : FAILSAFE_RECOVERY_AUTO;
     }
 
-    if (!failsafe_set_output_policy((uint16_t)output_id,
+    if (!failsafe_set_output_policy(output_id,
                                     enabled != 0,
                                     boot_action,
                                     comm_loss_action,
@@ -5243,8 +5367,8 @@ static esp_err_t failsafe_save_handler(httpd_req_t *req)
 
     snprintf(audit_detail,
              sizeof(audit_detail),
-             "output=%d enabled=%d boot=%s comm_loss=%s runtime_fault=%s safe=%d recovery=%s",
-             output_id,
+             "output=%u enabled=%d boot=%s comm_loss=%s runtime_fault=%s safe=%d recovery=%s",
+             (unsigned)output_id,
              enabled,
              failsafe_action_to_code(boot_action),
              failsafe_action_to_code(comm_loss_action),
@@ -5260,33 +5384,24 @@ static esp_err_t failsafe_save_handler(httpd_req_t *req)
 static esp_err_t failsafe_rearm_handler(httpd_req_t *req)
 {
     char body[HTTP_BODY_BUFFER_SIZE] = {0};
-    char output_text[16] = {0};
     char audit_detail[64];
-    int output_id = 0;
+    uint16_t output_id = 0U;
 
-    if (!http_auth_require_cap(req, AUTH_CAP_PROFILE_WRITE))
+    if (!http_auth_require_cap_json(req, AUTH_CAP_FAILSAFE_WRITE, false))
         return ESP_OK;
 
     http_set_private_json_headers(req);
 
-    if (req->content_len > 0)
-    {
-        if (!http_read_request_body(req, body, sizeof(body)) ||
-            !http_body_get_value(body, "output_id", output_text, sizeof(output_text)) ||
-            !query_parse_int(output_text, 0, UINT16_MAX, &output_id))
-        {
-            return failsafe_json_error(req, "400 Bad Request", "bad_request");
-        }
-    }
-    else if (!query_get_int(req, "output_id", 0, UINT16_MAX, &output_id))
-    {
-        return failsafe_json_error(req, "400 Bad Request", "bad_request");
-    }
+    if (!http_read_request_body(req, body, sizeof(body)) && req->content_len > 0)
+        return failsafe_json_error(req, "400 Bad Request", "bad_request_body");
 
-    if (!failsafe_rearm((uint16_t)output_id))
+    if (!failsafe_request_output_id(req, body, &output_id))
+        return failsafe_json_error(req, "400 Bad Request", "invalid_or_missing_output_id");
+
+    if (!failsafe_rearm(output_id))
         return failsafe_json_error(req, "404 Not Found", "invalid_output");
 
-    snprintf(audit_detail, sizeof(audit_detail), "output=%d", output_id);
+    snprintf(audit_detail, sizeof(audit_detail), "output=%u", (unsigned)output_id);
     auth_audit_log("failsafe_rearmed", audit_detail);
     http_server_notify_state_change();
     httpd_resp_sendstr(req, "{\"ok\":true}");
@@ -5296,32 +5411,30 @@ static esp_err_t failsafe_rearm_handler(httpd_req_t *req)
 static esp_err_t failsafe_test_handler(httpd_req_t *req)
 {
     char body[HTTP_BODY_BUFFER_SIZE] = {0};
-    char output_text[16] = {0};
     char audit_detail[96];
-    int output_id = 0;
+    uint16_t output_id = 0U;
     int32_t safe_value = 0;
 
-    if (!http_auth_require_cap(req, AUTH_CAP_PROFILE_WRITE))
+    if (!http_auth_require_cap_json(req, AUTH_CAP_FAILSAFE_WRITE, false))
         return ESP_OK;
 
     http_set_private_json_headers(req);
 
-    if (!http_read_request_body(req, body, sizeof(body)) ||
-        !http_body_get_value(body, "output_id", output_text, sizeof(output_text)) ||
-        !query_parse_int(output_text, 0, UINT16_MAX, &output_id))
-    {
-        return failsafe_json_error(req, "400 Bad Request", "bad_request");
-    }
+    if (!http_read_request_body(req, body, sizeof(body)) && req->content_len > 0)
+        return failsafe_json_error(req, "400 Bad Request", "bad_request_body");
 
-    if (!failsafe_trigger_manual_test((uint16_t)output_id, &safe_value))
+    if (!failsafe_request_output_id(req, body, &output_id))
+        return failsafe_json_error(req, "400 Bad Request", "invalid_or_missing_output_id");
+
+    if (!failsafe_trigger_manual_test(output_id, &safe_value))
         return failsafe_json_error(req, "404 Not Found", "invalid_output");
 
-    (void)state_set_int((uint16_t)output_id, safe_value);
+    (void)state_set_int(output_id, safe_value);
 
     snprintf(audit_detail,
              sizeof(audit_detail),
-             "output=%d reason=%s value=%" PRId32,
-             output_id,
+             "output=%u reason=%s value=%" PRId32,
+             (unsigned)output_id,
              failsafe_reason_name(FAILSAFE_REASON_MANUAL_TEST),
              safe_value);
     auth_audit_log("failsafe_test_triggered", audit_detail);
@@ -5736,61 +5849,6 @@ static esp_err_t nodes_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
-static bool query_get_channel_backend(httpd_req_t *req, device_channel_backend_t *out_backend)
-{
-    char backend_text[24] = {0};
-    bool found = false;
-
-    if (!out_backend)
-        return false;
-
-    *out_backend = DEVICE_CHANNEL_BACKEND_GPIO;
-
-    if (!query_get_optional_str(req, "backend", backend_text, sizeof(backend_text), &found))
-        return false;
-
-    if (!found || backend_text[0] == '\0' || strcmp(backend_text, "gpio") == 0)
-    {
-        *out_backend = DEVICE_CHANNEL_BACKEND_GPIO;
-        return true;
-    }
-
-    if (strcmp(backend_text, "mcp23x17") == 0 || strcmp(backend_text, "mcp") == 0)
-    {
-        *out_backend = DEVICE_CHANNEL_BACKEND_MCP23X17;
-        return true;
-    }
-
-    return false;
-}
-
-static bool query_get_binding_address(httpd_req_t *req,
-                                      device_channel_backend_t backend,
-                                      int *gpio,
-                                      int *backend_instance,
-                                      int *endpoint_index)
-{
-    if (!gpio || !backend_instance || !endpoint_index)
-        return false;
-
-    *gpio = -1;
-    *backend_instance = 0;
-    *endpoint_index = 0;
-
-    if (backend == DEVICE_CHANNEL_BACKEND_GPIO)
-    {
-        return query_get_optional_int(req, "gpio", -1, INT16_MAX, gpio, NULL);
-    }
-
-    if (backend == DEVICE_CHANNEL_BACKEND_MCP23X17)
-    {
-        return query_get_optional_int(req, "backend_instance", 0, INT16_MAX, backend_instance, NULL) &&
-               query_get_optional_int(req, "endpoint_index", 0, INT16_MAX, endpoint_index, NULL);
-    }
-
-    return false;
-}
-
 static esp_err_t respond_binding_result(httpd_req_t *req, io_binding_result_t result)
 {
     switch (result)
@@ -5823,26 +5881,6 @@ static esp_err_t respond_binding_result(httpd_req_t *req, io_binding_result_t re
             httpd_resp_sendstr(req, "PROTECTED_SLOT");
             return ESP_FAIL;
 
-        case IO_BINDING_RESULT_INVALID_BACKEND:
-            httpd_resp_set_status(req, "409 Conflict");
-            httpd_resp_sendstr(req, "INVALID_BACKEND");
-            return ESP_FAIL;
-
-        case IO_BINDING_RESULT_UNSUPPORTED_BACKEND:
-            httpd_resp_set_status(req, "409 Conflict");
-            httpd_resp_sendstr(req, "UNSUPPORTED_BACKEND");
-            return ESP_FAIL;
-
-        case IO_BINDING_RESULT_INVALID_ENDPOINT:
-            httpd_resp_set_status(req, "409 Conflict");
-            httpd_resp_sendstr(req, "INVALID_ENDPOINT");
-            return ESP_FAIL;
-
-        case IO_BINDING_RESULT_ADDRESS_CONFLICT:
-            httpd_resp_set_status(req, "409 Conflict");
-            httpd_resp_sendstr(req, "ADDRESS_CONFLICT");
-            return ESP_FAIL;
-
         case IO_BINDING_RESULT_NOT_FOUND:
         default:
             httpd_resp_set_status(req, "404 Not Found");
@@ -5855,9 +5893,6 @@ static esp_err_t output_config_handler(httpd_req_t *req)
 {
     int id = 0;
     int gpio = -1;
-    int backend_instance = 0;
-    int endpoint_index = 0;
-    device_channel_backend_t backend = DEVICE_CHANNEL_BACKEND_GPIO;
     char name[IO_BINDING_NAME_LEN] = {0};
     char role[IO_BINDING_ROLE_LEN] = {0};
     io_binding_result_t result;
@@ -5871,20 +5906,19 @@ static esp_err_t output_config_handler(httpd_req_t *req)
     if (!query_get_int(req, "id", 0, UINT16_MAX, &id) ||
         !query_get_optional_str(req, "name", name, sizeof(name), NULL) ||
         !query_get_optional_str(req, "role", role, sizeof(role), NULL) ||
-        !query_get_channel_backend(req, &backend) ||
-        !query_get_binding_address(req, backend, &gpio, &backend_instance, &endpoint_index))
+        !query_get_optional_int(req, "gpio", -1, INT16_MAX, &gpio, NULL))
     {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_sendstr(req, "BAD_REQUEST");
         return ESP_OK;
     }
 
-    result = io_binding_set_output_ex((uint16_t)id, name, role, backend, gpio, backend_instance, endpoint_index);
+    result = io_binding_set_output((uint16_t)id, name, role, gpio);
 
     if (respond_binding_result(req, result) != ESP_OK)
         return ESP_OK;
 
-    snprintf(audit_detail, sizeof(audit_detail), "output=%d backend=%s address=%d:%d gpio=%d name=%s", id, io_binding_backend_code(backend), backend_instance, endpoint_index, gpio, name[0] ? name : "-");
+    snprintf(audit_detail, sizeof(audit_detail), "output=%d gpio=%d name=%s", id, gpio, name[0] ? name : "-");
     auth_audit_log("output_config_updated", audit_detail);
     http_server_notify_state_change();
     httpd_resp_sendstr(req, "SAVED");
@@ -5895,9 +5929,6 @@ static esp_err_t input_config_handler(httpd_req_t *req)
 {
     int id = 0;
     int gpio = -1;
-    int backend_instance = 0;
-    int endpoint_index = 0;
-    device_channel_backend_t backend = DEVICE_CHANNEL_BACKEND_GPIO;
     char name[IO_BINDING_NAME_LEN] = {0};
     char role[IO_BINDING_ROLE_LEN] = {0};
     io_binding_result_t result;
@@ -5911,20 +5942,19 @@ static esp_err_t input_config_handler(httpd_req_t *req)
     if (!query_get_int(req, "id", 0, UINT16_MAX, &id) ||
         !query_get_optional_str(req, "name", name, sizeof(name), NULL) ||
         !query_get_optional_str(req, "role", role, sizeof(role), NULL) ||
-        !query_get_channel_backend(req, &backend) ||
-        !query_get_binding_address(req, backend, &gpio, &backend_instance, &endpoint_index))
+        !query_get_optional_int(req, "gpio", -1, INT16_MAX, &gpio, NULL))
     {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_sendstr(req, "BAD_REQUEST");
         return ESP_OK;
     }
 
-    result = io_binding_set_input_ex((uint16_t)id, name, role, backend, gpio, backend_instance, endpoint_index);
+    result = io_binding_set_input((uint16_t)id, name, role, gpio);
 
     if (respond_binding_result(req, result) != ESP_OK)
         return ESP_OK;
 
-    snprintf(audit_detail, sizeof(audit_detail), "input=%d backend=%s address=%d:%d gpio=%d name=%s", id, io_binding_backend_code(backend), backend_instance, endpoint_index, gpio, name[0] ? name : "-");
+    snprintf(audit_detail, sizeof(audit_detail), "input=%d gpio=%d name=%s", id, gpio, name[0] ? name : "-");
     auth_audit_log("input_config_updated", audit_detail);
     http_server_notify_state_change();
     httpd_resp_sendstr(req, "SAVED");
@@ -5991,9 +6021,6 @@ static esp_err_t input_add_handler(httpd_req_t *req)
 {
     int id = 0;
     int gpio = -1;
-    int backend_instance = 0;
-    int endpoint_index = 0;
-    device_channel_backend_t backend = DEVICE_CHANNEL_BACKEND_GPIO;
     char name[IO_BINDING_NAME_LEN] = {0};
     char role[IO_BINDING_ROLE_LEN] = {0};
     io_binding_result_t result;
@@ -6005,22 +6032,21 @@ static esp_err_t input_add_handler(httpd_req_t *req)
     http_set_private_text_headers(req);
 
     if (!query_get_int(req, "id", 0, UINT16_MAX, &id) ||
+        !query_get_int(req, "gpio", 0, INT16_MAX, &gpio) ||
         !query_get_optional_str(req, "name", name, sizeof(name), NULL) ||
-        !query_get_optional_str(req, "role", role, sizeof(role), NULL) ||
-        !query_get_channel_backend(req, &backend) ||
-        !query_get_binding_address(req, backend, &gpio, &backend_instance, &endpoint_index))
+        !query_get_optional_str(req, "role", role, sizeof(role), NULL))
     {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_sendstr(req, "BAD_REQUEST");
         return ESP_OK;
     }
 
-    result = io_binding_add_input_ex((uint16_t)id, name, role, backend, gpio, backend_instance, endpoint_index);
+    result = io_binding_add_input((uint16_t)id, name, role, gpio);
 
     if (respond_binding_result(req, result) != ESP_OK)
         return ESP_OK;
 
-    snprintf(audit_detail, sizeof(audit_detail), "input=%d backend=%s address=%d:%d gpio=%d", id, io_binding_backend_code(backend), backend_instance, endpoint_index, gpio);
+    snprintf(audit_detail, sizeof(audit_detail), "input=%d gpio=%d", id, gpio);
     auth_audit_log("input_added", audit_detail);
     http_server_notify_state_change();
     httpd_resp_sendstr(req, "ADDED");
@@ -6031,9 +6057,6 @@ static esp_err_t output_add_handler(httpd_req_t *req)
 {
     int id = 0;
     int gpio = -1;
-    int backend_instance = 0;
-    int endpoint_index = 0;
-    device_channel_backend_t backend = DEVICE_CHANNEL_BACKEND_GPIO;
     char name[IO_BINDING_NAME_LEN] = {0};
     char role[IO_BINDING_ROLE_LEN] = {0};
     io_binding_result_t result;
@@ -6045,23 +6068,21 @@ static esp_err_t output_add_handler(httpd_req_t *req)
     http_set_private_text_headers(req);
 
     if (!query_get_int(req, "id", 0, UINT16_MAX, &id) ||
+        !query_get_int(req, "gpio", 0, INT16_MAX, &gpio) ||
         !query_get_optional_str(req, "name", name, sizeof(name), NULL) ||
-        !query_get_optional_str(req, "role", role, sizeof(role), NULL) ||
-        !query_get_channel_backend(req, &backend) ||
-        !query_get_binding_address(req, backend, &gpio, &backend_instance, &endpoint_index))
+        !query_get_optional_str(req, "role", role, sizeof(role), NULL))
     {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_sendstr(req, "BAD_REQUEST");
         return ESP_OK;
     }
 
-    result = io_binding_add_output_ex((uint16_t)id, name, role, backend, gpio, backend_instance, endpoint_index);
+    result = io_binding_add_output((uint16_t)id, name, role, gpio);
 
     if (respond_binding_result(req, result) != ESP_OK)
         return ESP_OK;
 
-    (void)failsafe_sync_outputs();
-    snprintf(audit_detail, sizeof(audit_detail), "output=%d backend=%s address=%d:%d gpio=%d", id, io_binding_backend_code(backend), backend_instance, endpoint_index, gpio);
+    snprintf(audit_detail, sizeof(audit_detail), "output=%d gpio=%d", id, gpio);
     auth_audit_log("output_added", audit_detail);
     http_server_notify_state_change();
     httpd_resp_sendstr(req, "ADDED");
@@ -6118,7 +6139,6 @@ static esp_err_t output_remove_handler(httpd_req_t *req)
     if (respond_binding_result(req, result) != ESP_OK)
         return ESP_OK;
 
-    (void)failsafe_sync_outputs();
     auth_audit_log("output_removed", "binding-removed");
     http_server_notify_state_change();
     httpd_resp_sendstr(req, "REMOVED");

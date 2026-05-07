@@ -35,6 +35,7 @@ typedef enum
     AUTH_CAP_REBOOT_RECOVERY = 1U << 6,
     AUTH_CAP_RUNTIME_DIAGNOSTICS = 1U << 7,
     AUTH_CAP_SECURITY_ADMIN = 1U << 8,
+    AUTH_CAP_FAILSAFE_WRITE = 1U << 9,
 } auth_capability_t;
 
 typedef struct
