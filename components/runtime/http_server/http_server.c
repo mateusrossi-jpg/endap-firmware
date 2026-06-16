@@ -101,24 +101,24 @@ static int ws_count = 0;
 static volatile bool ws_broadcast_pending = false;
 static uint64_t ws_last_periodic_us = 0;
 static portMUX_TYPE ws_lock = portMUX_INITIALIZER_UNLOCKED;
-static char automation_json_buffer[AUTOMATION_JSON_BUFFER_SIZE];
-static char profile_json_buffer[PROFILE_JSON_BUFFER_SIZE];
-static char public_profile_json_buffer[PUBLIC_PROFILE_JSON_BUFFER_SIZE];
-static char nodes_json_buffer[NODES_JSON_BUFFER_SIZE];
-static char network_preview_json_buffer[NETWORK_PREVIEW_JSON_BUFFER_SIZE];
-static char status_json_buffer[STATUS_JSON_BUFFER_SIZE];
-static char ws_status_json_buffer[STATUS_JSON_BUFFER_SIZE];
+static char *automation_json_buffer = NULL;
+static char *profile_json_buffer = NULL;
+static char *public_profile_json_buffer = NULL;
+static char *nodes_json_buffer = NULL;
+static char *network_preview_json_buffer = NULL;
+static char *status_json_buffer = NULL;
+static char *ws_status_json_buffer = NULL;
 static uint32_t status_prev_deadline_miss = 0;
 static uint64_t status_prev_uptime_ms = 0;
 static char wifi_status_json_buffer[512];
-static char wifi_scan_json_buffer[WIFI_SCAN_JSON_BUFFER_SIZE];
-static automation_node_t automation_rules_snapshot[AUTOMATION_ENGINE_MAX_NODES];
-static automation_rule_diag_t automation_diag_snapshot[AUTOMATION_ENGINE_MAX_NODES];
-static io_binding_input_view_t input_profile_snapshot[IO_BINDING_MAX_INPUTS];
-static io_binding_output_view_t output_profile_snapshot[IO_BINDING_MAX_OUTPUTS];
-static io_binding_output_view_t status_output_snapshot[IO_BINDING_MAX_OUTPUTS];
-static io_driver_input_diag_t status_input_diag_snapshot[STATUS_IO_MAX_CHANNELS];
-static failsafe_output_status_t failsafe_status_snapshot[FAILSAFE_MAX_OUTPUTS];
+static char *wifi_scan_json_buffer = NULL;
+static automation_node_t *automation_rules_snapshot = NULL;
+static automation_rule_diag_t *automation_diag_snapshot = NULL;
+static io_binding_input_view_t *input_profile_snapshot = NULL;
+static io_binding_output_view_t *output_profile_snapshot = NULL;
+static io_binding_output_view_t *status_output_snapshot = NULL;
+static io_driver_input_diag_t *status_input_diag_snapshot = NULL;
+static failsafe_output_status_t *failsafe_status_snapshot = NULL;
 
 #define WS_PERIODIC_INTERVAL_US (1000ULL * 1000ULL)
 
@@ -803,6 +803,15 @@ static esp_err_t redirect_to_dash(httpd_req_t *req)
     return ESP_OK;
 }
 
+static esp_err_t redirect_to_dash_err(httpd_req_t *req, httpd_err_code_t err)
+{
+    http_set_common_security_headers(req);
+    httpd_resp_set_status(req, "302 Found");
+    httpd_resp_set_hdr(req, "Location", "/dash");
+    httpd_resp_sendstr(req, "");
+    return ESP_OK;
+}
+
 static esp_err_t no_content_handler(httpd_req_t *req)
 {
     http_set_common_security_headers(req);
@@ -1326,6 +1335,57 @@ static bool installation_map_upsert(uint32_t node_id,
     return installation_map_save();
 }
 
+static bool installation_map_replace_node(uint32_t old_id, uint32_t new_id)
+{
+    bool changed = false;
+    for (size_t i = 0; i < installation_map_blob.count; i++)
+    {
+        if (installation_map_blob.entries[i].node_id == old_id)
+        {
+            installation_map_blob.entries[i].node_id = new_id;
+            changed = true;
+        }
+    }
+    if (changed)
+        return installation_map_save();
+    return true;
+}
+
+static bool installation_map_clone_node(uint32_t old_id, uint32_t new_id)
+{
+    size_t new_count = installation_map_blob.count;
+    bool changed = false;
+    
+    size_t original_count = installation_map_blob.count;
+    for (size_t i = 0; i < original_count; i++)
+    {
+        if (installation_map_blob.entries[i].node_id == old_id)
+        {
+            if (new_count >= INSTALLATION_MAP_MAX_ENTRIES)
+                break;
+                
+            installation_map_entry_t *new_entry = &installation_map_blob.entries[new_count++];
+            *new_entry = installation_map_blob.entries[i];
+            new_entry->node_id = new_id;
+            new_entry->global_code[0] = '\0';
+            
+            if (new_entry->alias[0] != '\0')
+            {
+                char old_alias[INSTALLATION_MAP_ALIAS_LEN];
+                snprintf(old_alias, sizeof(old_alias), "%s", new_entry->alias);
+                snprintf(new_entry->alias, sizeof(new_entry->alias), "%.28s (Cópia)", old_alias);
+            }
+            changed = true;
+        }
+    }
+    if (changed)
+    {
+        installation_map_blob.count = new_count;
+        return installation_map_save();
+    }
+    return true;
+}
+
 static bool append_installation_map_entries(char *buf, size_t buf_size, size_t *offset)
 {
     if (!append_text(buf, buf_size, offset, "["))
@@ -1745,7 +1805,7 @@ static bool append_reserved_gpio_array_preview(char *buf,
 
 static void installation_local_code(bool input, int local_index, char out_code[INSTALLATION_MAP_LOCAL_CODE_LEN])
 {
-    snprintf(out_code, INSTALLATION_MAP_LOCAL_CODE_LEN, "%s%d", input ? "IN" : "OUT", local_index);
+    snprintf(out_code, INSTALLATION_MAP_LOCAL_CODE_LEN, "%s%u", input ? "IN" : "OUT", (unsigned)(local_index & 0xFFFF));
 }
 
 static bool append_available_slot_array(char *buf, size_t buf_size, size_t *offset, bool inputs)
@@ -2184,7 +2244,7 @@ static bool append_capability_resolution_object(char *buf,
                        offset,
                        "},\"profile\":{\"input_slot_capacity\":%d,\"output_slot_capacity\":%d},"
                        "\"active_config\":{\"active_input_count\":%d,\"active_output_count\":%d,"
-                       "\"wifi_enabled\":%u,\"ethernet_enabled\":%u,\"rs485_enabled\":%u},"
+                       "\"wifi_enabled\":%u,\"ethernet_enabled\":%u,\"rs485_enabled\":%u,\"wifi_mode\":%d},"
                        "\"effective_rule\":",
                        device_profile_input_count(),
                        device_profile_output_count(),
@@ -2192,7 +2252,8 @@ static bool append_capability_resolution_object(char *buf,
                        output_count,
                        (network && network->wifi_enabled) ? 1U : 0U,
                        (network && network->ethernet_enabled) ? 1U : 0U,
-                       (network && network->rs485_enabled) ? 1U : 0U))
+                       (network && network->rs485_enabled) ? 1U : 0U,
+                       (network) ? (int)network->wifi_mode : 0))
     {
         return false;
     }
@@ -4243,14 +4304,16 @@ static size_t build_profile_json(char *buf, size_t buf_size)
     if (!append_format(buf,
                        buf_size,
                        &offset,
-                       "\"wifi_supported\":%u,\"wifi_enabled\":%u,\"ethernet_supported\":%u,\"ethernet_enabled\":%u,\"rs485_supported\":%u,\"rs485_enabled\":%u,\"ethernet_configured\":%u,\"ethernet_mode\":",
+                       "\"wifi_supported\":%u,\"wifi_enabled\":%u,\"ethernet_supported\":%u,\"ethernet_enabled\":%u,\"rs485_supported\":%u,\"rs485_enabled\":%u,\"ethernet_configured\":%u,\"wifi_mode\":%u,\"ethernet_mode\":%u,\"label\":",
                        (network && network->wifi_supported) ? 1U : 0U,
                        (network && network->wifi_enabled) ? 1U : 0U,
                        (network && network->ethernet_supported) ? 1U : 0U,
                        (network && network->ethernet_enabled) ? 1U : 0U,
                        (network && network->rs485_supported) ? 1U : 0U,
                        (network && network->rs485_enabled) ? 1U : 0U,
-                       ethernet_configured ? 1U : 0U))
+                       ethernet_configured ? 1U : 0U,
+                       (network) ? (uint32_t)network->wifi_mode : 0U,
+                       (network) ? (uint32_t)network->ethernet_mode : 0U))
         return offset;
 
     if (!append_json_string(buf, buf_size, &offset, (network && network->label) ? network->label : ""))
@@ -4451,7 +4514,7 @@ static size_t build_public_profile_json(char *buf, size_t buf_size)
 
 static esp_err_t public_profile_handler(httpd_req_t *req)
 {
-    size_t len = build_public_profile_json(public_profile_json_buffer, sizeof(public_profile_json_buffer));
+    size_t len = build_public_profile_json(public_profile_json_buffer, PUBLIC_PROFILE_JSON_BUFFER_SIZE);
 
     http_set_public_json_headers(req);
 
@@ -4640,7 +4703,7 @@ static size_t build_wifi_scan_json(char *buf, size_t buf_size)
 
 static esp_err_t wifi_scan_handler(httpd_req_t *req)
 {
-    size_t len = build_wifi_scan_json(wifi_scan_json_buffer, sizeof(wifi_scan_json_buffer));
+    size_t len = build_wifi_scan_json(wifi_scan_json_buffer, WIFI_SCAN_JSON_BUFFER_SIZE);
 
     if (!http_auth_require_cap(req, AUTH_CAP_TRANSPORT_WRITE))
         return ESP_OK;
@@ -4877,7 +4940,7 @@ void http_ws_broadcast_state(void)
     memcpy(clients, ws_clients, sizeof(int) * (size_t)client_count);
     portEXIT_CRITICAL(&ws_lock);
 
-    size_t msg_len = build_status_json(ws_status_json_buffer, sizeof(ws_status_json_buffer));
+    size_t msg_len = build_status_json(ws_status_json_buffer, STATUS_JSON_BUFFER_SIZE);
 
     httpd_ws_frame_t frame = {
         .type = HTTPD_WS_TYPE_TEXT,
@@ -5088,7 +5151,7 @@ static esp_err_t status_handler(httpd_req_t *req)
         return ESP_OK;
 
     http_set_private_json_headers(req);
-    len = build_status_json(status_json_buffer, sizeof(status_json_buffer));
+    len = build_status_json(status_json_buffer, STATUS_JSON_BUFFER_SIZE);
 
     if (len == 0U)
         httpd_resp_send(req, "{}", 2);
@@ -5103,7 +5166,7 @@ static esp_err_t public_status_handler(httpd_req_t *req)
     size_t len;
 
     http_set_public_json_headers(req);
-    len = build_public_status_json(status_json_buffer, sizeof(status_json_buffer));
+    len = build_public_status_json(status_json_buffer, STATUS_JSON_BUFFER_SIZE);
 
     if (len == 0U)
         httpd_resp_send(req, "{}", 2);
@@ -5462,7 +5525,7 @@ static esp_err_t wifi_status_handler(httpd_req_t *req)
 
 static esp_err_t profile_handler(httpd_req_t *req)
 {
-    size_t len = build_profile_json(profile_json_buffer, sizeof(profile_json_buffer));
+    size_t len = build_profile_json(profile_json_buffer, PROFILE_JSON_BUFFER_SIZE);
 
     if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
         return ESP_OK;
@@ -5587,9 +5650,11 @@ static esp_err_t network_config_handler(httpd_req_t *req)
     int wifi_enabled = 0;
     int ethernet_enabled = 0;
     int rs485_enabled = 0;
+    int wifi_mode = 0;
     bool wifi_found = false;
     bool ethernet_found = false;
     bool rs485_found = false;
+    bool wifi_mode_found = false;
     char audit_detail[96];
 
     if (!http_auth_require_cap(req, AUTH_CAP_TRANSPORT_WRITE))
@@ -5600,7 +5665,8 @@ static esp_err_t network_config_handler(httpd_req_t *req)
     if (!network ||
         !query_get_optional_int(req, "wifi_enabled", 0, 1, &wifi_enabled, &wifi_found) ||
         !query_get_optional_int(req, "ethernet_enabled", 0, 1, &ethernet_enabled, &ethernet_found) ||
-        !query_get_optional_int(req, "rs485_enabled", 0, 1, &rs485_enabled, &rs485_found))
+        !query_get_optional_int(req, "rs485_enabled", 0, 1, &rs485_enabled, &rs485_found) ||
+        !query_get_optional_int(req, "wifi_mode", 0, 2, &wifi_mode, &wifi_mode_found))
     {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_sendstr(req, "BAD_REQUEST");
@@ -5623,9 +5689,13 @@ static esp_err_t network_config_handler(httpd_req_t *req)
     if (!rs485_found)
         rs485_enabled = network->rs485_enabled ? 1 : 0;
 
+    if (!wifi_mode_found)
+        wifi_mode = (int)network->wifi_mode;
+
     result = device_profile_set_network_enabled(wifi_enabled != 0,
                                                 ethernet_enabled != 0,
-                                                rs485_enabled != 0);
+                                                rs485_enabled != 0,
+                                                (device_profile_wifi_mode_t)wifi_mode);
     if (result == DEVICE_PROFILE_NETWORK_CONFIG_UNSUPPORTED)
     {
         httpd_resp_set_status(req, "409 Conflict");
@@ -5687,7 +5757,7 @@ static esp_err_t network_preview_handler(httpd_req_t *req)
         rs485_enabled = network->rs485_enabled ? 1 : 0;
 
     len = build_network_preview_json(network_preview_json_buffer,
-                                     sizeof(network_preview_json_buffer),
+                                     NETWORK_PREVIEW_JSON_BUFFER_SIZE,
                                      wifi_enabled != 0,
                                      ethernet_enabled != 0,
                                      rs485_enabled != 0);
@@ -5834,7 +5904,7 @@ static esp_err_t recovery_handler(httpd_req_t *req)
 
 static esp_err_t nodes_handler(httpd_req_t *req)
 {
-    size_t len = build_nodes_json(nodes_json_buffer, sizeof(nodes_json_buffer));
+    size_t len = build_nodes_json(nodes_json_buffer, NODES_JSON_BUFFER_SIZE);
 
     if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
         return ESP_OK;
@@ -6248,6 +6318,156 @@ static esp_err_t node_adopt_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+static esp_err_t nodes_template_apply_handler(httpd_req_t *req)
+{
+    char body[HTTP_BODY_BUFFER_SIZE] = {0};
+    char node_id_text[24] = {0};
+    char template_name[NODE_REGISTRY_TEMPLATE_LEN] = {0};
+    char profile[NODE_REGISTRY_PROFILE_LEN] = {0};
+    uint32_t node_id = 0U;
+
+    if (!http_auth_require_cap(req, AUTH_CAP_NODE_ADMISSION))
+        return ESP_OK;
+
+    http_set_private_json_headers(req);
+
+    if (!http_read_request_body(req, body, sizeof(body)) ||
+        !http_body_get_value(body, "id", node_id_text, sizeof(node_id_text)) ||
+        !http_body_get_value(body, "template", template_name, sizeof(template_name)))
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"bad_request\"}");
+        return ESP_OK;
+    }
+
+    node_id = (uint32_t)strtoul(node_id_text, NULL, 10);
+    if (node_id == 0U)
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"invalid_node\"}");
+        return ESP_OK;
+    }
+
+    if (strcmp(template_name, "relay-node") == 0) {
+        strcpy(profile, "relay-node");
+        installation_map_upsert(node_id, 1, 0, "Q0", "", "Relé 1", "", "", 0, "", "");
+        installation_map_upsert(node_id, 1, 1, "Q1", "", "Relé 2", "", "", 0, "", "");
+    } else if (strcmp(template_name, "sensor-node") == 0) {
+        strcpy(profile, "sensor-node");
+        installation_map_upsert(node_id, 0, 0, "I0", "", "Sensor Principal", "", "", 0, "", "");
+    } else {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"invalid_template\"}");
+        return ESP_OK;
+    }
+
+    installation_map_save();
+    
+    if (!node_registry_configure(node_id, profile, template_name))
+    {
+        httpd_resp_set_status(req, "500 Internal Server Error");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"registry_error\"}");
+        return ESP_OK;
+    }
+
+    auth_audit_log("template_applied", template_name);
+
+    httpd_resp_sendstr(req, "{\"ok\":true}");
+    return ESP_OK;
+}
+
+static esp_err_t nodes_replace_handler(httpd_req_t *req)
+{
+    char body[HTTP_BODY_BUFFER_SIZE] = {0};
+    char old_id_text[24] = {0};
+    char new_id_text[24] = {0};
+    uint32_t old_id = 0U;
+    uint32_t new_id = 0U;
+
+    if (!http_auth_require_cap(req, AUTH_CAP_NODE_ADMISSION))
+        return ESP_OK;
+
+    http_set_private_json_headers(req);
+
+    if (!http_read_request_body(req, body, sizeof(body)) ||
+        !http_body_get_value(body, "old_id", old_id_text, sizeof(old_id_text)) ||
+        !http_body_get_value(body, "new_id", new_id_text, sizeof(new_id_text)))
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"bad_request\"}");
+        return ESP_OK;
+    }
+
+    old_id = (uint32_t)strtoul(old_id_text, NULL, 10);
+    new_id = (uint32_t)strtoul(new_id_text, NULL, 10);
+
+    if (old_id == 0U || new_id == 0U || old_id == new_id)
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"invalid_nodes\"}");
+        return ESP_OK;
+    }
+
+    if (!node_registry_replace(old_id, new_id))
+    {
+        httpd_resp_set_status(req, "500 Internal Server Error");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"registry_error\"}");
+        return ESP_OK;
+    }
+
+    installation_map_replace_node(old_id, new_id);
+
+    auth_audit_log("node_replaced", new_id_text);
+
+    httpd_resp_sendstr(req, "{\"ok\":true}");
+    return ESP_OK;
+}
+
+static esp_err_t nodes_clone_handler(httpd_req_t *req)
+{
+    char body[HTTP_BODY_BUFFER_SIZE] = {0};
+    char old_id_text[24] = {0};
+    char new_id_text[24] = {0};
+    uint32_t old_id = 0U;
+    uint32_t new_id = 0U;
+
+    if (!http_auth_require_cap(req, AUTH_CAP_NODE_ADMISSION))
+        return ESP_OK;
+
+    http_set_private_json_headers(req);
+
+    if (!http_read_request_body(req, body, sizeof(body)) ||
+        !http_body_get_value(body, "old_id", old_id_text, sizeof(old_id_text)) ||
+        !http_body_get_value(body, "new_id", new_id_text, sizeof(new_id_text)))
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"bad_request\"}");
+        return ESP_OK;
+    }
+
+    old_id = (uint32_t)strtoul(old_id_text, NULL, 10);
+    new_id = (uint32_t)strtoul(new_id_text, NULL, 10);
+
+    if (old_id == 0U || new_id == 0U || old_id == new_id)
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"invalid_nodes\"}");
+        return ESP_OK;
+    }
+
+    if (!installation_map_clone_node(old_id, new_id))
+    {
+        httpd_resp_set_status(req, "500 Internal Server Error");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"installation_map_error\"}");
+        return ESP_OK;
+    }
+
+    auth_audit_log("node_cloned", new_id_text);
+
+    httpd_resp_sendstr(req, "{\"ok\":true}");
+    return ESP_OK;
+}
+
 static esp_err_t node_configure_handler(httpd_req_t *req)
 {
     uint32_t id = 0U;
@@ -6407,7 +6627,7 @@ static esp_err_t kernel_load_handler(httpd_req_t *req)
 
 static esp_err_t automation_list_handler(httpd_req_t *req)
 {
-    size_t len = build_automation_json(automation_json_buffer, sizeof(automation_json_buffer));
+    size_t len = build_automation_json(automation_json_buffer, AUTOMATION_JSON_BUFFER_SIZE);
 
     if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
         return ESP_OK;
@@ -6582,6 +6802,22 @@ static esp_err_t automation_clear_handler(httpd_req_t *req)
 
 void http_server_start(void)
 {
+    if (!automation_json_buffer) automation_json_buffer = malloc(AUTOMATION_JSON_BUFFER_SIZE);
+    if (!profile_json_buffer) profile_json_buffer = malloc(PROFILE_JSON_BUFFER_SIZE);
+    if (!public_profile_json_buffer) public_profile_json_buffer = malloc(PUBLIC_PROFILE_JSON_BUFFER_SIZE);
+    if (!nodes_json_buffer) nodes_json_buffer = malloc(NODES_JSON_BUFFER_SIZE);
+    if (!network_preview_json_buffer) network_preview_json_buffer = malloc(NETWORK_PREVIEW_JSON_BUFFER_SIZE);
+    if (!status_json_buffer) status_json_buffer = malloc(STATUS_JSON_BUFFER_SIZE);
+    if (!ws_status_json_buffer) ws_status_json_buffer = malloc(STATUS_JSON_BUFFER_SIZE);
+    if (!wifi_scan_json_buffer) wifi_scan_json_buffer = malloc(WIFI_SCAN_JSON_BUFFER_SIZE);
+    if (!automation_rules_snapshot) automation_rules_snapshot = malloc(sizeof(automation_node_t) * AUTOMATION_ENGINE_MAX_NODES);
+    if (!automation_diag_snapshot) automation_diag_snapshot = malloc(sizeof(automation_rule_diag_t) * AUTOMATION_ENGINE_MAX_NODES);
+    if (!input_profile_snapshot) input_profile_snapshot = malloc(sizeof(io_binding_input_view_t) * IO_BINDING_MAX_INPUTS);
+    if (!output_profile_snapshot) output_profile_snapshot = malloc(sizeof(io_binding_output_view_t) * IO_BINDING_MAX_OUTPUTS);
+    if (!status_output_snapshot) status_output_snapshot = malloc(sizeof(io_binding_output_view_t) * IO_BINDING_MAX_OUTPUTS);
+    if (!status_input_diag_snapshot) status_input_diag_snapshot = malloc(sizeof(io_driver_input_diag_t) * STATUS_IO_MAX_CHANNELS);
+    if (!failsafe_status_snapshot) failsafe_status_snapshot = malloc(sizeof(failsafe_output_status_t) * FAILSAFE_MAX_OUTPUTS);
+
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     /* O projeto usa um teto global enxuto de sockets no lwIP.
        O default do esp_http_server (7 clientes + 3 internos) consome
@@ -6706,6 +6942,15 @@ void http_server_start(void)
             .uri = "/api/nodes/configure", .method = HTTP_GET, .handler = node_configure_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/nodes/template/apply", .method = HTTP_POST, .handler = nodes_template_apply_handler });
+
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/nodes/replace", .method = HTTP_POST, .handler = nodes_replace_handler });
+
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/nodes/clone", .method = HTTP_POST, .handler = nodes_clone_handler });
+
+        httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/nodes/activate", .method = HTTP_GET, .handler = node_activate_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
@@ -6794,6 +7039,9 @@ void http_server_start(void)
 
         /* DASHBOARD */
         dashboard_register(server);
+
+        /* CATCH-ALL PARA CAPTIVE PORTAL NO iOS/ANDROID */
+        httpd_register_err_handler(server, HTTPD_404_NOT_FOUND, redirect_to_dash_err);
 
         ESP_LOGI(TAG, "HTTP SERVER FINAL (CAPTIVE + DASH)");
     }
