@@ -18,6 +18,7 @@
 #include "phase_load_test.h"
 #include "phase_monitor.h"
 #include "io_driver.h"
+#include "pve.h"
 #include "input_learning.h"
 #include "device_profile.h"
 #include "failsafe.h"
@@ -199,6 +200,7 @@ static esp_err_t failsafe_save_handler(httpd_req_t *req);
 static esp_err_t failsafe_rearm_handler(httpd_req_t *req);
 static esp_err_t failsafe_test_handler(httpd_req_t *req);
 static esp_err_t public_status_handler(httpd_req_t *req);
+static esp_err_t io_map_handler(httpd_req_t *req);
 static bool installation_map_save(void);
 
 static bool network_transport_wifi_enabled(const device_network_profile_t *network)
@@ -897,6 +899,7 @@ static esp_err_t auth_logout_handler(httpd_req_t *req)
 
 static esp_err_t auth_bootstrap_handler(httpd_req_t *req)
 {
+    ESP_LOGW(TAG, "====> AUTH BOOTSTRAP HANDLER CALLED <====");
     char body[HTTP_BODY_BUFFER_SIZE] = {0};
     char username[AUTH_USERNAME_LEN + 1] = {0};
     char password[HTTP_BODY_BUFFER_SIZE] = {0};
@@ -5540,6 +5543,336 @@ static esp_err_t profile_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+static esp_err_t io_map_handler(httpd_req_t *req)
+{
+    if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
+        return ESP_OK;
+
+    http_set_private_json_headers(req);
+
+    io_binding_input_view_t *inputs = malloc(sizeof(io_binding_input_view_t) * IO_BINDING_MAX_INPUTS);
+    io_binding_output_view_t *outputs = malloc(sizeof(io_binding_output_view_t) * IO_BINDING_MAX_OUTPUTS);
+    if (!inputs || !outputs)
+    {
+        free(inputs);
+        free(outputs);
+        httpd_resp_set_status(req, "500 Internal Server Error");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"no_memory\"}");
+        return ESP_OK;
+    }
+
+    int input_count = io_binding_export_inputs(inputs, IO_BINDING_MAX_INPUTS);
+    int output_count = io_binding_export_outputs(outputs, IO_BINDING_MAX_OUTPUTS);
+
+    size_t buf_size = 8192;
+    char *buf = malloc(buf_size);
+    if (!buf)
+    {
+        free(inputs);
+        free(outputs);
+        httpd_resp_set_status(req, "500 Internal Server Error");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"no_memory\"}");
+        return ESP_OK;
+    }
+
+    size_t offset = 0;
+    offset += (size_t)snprintf(buf + offset, buf_size - offset, "{\"inputs\":[");
+
+    for (int i = 0; i < input_count; i++)
+    {
+        int32_t val = 0;
+        (void)state_get_int(inputs[i].id, &val);
+
+        const char *type_str = (inputs[i].channel_class == DEVICE_CHANNEL_CLASS_ANALOG_INPUT) ? "analog_input" : "digital_input";
+        const char *prof_str = (inputs[i].backend == DEVICE_CHANNEL_BACKEND_MCP23X17) ? "mcp23x17" : "gpio";
+
+        if (i > 0)
+            offset += (size_t)snprintf(buf + offset, buf_size - offset, ",");
+        offset += (size_t)snprintf(buf + offset, buf_size - offset,
+            "{\"channel_id\":%u,\"name\":\"IN%d\",\"type\":\"%s\",\"gpio\":%d,\"profile\":\"%s\",\"state\":%" PRId32 ",\"implemented\":true}",
+            (unsigned int)inputs[i].id, i + 1, type_str, inputs[i].gpio, prof_str, val);
+    }
+
+    for (int i = 0; i < 2; i++)
+    {
+        int32_t val = 0;
+        (void)state_get_int(12 + i, &val);
+
+        offset += (size_t)snprintf(buf + offset, buf_size - offset,
+            ",{\"channel_id\":%u,\"name\":\"AIN%d\",\"type\":\"analog_input\",\"gpio\":%d,\"profile\":\"adc\",\"value\":%" PRId32 ",\"implemented\":true}",
+            (unsigned int)(12 + i), i + 1, 34 + i, val);
+    }
+
+    offset += (size_t)snprintf(buf + offset, buf_size - offset, "],\"outputs\":[");
+
+    for (int i = 0; i < output_count; i++)
+    {
+        int32_t val = 0;
+        (void)state_get_int(outputs[i].id, &val);
+        bool fs_active = failsafe_is_active(outputs[i].id);
+
+        if (i > 0)
+            offset += (size_t)snprintf(buf + offset, buf_size - offset, ",");
+        offset += (size_t)snprintf(buf + offset, buf_size - offset,
+            "{\"channel_id\":%u,\"name\":\"OUT%d\",\"type\":\"digital_output\",\"gpio\":%d,\"profile\":\"relay\",\"desired\":%" PRId32 ",\"reported\":%" PRId32 ",\"failsafe\":%s,\"driver_enabled\":true,\"physical_present\":true,\"control_path\":\"V2\",\"last_transition\":\"state_set_int -> pending_mask -> gpio_set_level\"}",
+            (unsigned int)outputs[i].id, 101 + i, outputs[i].gpio, val, val, fs_active ? "true" : "false");
+    }
+
+    offset += (size_t)snprintf(buf + offset, buf_size - offset, "]}");
+
+    httpd_resp_send(req, buf, offset);
+    free(buf);
+    free(inputs);
+    free(outputs);
+    return ESP_OK;
+}
+
+static esp_err_t pve_handler(httpd_req_t *req)
+{
+    if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
+        return ESP_OK;
+
+    http_set_private_json_headers(req);
+
+    size_t buf_size = 2048;
+    char *buf = malloc(buf_size);
+    if (!buf)
+    {
+        httpd_resp_set_status(req, "500 Internal Server Error");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"no_memory\"}");
+        return ESP_OK;
+    }
+
+    size_t offset = 0;
+    offset += (size_t)snprintf(buf + offset, buf_size - offset, "{\"variables\":[");
+
+    uint32_t count = pve_count();
+    for (uint32_t i = 0; i < count; i++)
+    {
+        const pve_variable_t *var = pve_get(i);
+        if (!var)
+            continue;
+
+        const char *source_str = "UNKNOWN";
+        switch (var->source_type)
+        {
+            case PVE_SOURCE_ADC_NATIVE:
+                source_str = "ADC_NATIVE";
+                break;
+            case PVE_SOURCE_ADC_EXTERNAL:
+                source_str = "ADC_EXTERNAL";
+                break;
+            case PVE_SOURCE_MODBUS:
+                source_str = "MODBUS";
+                break;
+            case PVE_SOURCE_ESPNOW:
+                source_str = "ESPNOW";
+                break;
+            case PVE_SOURCE_VIRTUAL:
+                source_str = "VIRTUAL";
+                break;
+        }
+
+        if (i > 0)
+            offset += (size_t)snprintf(buf + offset, buf_size - offset, ",");
+
+        offset += (size_t)snprintf(buf + offset, buf_size - offset,
+            "{\"id\":%u,\"name\":\"%s\",\"source\":\"%s\",\"source_id\":%u,\"raw\":%" PRId32 ",\"scaled\":%" PRId32 ",\"decimals\":%u,\"unit\":\"%s\",\"input_min\":%" PRId32 ",\"input_max\":%" PRId32 ",\"scaled_min\":%" PRId32 ",\"scaled_max\":%" PRId32 ",\"alarm_enabled\":%u,\"alarm_high\":%" PRId32 ",\"alarm_low\":%" PRId32 ",\"alarm_hysteresis\":%" PRId32 ",\"alarm_state\":%u}",
+            (unsigned int)i, var->name, source_str, (unsigned int)var->source_id, var->runtime.raw_value,
+            var->runtime.scaled_value, (unsigned int)var->config.decimals, var->config.unit,
+            var->config.input_min, var->config.input_max, var->config.scaled_min, var->config.scaled_max,
+            (unsigned int)var->alarm.enabled, var->alarm.high_limit, var->alarm.low_limit, var->alarm.hysteresis, (unsigned int)var->runtime.alarm_state);
+
+    }
+
+    offset += (size_t)snprintf(buf + offset, buf_size - offset, "]}");
+
+    httpd_resp_send(req, buf, offset);
+    free(buf);
+    return ESP_OK;
+}
+
+static esp_err_t pve_save_config_handler(httpd_req_t *req)
+{
+    if (!http_auth_require_cap(req, AUTH_CAP_PROFILE_WRITE))
+        return ESP_OK;
+
+    http_set_private_json_headers(req);
+
+    char body[1024] = {0};
+    if (!http_read_request_body(req, body, sizeof(body)))
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"bad_request\"}");
+        return ESP_OK;
+    }
+
+    char id_text[16] = {0};
+    if (!http_body_get_value(body, "id", id_text, sizeof(id_text)))
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"missing_id\"}");
+        return ESP_OK;
+    }
+
+    uint32_t id = (uint32_t)atoi(id_text);
+    if (id >= pve_count())
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"invalid_id\"}");
+        return ESP_OK;
+    }
+
+    pve_variable_t *var = &pve_variables[id];
+
+    // Validate input range (prevent division by zero)
+    char input_min_text[16] = {0};
+    char input_max_text[16] = {0};
+    int32_t next_input_min = var->config.input_min;
+    int32_t next_input_max = var->config.input_max;
+
+    if (http_body_get_value(body, "input_min", input_min_text, sizeof(input_min_text))) {
+        next_input_min = atoi(input_min_text);
+    }
+    if (http_body_get_value(body, "input_max", input_max_text, sizeof(input_max_text))) {
+        next_input_max = atoi(input_max_text);
+    }
+
+    if (next_input_min == next_input_max) {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"input_min_equals_max\"}");
+        return ESP_OK;
+    }
+
+    // Validate string lengths
+    char name_temp[128] = {0};
+    if (http_body_get_value(body, "name", name_temp, sizeof(name_temp))) {
+        if (strlen(name_temp) >= 16) {
+            httpd_resp_set_status(req, "400 Bad Request");
+            httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"name_too_long\"}");
+            return ESP_OK;
+        }
+    }
+
+    char unit_temp[64] = {0};
+    if (http_body_get_value(body, "unit", unit_temp, sizeof(unit_temp))) {
+        if (strlen(unit_temp) >= 8) {
+            httpd_resp_set_status(req, "400 Bad Request");
+            httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"unit_too_long\"}");
+            return ESP_OK;
+        }
+    }
+
+    // Apply values after validations
+    if (name_temp[0] != '\0') {
+        strncpy(var->name, name_temp, sizeof(var->name) - 1);
+    }
+    var->config.input_min = next_input_min;
+    var->config.input_max = next_input_max;
+
+    char scaled_min_text[16] = {0};
+    char scaled_max_text[16] = {0};
+    char decimals_text[16] = {0};
+
+    if (http_body_get_value(body, "scaled_min", scaled_min_text, sizeof(scaled_min_text))) {
+        var->config.scaled_min = atoi(scaled_min_text);
+    }
+    if (http_body_get_value(body, "scaled_max", scaled_max_text, sizeof(scaled_max_text))) {
+        var->config.scaled_max = atoi(scaled_max_text);
+    }
+    if (http_body_get_value(body, "decimals", decimals_text, sizeof(decimals_text))) {
+        var->config.decimals = (uint8_t)atoi(decimals_text);
+    }
+    if (unit_temp[0] != '\0') {
+        strncpy(var->config.unit, unit_temp, sizeof(var->config.unit) - 1);
+    }
+
+    // Parse and validate alarm limits
+    char alarm_enabled_text[16] = {0};
+    char alarm_high_text[16] = {0};
+    char alarm_low_text[16] = {0};
+    char alarm_hysteresis_text[16] = {0};
+    uint8_t next_alarm_enabled = var->alarm.enabled;
+    int32_t next_alarm_high = var->alarm.high_limit;
+    int32_t next_alarm_low = var->alarm.low_limit;
+    int32_t next_alarm_hysteresis = var->alarm.hysteresis;
+
+    if (http_body_get_value(body, "alarm_enabled", alarm_enabled_text, sizeof(alarm_enabled_text))) {
+        next_alarm_enabled = (uint8_t)atoi(alarm_enabled_text);
+    }
+    if (http_body_get_value(body, "alarm_high", alarm_high_text, sizeof(alarm_high_text))) {
+        next_alarm_high = atoi(alarm_high_text);
+    }
+    if (http_body_get_value(body, "alarm_low", alarm_low_text, sizeof(alarm_low_text))) {
+        next_alarm_low = atoi(alarm_low_text);
+    }
+    if (http_body_get_value(body, "alarm_hysteresis", alarm_hysteresis_text, sizeof(alarm_hysteresis_text))) {
+        next_alarm_hysteresis = atoi(alarm_hysteresis_text);
+    }
+
+    if (next_alarm_hysteresis < 0) {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"invalid_hysteresis\"}");
+        return ESP_OK;
+    }
+
+    if (next_alarm_enabled && (next_alarm_high <= next_alarm_low)) {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"invalid_alarm_limits\"}");
+        return ESP_OK;
+    }
+
+    var->alarm.enabled = next_alarm_enabled;
+    var->alarm.high_limit = next_alarm_high;
+    var->alarm.low_limit = next_alarm_low;
+    var->alarm.hysteresis = next_alarm_hysteresis;
+
+    pve_update(var, var->runtime.raw_value);
+    pve_save_config();
+
+    httpd_resp_sendstr(req, "{\"ok\":true}");
+    return ESP_OK;
+}
+
+static esp_err_t pve_alarms_history_handler(httpd_req_t *req)
+{
+    if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
+        return ESP_OK;
+
+    http_set_private_json_headers(req);
+
+    size_t buf_size = 4096;
+    char *buf = malloc(buf_size);
+    if (!buf)
+    {
+        httpd_resp_set_status(req, "500 Internal Server Error");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"no_memory\"}");
+        return ESP_OK;
+    }
+
+    size_t offset = 0;
+    offset += (size_t)snprintf(buf + offset, buf_size - offset, "{\"events\":[");
+
+    pve_alarm_event_t events[64];
+    uint32_t count = pve_get_alarm_history(events, 64);
+
+    for (uint32_t i = 0; i < count; i++)
+    {
+        if (i > 0)
+            offset += (size_t)snprintf(buf + offset, buf_size - offset, ",");
+
+        offset += (size_t)snprintf(buf + offset, buf_size - offset,
+            "{\"timestamp\":%" PRIu32 ",\"pve_id\":%u,\"state\":%u,\"scaled_value\":%" PRId32 "}",
+            events[i].timestamp, (unsigned int)events[i].pve_id, (unsigned int)events[i].state, events[i].scaled_value);
+    }
+
+    offset += (size_t)snprintf(buf + offset, buf_size - offset, "]}");
+
+    httpd_resp_send(req, buf, offset);
+    free(buf);
+    return ESP_OK;
+}
+
 
 static esp_err_t installation_map_handler(httpd_req_t *req)
 {
@@ -6891,6 +7224,9 @@ void http_server_start(void)
             .uri = "/api/failsafe", .method = HTTP_GET, .handler = failsafe_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/failsafe/status", .method = HTTP_GET, .handler = failsafe_handler });
+
+        httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/failsafe/outputs", .method = HTTP_GET, .handler = failsafe_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
@@ -6919,6 +7255,19 @@ void http_server_start(void)
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/installation/channel-map/save", .method = HTTP_POST, .handler = installation_map_save_handler });
+
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/io/map", .method = HTTP_GET, .handler = io_map_handler });
+
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/pve", .method = HTTP_GET, .handler = pve_handler });
+
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/pve/config", .method = HTTP_POST, .handler = pve_save_config_handler });
+
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/pve/alarms/history", .method = HTTP_GET, .handler = pve_alarms_history_handler });
+
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/network/config", .method = HTTP_GET, .handler = network_config_handler });

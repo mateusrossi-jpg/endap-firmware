@@ -28,6 +28,7 @@ set(EXTRA_COMPONENT_DIRS
     components/runtime/io_driver
     components/runtime/event_set
     components/runtime/io_command
+    components/runtime/pve
      
     components/data/io_image
     components/data/state

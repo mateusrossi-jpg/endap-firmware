@@ -21,15 +21,8 @@
 #define NODE_REGISTRY_VERSION   2U
 #define NODE_REGISTRY_VERSION_V1 1U
 #define NODE_REGISTRY_SYNC_MS   1000U
+// node_registry_blob_t is defined in node_registry.h
 
-typedef struct
-{
-    uint32_t magic;
-    uint16_t version;
-    uint16_t count;
-    node_registry_entry_t entries[NODE_REGISTRY_MAX_NODES];
-    uint32_t crc;
-} node_registry_blob_t;
 
 typedef struct
 {
@@ -277,10 +270,7 @@ static bool node_registry_seed_entry_from_cluster(uint32_t node_id)
 
     if (entry)
     {
-        entry->last_ip_addr = target.ip;
-        entry->age_ms = target.age_ms;
         entry->last_seen_ms = target.last_seen_ms;
-        entry->health = target.health;
         entry->cluster_state = (uint8_t)target.state;
         if (entry->last_transport == NODE_REGISTRY_TRANSPORT_NONE)
             entry->last_transport = NODE_REGISTRY_TRANSPORT_NONE;
@@ -539,10 +529,7 @@ void node_registry_process(void)
             is_new = true;
         }
 
-        entry->last_ip_addr = snapshot[i].ip;
-        entry->age_ms = snapshot[i].age_ms;
         entry->last_seen_ms = snapshot[i].last_seen_ms;
-        entry->health = snapshot[i].health;
         entry->cluster_state = (uint8_t)snapshot[i].state;
         if (entry->last_transport == NODE_REGISTRY_TRANSPORT_NONE)
             entry->last_transport = NODE_REGISTRY_TRANSPORT_NONE;
@@ -870,6 +857,61 @@ bool node_registry_revoke(uint32_t node_id)
 
     node_registry_restore_entry(node_id, &previous);
     ESP_LOGE(TAG, "Falha ao persistir revogacao do node %" PRIu32, node_id);
+    return false;
+}
+
+bool node_registry_replace(uint32_t old_id, uint32_t new_id)
+{
+    bool found = false;
+    node_registry_blob_t blob;
+    node_registry_entry_t previous_old = {0};
+
+    if (old_id == 0U || new_id == 0U || old_id == new_id)
+        return false;
+
+    portENTER_CRITICAL(&node_registry_lock);
+
+    node_registry_entry_t *old_entry = node_registry_find_locked(old_id);
+    if (!old_entry)
+    {
+        portEXIT_CRITICAL(&node_registry_lock);
+        return false;
+    }
+
+    previous_old = *old_entry;
+
+    node_registry_entry_t *new_entry = node_registry_find_locked(new_id);
+    if (!new_entry)
+    {
+        new_entry = node_registry_allocate_locked();
+    }
+
+    if (new_entry)
+    {
+        new_entry->node_id = new_id;
+        new_entry->registry_state = old_entry->registry_state;
+        node_registry_copy_text(new_entry->profile, sizeof(new_entry->profile), old_entry->profile);
+        node_registry_copy_text(new_entry->template_name, sizeof(new_entry->template_name), old_entry->template_name);
+
+        old_entry->node_id = 0; // Invalidate the old entry
+        
+        node_registry_build_blob_locked(&blob);
+        found = true;
+    }
+
+    portEXIT_CRITICAL(&node_registry_lock);
+
+    if (found)
+        ESP_LOGI(TAG, "Node %" PRIu32 " assumiu identidade de %" PRIu32, new_id, old_id);
+
+    if (!found)
+        return false;
+
+    if (node_registry_save_blob(&blob))
+        return true;
+
+    node_registry_restore_entry(old_id, &previous_old);
+    ESP_LOGE(TAG, "Falha ao persistir substituicao");
     return false;
 }
 
