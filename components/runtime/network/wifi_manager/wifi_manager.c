@@ -3,11 +3,13 @@
 #include "captive_dns.h"
 #include "network_ready.h"
 #include "node_identity.h"
+#include "device_profile.h"
 
 #include "esp_event.h"
 #include "esp_log.h"
 #include "esp_netif.h"
 #include "esp_wifi.h"
+#include "esp_mesh.h"
 #include "nvs_flash.h"
 
 #include "freertos/FreeRTOS.h"
@@ -21,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "endap_nvs.h"
 
 #define TAG "WIFI"
 
@@ -40,7 +43,9 @@
 static bool wifi_initialized = false;
 static bool wifi_driver_started = false;
 static esp_netif_t *wifi_ap_netif = NULL;
+#if WIFI_CLUSTER_AUTO_JOIN_FROM_FALLBACK_AP
 static TaskHandle_t wifi_cluster_scan_task_handle = NULL;
+#endif
 static portMUX_TYPE wifi_status_lock = portMUX_INITIALIZER_UNLOCKED;
 static portMUX_TYPE wifi_cluster_lock = portMUX_INITIALIZER_UNLOCKED;
 static wifi_manager_status_t wifi_status = {
@@ -100,6 +105,7 @@ static void wifi_manager_build_cluster_ap_ssid(char *buf, size_t buf_size)
              wifi_cluster_self_node_id);
 }
 
+#if WIFI_CLUSTER_AUTO_JOIN_FROM_FALLBACK_AP
 static bool wifi_manager_parse_cluster_peer_id(const char *ssid, uint32_t *out_node_id)
 {
     const char *suffix;
@@ -127,6 +133,7 @@ static bool wifi_manager_parse_cluster_peer_id(const char *ssid, uint32_t *out_n
 
     return true;
 }
+
 
 static bool wifi_manager_find_cluster_host(char *out_ssid,
                                            size_t out_ssid_size,
@@ -219,12 +226,6 @@ static void wifi_manager_cluster_scan_task(void *arg)
 {
     (void)arg;
 
-#if !WIFI_CLUSTER_AUTO_JOIN_FROM_FALLBACK_AP
-    while (1)
-    {
-        vTaskDelay(pdMS_TO_TICKS(10000));
-    }
-#else
     vTaskDelay(pdMS_TO_TICKS(WIFI_CLUSTER_SCAN_START_DELAY_MS));
 
     while (1)
@@ -252,16 +253,12 @@ static void wifi_manager_cluster_scan_task(void *arg)
                                                &peer_node_id,
                                                &peer_rssi))
             {
-                ESP_LOGI(TAG,
-                         "Peer WiFi eleito: node=%" PRIu32 " ssid=%s rssi=%d",
-                         peer_node_id,
-                         peer_ssid,
-                         (int)peer_rssi);
+                ESP_LOGI(TAG, "Nó %" PRIu32 " é candidato de gateway via WiFi (RSSI %d). Conectando...",
+                         peer_node_id, peer_rssi);
 
                 if (wifi_manager_join_cluster_peer(peer_ssid) == ESP_OK)
                 {
-                    vTaskDelay(pdMS_TO_TICKS(WIFI_CLUSTER_SCAN_RETRY_MS));
-                    continue;
+                    delay_ms = 60000;
                 }
             }
             else
@@ -272,8 +269,8 @@ static void wifi_manager_cluster_scan_task(void *arg)
 
         vTaskDelay(pdMS_TO_TICKS(delay_ms));
     }
-#endif
 }
+#endif
 
 static void wifi_manager_start_cluster_scan_task(void)
 {
@@ -502,7 +499,7 @@ static esp_err_t save_wifi_credentials(const char *ssid, const char *pass)
     if (err == ESP_OK)
         err = nvs_set_str(nvs, "pass", pass ? pass : "");
     if (err == ESP_OK)
-        err = nvs_commit(nvs);
+        err = endap_nvs_commit(nvs);
 
     nvs_close(nvs);
     return err;
@@ -928,6 +925,7 @@ void wifi_manager_init(void)
 
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+    ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));
 
     esp_wifi_set_ps(WIFI_PS_NONE);
 
@@ -936,6 +934,91 @@ void wifi_manager_init(void)
     ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_LOST_IP, &wifi_event_handler, NULL));
     wifi_manager_start_cluster_scan_task();
 
+    const device_network_profile_t *net = device_profile_network();
+
+    if (net && !net->onboarding_pending && net->wifi_mode == DEVICE_PROFILE_WIFI_MODE_NOW)
+    {
+        ESP_LOGI(TAG, "NETWORK:\nPrimary transport = ESPNOW\nNETWORK:\nStarting ESPNOW runtime");
+        ESP_LOGI(TAG, "Configurando Wi-Fi para ESP-NOW");
+
+        if (net->allow_local_ap)
+        {
+            char ap_ssid[WIFI_SSID_MAX_LEN + 1U] = {0};
+            wifi_config_t ap_config = {0};
+
+            wifi_manager_build_cluster_ap_ssid(ap_ssid, sizeof(ap_ssid));
+            memcpy(ap_config.ap.ssid, ap_ssid, strlen(ap_ssid));
+            memcpy(ap_config.ap.password, DEFAULT_AP_PASS, sizeof(DEFAULT_AP_PASS) - 1U);
+            ap_config.ap.ssid_len = (uint8_t)strlen(ap_ssid);
+            ap_config.ap.max_connection = 4;
+            ap_config.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
+
+            ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
+            ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &ap_config));
+            ESP_ERROR_CHECK(esp_wifi_start());
+            captive_dns_start();
+        }
+        else
+        {
+            ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+            ESP_ERROR_CHECK(esp_wifi_start());
+        }
+
+        wifi_driver_started = true;
+        network_ready_publish_up(NETWORK_READY_LINK_WIFI_STA, 0U, 0U);
+        return;
+    }
+    else if (net && !net->onboarding_pending && net->wifi_mode == DEVICE_PROFILE_WIFI_MODE_MESH)
+    {
+        ESP_LOGI(TAG, "NETWORK:\nPrimary transport = MESH\nNETWORK:\nStarting MESH runtime");
+        ESP_LOGI(TAG, "Configurando Wi-Fi para ESP-WIFI-MESH");
+
+        if (net->allow_local_ap)
+        {
+            char ap_ssid[WIFI_SSID_MAX_LEN + 1U] = {0};
+            wifi_config_t ap_config = {0};
+
+            wifi_manager_build_cluster_ap_ssid(ap_ssid, sizeof(ap_ssid));
+            memcpy(ap_config.ap.ssid, ap_ssid, strlen(ap_ssid));
+            memcpy(ap_config.ap.password, DEFAULT_AP_PASS, sizeof(DEFAULT_AP_PASS) - 1U);
+            ap_config.ap.ssid_len = (uint8_t)strlen(ap_ssid);
+            ap_config.ap.max_connection = 4;
+            ap_config.ap.authmode = WIFI_AUTH_WPA_WPA2_PSK;
+
+            ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
+            ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &ap_config));
+            ESP_ERROR_CHECK(esp_wifi_start());
+            captive_dns_start();
+        }
+        else
+        {
+            ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+            ESP_ERROR_CHECK(esp_wifi_start());
+        }
+
+        wifi_driver_started = true;
+
+        esp_mesh_init();
+        esp_mesh_set_topology(MESH_TOPO_TREE);
+        esp_mesh_set_max_layer(6);
+        esp_mesh_set_vote_percentage(1);
+        esp_mesh_set_xon_qsize(128);
+
+        // Disable mesh IE encryption for simple demo config
+        mesh_cfg_t cfg = MESH_INIT_CONFIG_DEFAULT();
+        cfg.crypto_funcs = &g_wifi_default_mesh_crypto_funcs;
+        memcpy((uint8_t *) &cfg.mesh_id, "ENDAP_MESH", 10);
+        esp_mesh_set_config(&cfg);
+        esp_mesh_start();
+
+        network_ready_publish_up(NETWORK_READY_LINK_WIFI_STA, 0U, 0U);
+        return;
+    }
+
+    ESP_LOGI(TAG, "NETWORK:\nPrimary transport = WIFI\nNETWORK:\nStarting WIFI runtime");
+    
+    wifi_driver_started = true;
+    ESP_ERROR_CHECK(esp_wifi_start());
     char ssid[WIFI_SSID_MAX_LEN + 1U] = {0};
     char pass[WIFI_PASS_MAX_LEN + 1U] = {0};
     wifi_config_t sta_config = {0};
