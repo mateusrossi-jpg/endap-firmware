@@ -712,7 +712,26 @@ function apiFetch(url,opts){
       ok: true,
       status: 200,
       headers: { get: () => '' },
-      json: () => Promise.resolve({}),
+      json: () => {
+        if (url.includes('/api/profile')) {
+          return Promise.resolve({
+            inputs: [{id: 100, gpio: 4, name: 'Interruptor Sala', role: 'Botão'}, {id: 101, gpio: 5, role: 'Sensor'}],
+            outputs: [{id: 200, gpio: 12, name: 'Lâmpada Sala', role: 'Luz'}, {id: 201, gpio: 13, role: 'Relé'}]
+          });
+        }
+        if (url.includes('/api/status')) {
+          return Promise.resolve({ inputs: {'100':1, '101':0}, outputs: {'200':1, '201':0} });
+        }
+        if (url.includes('/api/automation/list')) {
+          return Promise.resolve({
+            rules: [
+              {input: 100, output: 200, mode: 'follow'},
+              {input: 101, output: 201, mode: 'toggle_on_rise'}
+            ]
+          });
+        }
+        return Promise.resolve({});
+      },
       text: () => Promise.resolve('{}')
     });
   }
@@ -953,8 +972,8 @@ function syncRemoteOutputValue(nodeId,id,val){
 }
 function renderLocalOutputFeedback(){renderPanel(); if(currentTab==='operations') renderOperations(); const selectedNode=nodes.find(node=>n(node.id)===n(selectedNodeId)); if(selectedNode&&selectedNode.is_local) selectNode(selectedNodeId); else renderNodeSummaryCards();}
 function scheduleLocalOutputRefresh(){if(localOutputRefreshTimer){clearTimeout(localOutputRefreshTimer); localOutputRefreshTimer=0;} localOutputRefreshTimer=setTimeout(()=>{localOutputRefreshTimer=0; if(!authAllowsDashboard()) return; const refreshes=[loadStatus(true)]; if(currentTab==='operations') refreshes.push(loadOperations(false)); Promise.all(refreshes).catch(()=>{});}, wsConnected?900:250);}
-function inputName(id){const node=installationCurrentNode(); const list=profile.inputs||[]; const idx=list.findIndex(x=>String(x.id)===String(id)); const it=idx>=0?list[idx]:null; if(!it) return `Input ${id}`; const identity=installationChannelIdentity(node,'input',it,idx+1); return identity.primaryLabel;}
-function outputName(id){const node=installationCurrentNode(); const list=profile.outputs||[]; const idx=list.findIndex(x=>String(x.id)===String(id)); const it=idx>=0?list[idx]:null; if(!it) return `Output ${id}`; const identity=installationChannelIdentity(node,'output',it,idx+1); return identity.primaryLabel;}
+function inputName(id){const node=installationCurrentNode(); const list=profile.inputs||[]; const idx=list.findIndex(x=>String(x.id)===String(id)); const it=idx>=0?list[idx]:null; if(!it) return `Canal ${id}`; const identity=installationChannelIdentity(node,'input',it,idx+1); return identity.primaryLabel;}
+function outputName(id){const node=installationCurrentNode(); const list=profile.outputs||[]; const idx=list.findIndex(x=>String(x.id)===String(id)); const it=idx>=0?list[idx]:null; if(!it) return `Canal ${id}`; const identity=installationChannelIdentity(node,'output',it,idx+1); return identity.primaryLabel;}
 function statusProtocolFlags(d){const src=d||lastStatus||{}; return {wifi:!!n(src.wifi_enabled), ethernet:!!n(src.ethernet_enabled), rs485:!!n(src.rs485_enabled)};}
 function networkConfig(){const d=profile.network||{}; const statusFlags=statusProtocolFlags(lastStatus); const profileAny=!!(d.wifi_enabled||d.ethernet_enabled||d.rs485_enabled); const inferredAny=!profileAny&&(statusFlags.wifi||statusFlags.ethernet||statusFlags.rs485); return {wifi_supported:!!d.wifi_supported||!!d.wifi_enabled||(inferredAny&&statusFlags.wifi), ethernet_supported:!!d.ethernet_supported||!!d.ethernet_enabled||(inferredAny&&statusFlags.ethernet), rs485_supported:!!d.rs485_supported||!!d.rs485_enabled||(inferredAny&&statusFlags.rs485), wifi_enabled:!!d.wifi_enabled||(inferredAny&&statusFlags.wifi), ethernet_enabled:!!d.ethernet_enabled||(inferredAny&&statusFlags.ethernet), rs485_enabled:!!d.rs485_enabled||(inferredAny&&statusFlags.rs485), w5500:d.w5500||null};}
 function emptyProfileContext(){return {inputs:[],outputs:[],network:{},node_capabilities:{},capability_resolution:{},expansion_capabilities:{},channel_inventory:[],binding_backends:[],components:[],mcp_runtime:{instances:[],endpoints:[]}}}
@@ -1036,7 +1055,8 @@ function installationNodeOrdinal(node){const visible=nodes.filter(n0=>n0.is_loca
 function installationCurrentNode(){return nodes.find(n0=>n0&&n0.is_local)||{id:n(lastStatus&&lastStatus.node_id)||1,is_local:true};}
 function installationEntry(nodeId,kind,channelId,localCode){const list=Array.isArray(installationMap&&installationMap.entries)?installationMap.entries:[]; const expected=kind==='output'?'1':'0'; return list.find(entry=>{const entryKind=String(entry.kind); const entryKindText=String(entry.kind_text||'').toLowerCase(); return String(entry.node_id)===String(nodeId)&&(entryKind===expected||entryKindText===kind)&&String(entry.channel_id)===String(channelId)&&(localCode?String(entry.local_code||'')===String(localCode):true);})||null;}
 function installationDefaultGlobalCode(node,kind,localIndex){const nodeOrdinal=Math.max(1,installationNodeOrdinal(node)); if(kind==='input'){const start=((nodeOrdinal-1)*(n(installationMap.input_block)||8))+1; return `IN${start+Math.max(0,localIndex-1)}`;} const base=n(installationMap.output_global_base)||101; const block=n(installationMap.output_block)||4; const start=base+((nodeOrdinal-1)*block); return `OUT${start+Math.max(0,localIndex-1)}`;}
-function installationChannelIdentity(node,kind,item,localIndex){const fallbackLocalIndex=n(item&&item.local_index)||Math.max(1,localIndex||1); const localCode=String(item&&item.local_code||`${kind==='input'?'IN':'OUT'}${fallbackLocalIndex}`); const entry=installationEntry(n(node&&node.id),kind,n(item&&item.id),localCode); const persistedGlobal=String(entry&&(entry.global_id||entry.global_code)||'').trim(); const globalCode=persistedGlobal||installationDefaultGlobalCode(node,kind,fallbackLocalIndex); const alias=String(entry&&entry.alias||'').trim(); const room=String(entry&&entry.room||'').trim(); const group=String(entry&&entry.group||'').trim(); const visibility=String(entry&&entry.visibility||'').trim(); const notes=String(entry&&entry.notes||'').trim(); const sortOrder=n(entry&&entry.sort_order); const localName=String(item&&((item.display_name_local||item.name||item.role))||'').trim(); const primary=alias||globalCode||localCode||localName; const secondary=[localCode,alias?globalCode:'',localName&&localName!==primary?localName:'',room,group].filter(Boolean).join(' · '); return {localIndex:fallbackLocalIndex,localCode,globalCode,alias,room,group,visibility,notes,sortOrder,localName,primaryLabel:primary,secondaryLabel:secondary};}
+function installationChannelIdentity(node,kind,item,localIndex){const fallbackLocalIndex=n(item&&item.local_index)||Math.max(1,localIndex||1); const localCode=String(item&&item.local_code||`${kind==='input'?'IN':'OUT'}${fallbackLocalIndex}`); const entry=installationEntry(n(node&&node.id),kind,n(item&&item.id),localCode); const persistedGlobal=String(entry&&(entry.global_id||entry.global_code)||'').trim(); const globalCode=persistedGlobal||installationDefaultGlobalCode(node,kind,fallbackLocalIndex); const alias=String(entry&&entry.alias||'').trim(); const room=String(entry&&entry.room||'').trim(); const group=String(entry&&entry.group||'').trim(); const visibility=String(entry&&entry.visibility||'').trim(); const notes=String(entry&&entry.notes||'').trim(); const sortOrder=n(entry&&entry.sort_order); const localName=String(item&&((item.display_name_local||item.name||item.role))||'').trim(); const defaultHw = item ? (item.backend === 'mcp23x17' ? 'MCP ' + item.backend_instance + '-' + item.endpoint_index : (item.gpio ? 'GPIO ' + item.gpio : '')) : '';
+const primary=alias||localName||defaultHw||globalCode||localCode; const secondary=[localCode,alias?globalCode:'',localName&&localName!==primary?localName:'',room,group].filter(Boolean).join(' · '); return {localIndex:fallbackLocalIndex,localCode,globalCode,alias,room,group,visibility,notes,sortOrder,localName,primaryLabel:primary,secondaryLabel:secondary};}
 function loadInstallationMap(){if(!authAllowsDashboard()) return Promise.resolve(installationMap); return apiJson('/api/installation/channel-map').then(data=>{installationMap={input_block:n(data&&data.input_block)||8,output_block:n(data&&data.output_block)||4,output_global_base:n(data&&data.output_global_base)||101,entries:Array.isArray(data&&data.entries)?data.entries:[]}; renderAutomationSelects(); renderOperations(); return installationMap;}).catch(()=>installationMap);}
 function installationMapFieldKey(nodeId,kind,channelId,localCode){return `${n(nodeId)}_${kind}_${n(channelId)}_${String(localCode||'').replace(/[^a-zA-Z0-9_]/g,'_')}`;}
 function installationMapRows(node,kind,items,outputStates=[]){
