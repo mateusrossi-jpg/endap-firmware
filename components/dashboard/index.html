@@ -31,20 +31,21 @@ button,.btn,select,input{font:inherit}
 .tone-warn{background:var(--warn-soft);border-color:#f0debc;color:var(--warn)}
 .tone-err{background:var(--err-soft);border-color:#f0caca;color:var(--err)}
 .tone-info{background:var(--primary-soft);border-color:#bfe7ee;color:#0f6672}
-.page{margin-top:16px;display:flex;flex-direction:column;gap:16px}
+.page{margin-top:24px;display:flex;flex-direction:column;gap:24px}
 .tab-panel{display:none}
-.tab-panel.active{display:flex;flex-direction:column;gap:16px}
+.tab-panel.active{display:flex;flex-direction:column;gap:24px}
 .hero{padding:22px}.hero h1{margin:0;font-size:30px;line-height:1.05}.hero p{margin:10px 0 0;color:var(--muted);line-height:1.55;max-width:60ch}.hero-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-.grid{display:grid;gap:14px;align-items:start}.grid.cards{grid-template-columns:repeat(5,minmax(0,1fr))}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.card{padding:18px}.card h2{margin:4px 0 0;font-size:22px}.kicker{font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}.sub{color:var(--muted);font-size:13px;line-height:1.5}
+.grid{display:grid;gap:24px;align-items:start}.grid.cards{grid-template-columns:repeat(5,minmax(0,1fr))}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{padding:18px}.card h2{margin:4px 0 0;font-size:22px}
+.card h2 + .list, .card h2 + .section-stack, .card h2 + .form-grid, .card h2 + .grid, .card h2 + p { margin-top: 20px; }.kicker{font-size:11px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}.sub{color:var(--muted);font-size:13px;line-height:1.5}
 .stat{padding:18px}.stat .label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}.stat .value{margin-top:8px;font-size:22px;font-weight:800}.stat .sub{margin-top:6px;font-size:12px}
-.list{display:flex;flex-direction:column;gap:10px}.item{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--soft);flex-wrap:wrap}.item strong{display:block}.item span{display:block;color:var(--muted);font-size:12px;line-height:1.45}
+.list{display:flex;flex-direction:column;gap:14px}.item{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--soft);flex-wrap:wrap}.item strong{display:block}.item span{display:block;color:var(--muted);font-size:12px;line-height:1.45}
 .empty{padding:14px;border:1px dashed #c9d7dc;border-radius:16px;background:#fbfdfe;color:var(--muted);font-size:13px}
-.form{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--soft)}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}
+.form{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--soft)}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}
 label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)} select,input{width:100%;padding:12px 13px;border-radius:14px;border:1px solid #cfd9de;background:#fff;color:var(--text)}
 .preview{margin-top:12px;padding:14px;border-radius:14px;background:#fff;border:1px solid #d8e4e8}.preview small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}.preview div{margin-top:6px;line-height:1.55}
-.helper{font-size:12px;color:var(--muted);line-height:1.5}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hidden{display:none!important}.advanced-shell{display:none}.advanced-shell.active{display:flex;flex-direction:column;gap:16px} details{border:1px solid var(--line);border-radius:16px;background:#fff;padding:10px 12px} summary{cursor:pointer;font-weight:700}
-.node-grid{display:grid;gap:10px;max-height:420px;overflow:auto;padding-right:4px;align-content:start}.node-btn{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--soft);cursor:pointer;text-align:left}.node-btn.active{border-color:#9edce4;background:#eef9fb;box-shadow:inset 0 0 0 1px #c6edf2}
+.helper{font-size:12px;color:var(--muted);line-height:1.5}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hidden{display:none!important}.advanced-shell{display:none}.advanced-shell.active{display:flex;flex-direction:column;gap:24px} details{border:1px solid var(--line);border-radius:16px;background:#fff;padding:10px 12px} summary{cursor:pointer;font-weight:700}
+.node-grid{display:grid;gap:16px;max-height:420px;overflow:auto;padding-right:4px;align-content:start}.node-btn{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--soft);cursor:pointer;text-align:left}.node-btn.active{border-color:#9edce4;background:#eef9fb;box-shadow:inset 0 0 0 1px #c6edf2}
 .inline-status{margin-top:12px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel);display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:var(--shadow)}
 .inline-status strong{display:block;font-size:12px}.inline-status span{display:block;color:var(--muted);font-size:12px;line-height:1.45}.inline-status.tone-info,.inline-status.tone-ok,.inline-status.tone-warn,.inline-status.tone-err{display:flex}
 .toast-stack{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:10px;z-index:9999;max-width:min(360px,calc(100vw - 24px))}
@@ -53,8 +54,8 @@ label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mu
 .toast::before{content:"";width:10px;height:10px;border-radius:50%;margin-top:5px;background:currentColor;flex:0 0 auto}
 .toast strong{display:block;font-size:13px}.toast span{display:block;color:var(--muted);font-size:12px;line-height:1.45;margin-top:2px}.toast.tone-info{color:#0f6672}.toast.tone-ok{color:var(--ok)}.toast.tone-warn{color:var(--warn)}.toast.tone-err{color:var(--err)}
 .btn-busy{opacity:.72;pointer-events:none}.btn-busy::after{content:" •";animation:blink 1s linear infinite}.section-note{margin-top:10px;padding:12px 14px;border-radius:14px;border:1px dashed #c9d7dc;background:#fbfdfe;color:var(--muted);font-size:12px;line-height:1.5}
- .auth-shell{display:flex;flex-direction:column;gap:16px;margin-top:16px}.auth-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.9fr);gap:16px}.auth-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}.auth-card h1,.auth-card h2{margin:0}.auth-card p{color:var(--muted);line-height:1.6}.auth-stack{display:flex;flex-direction:column;gap:12px}.auth-note{padding:12px 14px;border-radius:14px;border:1px solid #d8e4e8;background:#fbfdfe;color:var(--muted);font-size:13px;line-height:1.55}.auth-note strong{display:block;color:var(--text);margin-bottom:4px}.auth-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}.auth-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:8px 12px;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted)}.auth-chip::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
-@keyframes blink{0%,49%{opacity:.2}50%,100%{opacity:1}}.node-btn .node-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.node-btn .node-title{font-size:16px;font-weight:800}.node-btn .node-meta{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.45}.node-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.micro-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:start}.micro-card{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow)}.micro-card .label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}.micro-card .value{margin-top:8px;font-size:20px;font-weight:800}.micro-card .sub{margin-top:6px;font-size:12px}.section-stack{display:flex;flex-direction:column;gap:12px}.kv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.kv-card{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--soft)}.kv-card strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.kv-card span{display:block;margin-top:8px;font-size:15px;font-weight:700;color:var(--text)}.note-strip{padding:12px 14px;border-radius:14px;background:var(--primary-soft);border:1px solid #bfe7ee;color:#0f6672;font-size:13px;line-height:1.45}.io-group{display:flex;flex-direction:column;gap:10px}.item-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.muted-line{font-size:12px;color:var(--muted);line-height:1.45}.compact-card{padding:16px}.node-grid::-webkit-scrollbar{width:10px}.node-grid::-webkit-scrollbar-thumb{background:#d2dde2;border-radius:999px}.node-grid::-webkit-scrollbar-track{background:transparent}
+ .auth-shell{display:flex;flex-direction:column;gap:24px;margin-top:24px}.auth-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.9fr);gap:24px}.auth-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}.auth-card h1,.auth-card h2{margin:0}.auth-card p{color:var(--muted);line-height:1.6}.auth-stack{display:flex;flex-direction:column;gap:12px}.auth-note{padding:12px 14px;border-radius:14px;border:1px solid #d8e4e8;background:#fbfdfe;color:var(--muted);font-size:13px;line-height:1.55}.auth-note strong{display:block;color:var(--text);margin-bottom:4px}.auth-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}.auth-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:8px 12px;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted)}.auth-chip::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+@keyframes blink{0%,49%{opacity:.2}50%,100%{opacity:1}}.node-btn .node-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.node-btn .node-title{font-size:16px;font-weight:800}.node-btn .node-meta{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.45}.node-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.micro-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:start}.micro-card{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow)}.micro-card .label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}.micro-card .value{margin-top:8px;font-size:20px;font-weight:800}.micro-card .sub{margin-top:6px;font-size:12px}.section-stack{display:flex;flex-direction:column;gap:12px}.kv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.kv-card{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--soft)}.kv-card strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.kv-card span{display:block;margin-top:8px;font-size:15px;font-weight:700;color:var(--text)}.note-strip{padding:12px 14px;border-radius:14px;background:var(--primary-soft);border:1px solid #bfe7ee;color:#0f6672;font-size:13px;line-height:1.45}.io-group{display:flex;flex-direction:column;gap:16px}.item-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.muted-line{font-size:12px;color:var(--muted);line-height:1.45}.compact-card{padding:16px}.node-grid::-webkit-scrollbar{width:10px}.node-grid::-webkit-scrollbar-thumb{background:#d2dde2;border-radius:999px}.node-grid::-webkit-scrollbar-track{background:transparent}
 @media (max-width:960px){.grid.cards,.grid.two,.form-grid,.micro-grid,.kv-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:720px){.grid.cards,.grid.two,.form-grid,.micro-grid,.kv-grid,.auth-grid{grid-template-columns:1fr}.hero h1{font-size:26px}.nav,.hero-actions,.actions{width:100%}.tab-btn,.primary-btn,.soft-btn,.danger-btn,.ghost-btn{flex:1}}
 </style>
@@ -329,7 +330,313 @@ label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mu
       <div class="grid two"><div class="card"><div class="kicker">Escalabilidade do ENDAP</div><h2>Como este sistema cresce</h2><div id="scale_notes" class="list"><div class="empty">Carregando capacidade do nó.</div></div></div><div class="card"><div class="kicker">Expansão local</div><h2>MCP e analógico</h2><div id="scale_expansion_notes" class="list"><div class="empty">Carregando opções de expansão.</div></div></div></div>
       <div class="grid two"><div class="card"><div class="kicker">Inventário de componentes</div><h2>Camadas do nó</h2><p id="channel_inventory_scope" class="sub">Catálogo contextual do nó selecionado.</p><div class="actions"><button id="channel_inventory_toggle" class="soft-btn" onclick="toggleComponentCatalogMode()">Mostrar desativados</button></div><div id="channel_inventory_panel" class="list"><div class="empty">Carregando inventário.</div></div></div><div class="card"><div class="kicker">Roadmap de implementação</div><h2>O que já existe e o que é próximo passo</h2><div id="channel_inventory_plan" class="list"><div class="empty">Carregando roadmap.</div></div></div></div>
       <div class="grid two"><div class="card"><div class="kicker">Lista de nós</div><h2>ESP disponíveis</h2><div id="node_cards" class="node-grid"><div class="empty">Carregando nós.</div></div></div><div class="card"><div class="kicker">Detalhe do nó</div><h2 id="node_detail_title">Selecione um nó</h2><div id="node_detail_header" class="section-stack"><div class="empty">Escolha um nó para ver o resumo.</div></div><div id="node_detail" class="section-stack"><div class="empty">Escolha um nó para ver os detalhes.</div></div><div class="kicker" style="margin-top:12px">Entradas e saídas</div><div id="node_inputs_outputs" class="section-stack"><div class="empty">Selecione um nó para ver entradas e saídas.</div></div><div class="kicker" style="margin-top:12px">Mapa simples da instalação</div><div id="node_installation_map" class="section-stack"><div class="empty">Selecione um nó para organizar códigos globais e aliases.</div></div></div></div>
-      <div id="nodes_advanced" class="advanced-shell"><div class="grid two"><div class="card"><div class="kicker">GPIO do nó</div><h2>Pinos disponíveis</h2><div id="pins_panel" class="list"></div></div><div class="card"><div class="kicker">Ações e recovery</div><h2>Controle técnico</h2><div id="nodes_advanced_content" class="list"></div></div></div><div id="node_binding_card" class="card"><div class="kicker">Binding local do nó</div><h2>Entradas e saídas</h2><p class="sub">Agora cada canal pode usar GPIO nativo ou MCP23x17. O backend escolhido define automaticamente o endereço que precisa ser informado.</p><div class="grid two" style="margin-top:14px"><div class="form"><div class="kicker">Adicionar entrada</div><div class="form-grid"><div class="field"><label>Slot disponível</label><select id="cfg_add_input_id"></select></div><div class="field"><label>Backend</label><select id="cfg_add_input_backend"></select></div><div id="cfg_add_input_gpio_field" class="field"><label>GPIO</label><select id="cfg_add_input_gpio"></select></div><div id="cfg_add_input_mcp_instance_field" class="field hidden"><label>Instância MCP</label><select id="cfg_add_input_backend_instance"></select></div><div id="cfg_add_input_endpoint_field" class="field hidden"><label>Canal MCP</label><select id="cfg_add_input_endpoint_index"></select></div><div class="field"><label>Nome</label><input id="cfg_add_input_name" type="text" placeholder="Nome da nova entrada"></div><div class="field"><label>Papel</label><input id="cfg_add_input_role" type="text" placeholder="Ex.: Botão, Sensor"></div></div><div class="preview"><small>Resumo</small><div id="cfg_add_input_hint">Escolha um slot, um backend e um endereço válido.</div></div><div class="actions"><button class="soft-btn" onclick="addInputSlot(this)">Adicionar entrada</button></div></div><div class="form"><div class="kicker">Adicionar saída</div><div class="form-grid"><div class="field"><label>Slot disponível</label><select id="cfg_add_output_id"></select></div><div class="field"><label>Backend</label><select id="cfg_add_output_backend"></select></div><div id="cfg_add_output_gpio_field" class="field"><label>GPIO</label><select id="cfg_add_output_gpio"></select></div><div id="cfg_add_output_mcp_instance_field" class="field hidden"><label>Instância MCP</label><select id="cfg_add_output_backend_instance"></select></div><div id="cfg_add_output_endpoint_field" class="field hidden"><label>Canal MCP</label><select id="cfg_add_output_endpoint_index"></select></div><div class="field"><label>Nome</label><input id="cfg_add_output_name" type="text" placeholder="Nome da nova saída"></div><div class="field"><label>Papel</label><input id="cfg_add_output_role" type="text" placeholder="Ex.: Atuador, Relé"></div></div><div class="preview"><small>Resumo</small><div id="cfg_add_output_hint">Escolha um slot, um backend e um endereço válido.</div></div><div class="actions"><button class="soft-btn" onclick="addOutputSlot(this)">Adicionar saída</button></div></div></div><div class="preview" style="margin-top:14px"><small>Resumo dos slots</small><div id="slot_summary">Carregando slots ativos e disponíveis.</div></div><div class="grid two"><div class="form"><div class="kicker">Entrada</div><div class="form-grid"><div class="field"><label>Entrada</label><select id="cfg_input_id"></select></div><div class="field"><label>Backend</label><select id="cfg_input_backend"></select></div><div id="cfg_input_gpio_field" class="field"><label>GPIO</label><select id="cfg_input_gpio"></select></div><div id="cfg_input_mcp_instance_field" class="field hidden"><label>Instância MCP</label><select id="cfg_input_backend_instance"></select></div><div id="cfg_input_endpoint_field" class="field hidden"><label>Canal MCP</label><select id="cfg_input_endpoint_index"></select></div><div class="field"><label>Nome</label><input id="cfg_input_name" type="text" placeholder="Nome da entrada"></div><div class="field"><label>Papel</label><input id="cfg_input_role" type="text" placeholder="Ex.: Botão, Sensor"></div></div><div class="preview"><small>Resumo</small><div id="cfg_input_hint">Selecione uma entrada para configurar.</div></div><div class="actions"><button class="soft-btn" onclick="saveInputProfile(this)">Salvar entrada</button><button class="danger-btn" onclick="resetInputProfile(this)">Resetar entrada</button><button class="danger-btn" onclick="removeInputSlot(this)">Remover entrada extra</button></div></div><div class="form"><div class="kicker">Saída</div><div class="form-grid"><div class="field"><label>Saída</label><select id="cfg_output_id"></select></div><div class="field"><label>Backend</label><select id="cfg_output_backend"></select></div><div id="cfg_output_gpio_field" class="field"><label>GPIO</label><select id="cfg_output_gpio"></select></div><div id="cfg_output_mcp_instance_field" class="field hidden"><label>Instância MCP</label><select id="cfg_output_backend_instance"></select></div><div id="cfg_output_endpoint_field" class="field hidden"><label>Canal MCP</label><select id="cfg_output_endpoint_index"></select></div><div class="field"><label>Nome</label><input id="cfg_output_name" type="text" placeholder="Nome da saída"></div><div class="field"><label>Papel</label><input id="cfg_output_role" type="text" placeholder="Ex.: Atuador, Relé"></div></div><div class="preview"><small>Resumo</small><div id="cfg_output_hint">Selecione uma saída para configurar.</div></div><div class="actions"><button class="soft-btn" onclick="saveOutputProfile(this)">Salvar saída</button><button class="danger-btn" onclick="resetOutputProfile(this)">Resetar saída</button><button class="danger-btn" onclick="removeOutputSlot(this)">Remover saída extra</button></div></div></div><div class="grid two" style="margin-top:14px"><div class="card"><div class="kicker">Endereçamento por backend</div><h2>Guia rápido</h2><div id="pin_mode_guide" class="list"></div></div><div class="card"><div class="kicker">Nota prática</div><h2>Como usar</h2><div class="list"><div class="item"><div><strong>GPIO nativo</strong><span>Continua sujeito aos bloqueios de Wi‑Fi, RS485, W5500 e conflitos com outros bindings.</span></div></div><div class="item"><div><strong>MCP23x17</strong><span>Usa instância e canal A0..B7. O binding já aceita esse backend; a aplicação elétrica/runtime é a próxima camada.</span></div></div><div class="item"><div><strong>RS485 / Ethernet</strong><span>Continuam reservando pinos do transporte local. O preview automático afeta apenas o backend GPIO.</span></div></div><div class="item"><div><strong>Input learning</strong><span>Segue valendo para entradas físicas locais. Canais MCP entram pela configuração de backend/endereço.</span></div></div></div></div></div><div class="grid two" style="margin-top:14px"><div class="card"><div class="kicker">Mapa MCP</div><h2>Instâncias expandidas</h2><div id="mcp_runtime_summary" class="list"><div class="empty">Carregando mapa MCP.</div></div></div><div class="card"><div class="kicker">Ocupação dos canais</div><h2>Endpoints MCP</h2><div id="mcp_runtime_instances" class="list"><div class="empty">Carregando endpoints MCP.</div></div></div></div></div>
+      <div id="nodes_advanced" class="advanced-shell">
+  <div class="grid two">
+    <div class="card">
+      <div class="kicker">GPIO do nó</div>
+      <h2>Pinos disponíveis</h2>
+      <div id="pins_panel" class="list" style="margin-top: 16px;"></div>
+    </div>
+    <div class="card">
+      <div class="kicker">Ações e recovery</div>
+      <h2>Controle técnico</h2>
+      <div id="nodes_advanced_content" class="list" style="margin-top: 16px;"></div>
+    </div>
+  </div>
+  <div id="node_binding_card" class="card" style="margin-top: 24px; border-color: var(--primary);">
+    <div class="kicker">Binding local do nó</div>
+    <h2>Entradas e saídas</h2>
+    <p class="sub">
+      Agora cada canal pode usar GPIO nativo ou MCP23x17. O backend escolhido
+      define automaticamente o endereço que precisa ser informado.
+    </p>
+    <div class="grid two" style="margin-top: 14px">
+      <div class="form">
+        <div class="kicker">Adicionar entrada</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Slot disponível</label
+            ><select id="cfg_add_input_id"></select>
+          </div>
+          <div class="field">
+            <label>Backend</label
+            ><select id="cfg_add_input_backend"></select>
+          </div>
+          <div id="cfg_add_input_gpio_field" class="field">
+            <label>GPIO</label
+            ><select id="cfg_add_input_gpio"></select>
+          </div>
+          <div id="cfg_add_input_mcp_instance_field" class="field hidden">
+            <label>Instância MCP</label
+            ><select id="cfg_add_input_backend_instance"></select>
+          </div>
+          <div id="cfg_add_input_endpoint_field" class="field hidden">
+            <label>Canal MCP</label
+            ><select id="cfg_add_input_endpoint_index"></select>
+          </div>
+          <div class="field">
+            <label>Nome</label
+            ><input
+              id="cfg_add_input_name"
+              type="text"
+              placeholder="Nome da nova entrada"
+            />
+          </div>
+          <div class="field">
+            <label>Papel</label
+            ><input
+              id="cfg_add_input_role"
+              type="text"
+              placeholder="Ex.: Botão, Sensor"
+            />
+          </div>
+        </div>
+        <div class="preview">
+          <small>Resumo</small>
+          <div id="cfg_add_input_hint">
+            Escolha um slot, um backend e um endereço válido.
+          </div>
+        </div>
+        <div class="actions">
+          <button class="soft-btn" onclick="addInputSlot(this)">
+            Adicionar entrada
+          </button>
+        </div>
+      </div>
+      <div class="form">
+        <div class="kicker">Adicionar saída</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Slot disponível</label
+            ><select id="cfg_add_output_id"></select>
+          </div>
+          <div class="field">
+            <label>Backend</label
+            ><select id="cfg_add_output_backend"></select>
+          </div>
+          <div id="cfg_add_output_gpio_field" class="field">
+            <label>GPIO</label
+            ><select id="cfg_add_output_gpio"></select>
+          </div>
+          <div id="cfg_add_output_mcp_instance_field" class="field hidden">
+            <label>Instância MCP</label
+            ><select id="cfg_add_output_backend_instance"></select>
+          </div>
+          <div id="cfg_add_output_endpoint_field" class="field hidden">
+            <label>Canal MCP</label
+            ><select id="cfg_add_output_endpoint_index"></select>
+          </div>
+          <div class="field">
+            <label>Nome</label
+            ><input
+              id="cfg_add_output_name"
+              type="text"
+              placeholder="Nome da nova saída"
+            />
+          </div>
+          <div class="field">
+            <label>Papel</label
+            ><input
+              id="cfg_add_output_role"
+              type="text"
+              placeholder="Ex.: Atuador, Relé"
+            />
+          </div>
+        </div>
+        <div class="preview">
+          <small>Resumo</small>
+          <div id="cfg_add_output_hint">
+            Escolha um slot, um backend e um endereço válido.
+          </div>
+        </div>
+        <div class="actions">
+          <button class="soft-btn" onclick="addOutputSlot(this)">
+            Adicionar saída
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="preview" style="margin-top: 14px">
+      <small>Resumo dos slots</small>
+      <div id="slot_summary">Carregando slots ativos e disponíveis.</div>
+    </div>
+    <div class="grid two">
+      <div class="form">
+        <div class="kicker">Entrada</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Entrada</label
+            ><select id="cfg_input_id"></select>
+          </div>
+          <div class="field">
+            <label>Backend</label
+            ><select id="cfg_input_backend"></select>
+          </div>
+          <div id="cfg_input_gpio_field" class="field">
+            <label>GPIO</label
+            ><select id="cfg_input_gpio"></select>
+          </div>
+          <div id="cfg_input_mcp_instance_field" class="field hidden">
+            <label>Instância MCP</label
+            ><select id="cfg_input_backend_instance"></select>
+          </div>
+          <div id="cfg_input_endpoint_field" class="field hidden">
+            <label>Canal MCP</label
+            ><select id="cfg_input_endpoint_index"></select>
+          </div>
+          <div class="field">
+            <label>Nome</label
+            ><input
+              id="cfg_input_name"
+              type="text"
+              placeholder="Nome da entrada"
+            />
+          </div>
+          <div class="field">
+            <label>Papel</label
+            ><input
+              id="cfg_input_role"
+              type="text"
+              placeholder="Ex.: Botão, Sensor"
+            />
+          </div>
+        </div>
+        <div class="preview">
+          <small>Resumo</small>
+          <div id="cfg_input_hint">Selecione uma entrada para configurar.</div>
+        </div>
+        <div class="actions">
+          <button class="soft-btn" onclick="saveInputProfile(this)">
+            Salvar entrada</button
+          ><button class="danger-btn" onclick="resetInputProfile(this)">
+            Resetar entrada</button
+          ><button class="danger-btn" onclick="removeInputSlot(this)">
+            Remover entrada extra
+          </button>
+        </div>
+      </div>
+      <div class="form">
+        <div class="kicker">Saída</div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Saída</label
+            ><select id="cfg_output_id"></select>
+          </div>
+          <div class="field">
+            <label>Backend</label
+            ><select id="cfg_output_backend"></select>
+          </div>
+          <div id="cfg_output_gpio_field" class="field">
+            <label>GPIO</label
+            ><select id="cfg_output_gpio"></select>
+          </div>
+          <div id="cfg_output_mcp_instance_field" class="field hidden">
+            <label>Instância MCP</label
+            ><select id="cfg_output_backend_instance"></select>
+          </div>
+          <div id="cfg_output_endpoint_field" class="field hidden">
+            <label>Canal MCP</label
+            ><select id="cfg_output_endpoint_index"></select>
+          </div>
+          <div class="field">
+            <label>Nome</label
+            ><input
+              id="cfg_output_name"
+              type="text"
+              placeholder="Nome da saída"
+            />
+          </div>
+          <div class="field">
+            <label>Papel</label
+            ><input
+              id="cfg_output_role"
+              type="text"
+              placeholder="Ex.: Atuador, Relé"
+            />
+          </div>
+        </div>
+        <div class="preview">
+          <small>Resumo</small>
+          <div id="cfg_output_hint">Selecione uma saída para configurar.</div>
+        </div>
+        <div class="actions">
+          <button class="soft-btn" onclick="saveOutputProfile(this)">
+            Salvar saída</button
+          ><button class="danger-btn" onclick="resetOutputProfile(this)">
+            Resetar saída</button
+          ><button class="danger-btn" onclick="removeOutputSlot(this)">
+            Remover saída extra
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="grid two" style="margin-top: 14px">
+      <div class="card">
+        <div class="kicker">Endereçamento por backend</div>
+        <h2>Guia rápido</h2>
+        <div id="pin_mode_guide" class="list" style="margin-top: 16px;"></div>
+      </div>
+      <div class="card">
+        <div class="kicker">Nota prática</div>
+        <h2>Como usar</h2>
+        <div class="list">
+          <div class="item">
+            <div>
+              <strong>GPIO nativo</strong
+              ><span
+                >Continua sujeito aos bloqueios de Wi‑Fi, RS485, W5500 e
+                conflitos com outros bindings.</span
+              >
+            </div>
+          </div>
+          <div class="item">
+            <div>
+              <strong>MCP23x17</strong
+              ><span
+                >Usa instância e canal A0..B7. O binding já aceita esse backend;
+                a aplicação elétrica/runtime é a próxima camada.</span
+              >
+            </div>
+          </div>
+          <div class="item">
+            <div>
+              <strong>RS485 / Ethernet</strong
+              ><span
+                >Continuam reservando pinos do transporte local. O preview
+                automático afeta apenas o backend GPIO.</span
+              >
+            </div>
+          </div>
+          <div class="item">
+            <div>
+              <strong>Input learning</strong
+              ><span
+                >Segue valendo para entradas físicas locais. Canais MCP entram
+                pela configuração de backend/endereço.</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid two" style="margin-top: 14px">
+      <div class="card">
+        <div class="kicker">Mapa MCP</div>
+        <h2>Instâncias expandidas</h2>
+        <div id="mcp_runtime_summary" class="list" style="margin-top: 16px;">
+          <div class="empty">Carregando mapa MCP.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="kicker">Ocupação dos canais</div>
+        <h2>Endpoints MCP</h2>
+        <div id="mcp_runtime_instances" class="list" style="margin-top: 16px;">
+          <div class="empty">Carregando endpoints MCP.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
     </section>
   </div>
 </div>
@@ -399,11 +706,33 @@ function setAuthBackendChip(textValue,tone='tone-info'){const chip=$('auth_backe
 function closeWSConnection(){if(ws){try{ws.onopen=null; ws.onmessage=null; ws.onerror=null; ws.onclose=null; ws.close();}catch(_e){} ws=null;} wsConnected=false; updateLiveChip();}
 function sameOriginRequest(url){try{return new URL(url,location.href).origin===location.origin;}catch(_e){return true;}}
 function handleLocalAuthFailure(){if(authTransitionInFlight||authInOptimisticWindow()) return; setAuthBackendChip('Sessao expirada','tone-warn'); refreshAuthStatus(false,authEpoch).catch(()=>{});}
-function apiFetch(url,opts){const finalOpts=Object.assign({cache:'no-store',credentials:'same-origin'},opts||{}); const headers=Object.assign({}, finalOpts.headers||{}); if(authSessionToken&&sameOriginRequest(url)&&!headers['X-ENDAP-Session']) headers['X-ENDAP-Session']=authSessionToken; finalOpts.headers=headers; return fetch(url,finalOpts).then(r=>{const path=String(url||''); const skip=path.includes('/api/auth/login')||path.includes('/api/auth/status')||path.includes('/api/auth/logout')||path.includes('/api/auth/password'); if(r.status===401&&sameOriginRequest(url)&&!skip) handleLocalAuthFailure(); return r;});}
+function apiFetch(url,opts){
+  if (window.location.protocol === 'file:') {
+    return Promise.resolve({
+      ok: true,
+      status: 200,
+      headers: { get: () => '' },
+      json: () => Promise.resolve({}),
+      text: () => Promise.resolve('{}')
+    });
+  }
+  const finalOpts=Object.assign({cache:'no-store',credentials:'same-origin'},opts||{}); const headers=Object.assign({}, finalOpts.headers||{}); if(authSessionToken&&sameOriginRequest(url)&&!headers['X-ENDAP-Session']) headers['X-ENDAP-Session']=authSessionToken; finalOpts.headers=headers; return fetch(url,finalOpts).then(r=>{const path=String(url||''); const skip=path.includes('/api/auth/login')||path.includes('/api/auth/status')||path.includes('/api/auth/logout')||path.includes('/api/auth/password'); if(r.status===401&&sameOriginRequest(url)&&!skip) handleLocalAuthFailure(); return r;});}
 function apiForm(url,fields){const body=new URLSearchParams(); Object.entries(fields||{}).forEach(([k,v])=>body.set(k,v==null?'':String(v))); return apiFetch(url,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:body.toString()}).then(async r=>{const raw=await r.text().catch(()=>''); let data={}; try{data=raw?JSON.parse(raw):{};}catch(_e){data={raw};} const sessionToken=r.headers.get('X-ENDAP-Session')||((data&&data.session_token)?String(data.session_token):''); if(sessionToken) authRememberSessionToken(sessionToken); return {ok:r.ok,status:r.status,data,text:raw,sessionToken};});}
 function bootstrapDashboardSession(){ if(dashboardBootPromise) return dashboardBootPromise; dashboardBootPromise=(async()=>{ await loadStatus(true).catch(()=>{}); await loadProfile().catch(()=>{}); await loadNodes().catch(()=>{}); await loadInstallationMap().catch(()=>{}); await loadAutomation().catch(()=>{}); if(authCan('security_admin')){ await loadAuthUsers(false).catch(()=>{}); await loadAuthAudit(false).catch(()=>{}); } connectWS(); })().finally(()=>{dashboardBootPromise=null;}); return dashboardBootPromise; }
 function applyAuthState(){const allow=authAllowsDashboard(); const openBootstrap=authBootstrapOpen(); setHidden('topbar_shell',!allow); setHidden('page_shell',!allow); setHidden('auth_shell',allow); setHidden('auth_login_view',authState.authenticated||openBootstrap); setHidden('auth_password_view',!(authState.authenticated&&authState.password_change_required)); setHidden('bootstrap_admin_card',!(allow&&openBootstrap)); setHidden('logout_btn',!authState.authenticated); setHidden('auth_badge',!(authState.authenticated||openBootstrap)); text('auth_badge',openBootstrap?'Bootstrap local aberto':(authState.authenticated?`${authState.username||'local'} · ${authRoleLabel(authState.role)}`:'Conta local')); text('auth_login_note',authLoginNoteText()); text('auth_password_note',authPasswordNoteText()); updatePasswordFlowUi(); setHidden('security_admin_card',!(allow&&authState.authenticated&&authCan('security_admin'))); setHidden('connect_transport_card',!(allow&&authCanUse('transport_write'))); setHidden('node_binding_card',!(allow&&authCanUse('profile_write'))); setHidden('reboot_btn',!(allow&&authCanUse('reboot_recovery'))); if($('connect_scan_cta')) $('connect_scan_cta').disabled=!authCanUse('transport_write'); if($('connect_save_cta')) $('connect_save_cta').disabled=!authCanUse('transport_write'); if($('scan_btn')) $('scan_btn').disabled=!authCanUse('transport_write'); if($('wifi_save_btn')) $('wifi_save_btn').disabled=!authCanUse('transport_write'); if($('transport_save_btn')) $('transport_save_btn').disabled=!authCanUse('transport_write'); setHidden('connect_try_reconnect_btn',!authCanUse('reboot_recovery')); setHidden('connect_wifi_retry_btn',!authCanUse('reboot_recovery')); setHidden('connect_recovery_ap_btn',!authCanUse('reboot_recovery')); if($('auto_save_btn')) $('auto_save_btn').disabled=!authCanUse('automation_write'); if($('automation_clear_btn')) $('automation_clear_btn').disabled=!authCanUse('automation_write'); if(authState.backendReady){if(openBootstrap){setAuthBackendChip('Bootstrap local aberto','tone-info');}else{setAuthBackendChip(authAllowsDashboard()?`Sessao valida · ${authRoleLabel(authState.role)}`:(authState.password_change_required?'Troca obrigatoria':'Aguardando login'),authAllowsDashboard()?'tone-ok':'tone-warn');}} if(allow && !dashboardSessionActive){dashboardSessionActive=true; bootstrapDashboardSession();} if(!allow && dashboardSessionActive){dashboardSessionActive=false; closeWSConnection();} if(!allow){authUsers=[]; authAudit=[]; hideInlineStatus();} renderAuthUsers(); renderAuthAudit(); if(!(allow&&authState.authenticated&&authCan('security_admin'))) setHidden('security_admin_card',true); updateLiveChip();}
-function refreshAuthStatus(manual, requestEpoch){const epoch=requestEpoch==null?authEpoch:requestEpoch; authRestoreSessionToken(); return apiFetch('/api/auth/status').then(async r=>{const data=r.ok?await r.json().catch(()=>({})):null; const sessionToken=r.headers.get('X-ENDAP-Session')||((data&&data.session_token)?String(data.session_token):''); if(sessionToken) authRememberSessionToken(sessionToken); if(!r.ok) throw r.status; return data;}).then(data=>{if(epoch!==authEpoch) return authState; const nextState=Object.assign(authStateDefaults(), data||{}, {backendReady:true}); const hasStoredSession=!!authSessionToken; if(!manual && hasStoredSession && !authState.authenticated && !nextState.authenticated && !authBootstrapOpen()){authDowngradeVotes++; setAuthBackendChip('Confirmando sessao','tone-warn'); if(authDowngradeVotes<2){ if(authStatusRetryTimer) clearTimeout(authStatusRetryTimer); authStatusRetryTimer=setTimeout(()=>{authStatusRetryTimer=0; refreshAuthStatus(false,authEpoch).catch(()=>{});},700); updateLiveChip(); return authState; }} else if(authState.authenticated && !manual && !authTransitionInFlight && !nextState.authenticated){ if(authInOptimisticWindow()){ setAuthBackendChip('Confirmando sessao','tone-warn'); authScheduleStatusRefresh(authEpoch,1200); updateLiveChip(); return authState; } authDowngradeVotes++; setAuthBackendChip('Confirmando sessao','tone-warn'); if(authDowngradeVotes<2){ if(authStatusRetryTimer) clearTimeout(authStatusRetryTimer); authStatusRetryTimer=setTimeout(()=>{authStatusRetryTimer=0; refreshAuthStatus(false,authEpoch).catch(()=>{});},900); updateLiveChip(); return authState; } } else { authDowngradeVotes=0; } authState=nextState; if(!authState.authenticated && !authBootstrapOpen()) authClearSessionToken(); applyAuthState(); return authState;}).catch(err=>{if(epoch!==authEpoch) return Promise.reject(err); if(authState.authenticated || authSessionToken){setAuthBackendChip('Sessao instavel','tone-warn'); if(manual) afterError('Falha ao ler autenticacao','O backend nao respondeu ao status de sessao, mas a sessao atual foi preservada.'); updateLiveChip(); return Promise.reject(err);} authState.backendReady=false; setAuthBackendChip('Backend indisponivel','tone-warn'); text('auth_login_note','Nao foi possivel consultar /api/auth/status agora. A dashboard continua segura e voce pode tentar novamente.'); if(manual) afterError('Falha ao ler autenticacao','O backend nao respondeu ao status de sessao.'); updateLiveChip(); return Promise.reject(err);});}
+function refreshAuthStatus(manual, requestEpoch){const epoch=requestEpoch==null?authEpoch:requestEpoch; authRestoreSessionToken(); return apiFetch('/api/auth/status').then(async r=>{const data=r.ok?await r.json().catch(()=>({})):null; const sessionToken=r.headers.get('X-ENDAP-Session')||((data&&data.session_token)?String(data.session_token):''); if(sessionToken) authRememberSessionToken(sessionToken); if(!r.ok) throw r.status; return data;}).then(data=>{if(epoch!==authEpoch) return authState; let nextState=Object.assign(authStateDefaults(), data||{}, {backendReady:true});
+if (window.location.protocol === 'file:') {
+  nextState.authenticated = true;
+  nextState.role = 'admin';
+  nextState.username = 'local_dev';
+  nextState.capabilities = {
+    security_admin: true,
+    transport_write: true,
+    profile_write: true,
+    automation_write: true,
+    reboot_recovery: true
+  };
+} const hasStoredSession=!!authSessionToken; if(!manual && hasStoredSession && !authState.authenticated && !nextState.authenticated && !authBootstrapOpen()){authDowngradeVotes++; setAuthBackendChip('Confirmando sessao','tone-warn'); if(authDowngradeVotes<2){ if(authStatusRetryTimer) clearTimeout(authStatusRetryTimer); authStatusRetryTimer=setTimeout(()=>{authStatusRetryTimer=0; refreshAuthStatus(false,authEpoch).catch(()=>{});},700); updateLiveChip(); return authState; }} else if(authState.authenticated && !manual && !authTransitionInFlight && !nextState.authenticated){ if(authInOptimisticWindow()){ setAuthBackendChip('Confirmando sessao','tone-warn'); authScheduleStatusRefresh(authEpoch,1200); updateLiveChip(); return authState; } authDowngradeVotes++; setAuthBackendChip('Confirmando sessao','tone-warn'); if(authDowngradeVotes<2){ if(authStatusRetryTimer) clearTimeout(authStatusRetryTimer); authStatusRetryTimer=setTimeout(()=>{authStatusRetryTimer=0; refreshAuthStatus(false,authEpoch).catch(()=>{});},900); updateLiveChip(); return authState; } } else { authDowngradeVotes=0; } authState=nextState; if(!authState.authenticated && !authBootstrapOpen()) authClearSessionToken(); applyAuthState(); return authState;}).catch(err=>{if(epoch!==authEpoch) return Promise.reject(err); if(authState.authenticated || authSessionToken){setAuthBackendChip('Sessao instavel','tone-warn'); if(manual) afterError('Falha ao ler autenticacao','O backend nao respondeu ao status de sessao, mas a sessao atual foi preservada.'); updateLiveChip(); return Promise.reject(err);} authState.backendReady=false; setAuthBackendChip('Backend indisponivel','tone-warn'); text('auth_login_note','Nao foi possivel consultar /api/auth/status agora. A dashboard continua segura e voce pode tentar novamente.'); if(manual) afterError('Falha ao ler autenticacao','O backend nao respondeu ao status de sessao.'); updateLiveChip(); return Promise.reject(err);});}
 function loginDashboard(btn){if(authBootstrapOpen()){afterInfo('Bootstrap local aberto','Crie a primeira conta deste gateway antes de usar o login tradicional.'); return;} const username=$('auth_username')&&$('auth_username').value.trim()||'admin'; const password=$('auth_password')&&$('auth_password').value||''; if(!password){alert('Digite a senha local antes de entrar.'); return;} setAuthBackendChip('Validando credenciais','tone-info'); return withBusy(btn||$('auth_login_btn'),'Entrando',()=>apiForm('/api/auth/login',{username,password}).then(({ok,status,data,sessionToken})=>{if(!ok){authApplySnapshot(Object.assign({},authState,data||{})); if(status===429){afterError('Login temporariamente bloqueado',`Aguarde ${formatSeconds(n(data&&data.retry_after))} para tentar novamente.`); return;} afterError('Falha no login',(data&&data.error)==='invalid_credentials'?'Credenciais invalidas.':(data&&data.error)==='bootstrap_open'?'Crie primeiro a conta inicial deste gateway.':'Nao foi possivel autenticar agora.'); return;} if(sessionToken) authRememberSessionToken(sessionToken); if($('auth_password')) $('auth_password').value=''; const epoch=authBeginTransition(); authMarkOptimistic(); authApplySnapshot(Object.assign({},authState,data||{})); authFinishTransition(epoch); toast('tone-ok','Login efetuado',authState.password_change_required?`Troque a senha temporaria de ${authState.username||username} para liberar o painel.`:`Sessao ${authRoleLabel(authState.role)} liberada.`); if(authAllowsDashboard()) bootstrapDashboardSession(); authScheduleStatusRefresh(epoch,1400);}).catch(()=>afterError('Falha no login','Nao foi possivel concluir o login agora.')));}
 function bootstrapCreateFirstAccount(btn){if(!authBootstrapOpen()){afterInfo('Bootstrap encerrado','Este dispositivo já possui conta inicial criada. Use o login normal.'); refreshAuthStatus(true).catch(()=>{}); return;} const username=$('bootstrap_admin_username')&&$('bootstrap_admin_username').value.trim()||'admin'; const password=$('bootstrap_admin_password')&&$('bootstrap_admin_password').value||''; const confirmPassword=$('bootstrap_admin_confirm')&&$('bootstrap_admin_confirm').value||''; if(!password){alert('Digite a senha da primeira conta.'); return;} if(password.length<8){alert('Use pelo menos 8 caracteres na senha inicial.'); return;} if(password!==confirmPassword){alert('A confirmacao da senha nao confere.'); return;} return withBusy(btn||$('bootstrap_admin_btn'),'Criando',()=>apiForm('/api/auth/bootstrap',{username,password}).then(({ok,status,data,sessionToken})=>{if(!ok){authApplySnapshot(Object.assign({},authState,data||{})); const errorCode=(data&&data.error)||''; if(status===409&&errorCode==='already_configured'){afterInfo('Bootstrap encerrado','A primeira conta já foi criada neste dispositivo.'); refreshAuthStatus(true).catch(()=>{}); return;} afterError('Falha ao criar a primeira conta',errorCode==='invalid_username'?'Use apenas letras, numeros, ponto, hifen ou underscore no usuario.':errorCode==='weak_password'?'A senha inicial precisa ter pelo menos 8 caracteres.':errorCode==='bootstrap_save_failed'?'Nao foi possivel persistir a primeira conta neste dispositivo.':'Nao foi possivel concluir a criacao da conta inicial agora.'); return;} if(sessionToken) authRememberSessionToken(sessionToken); if($('bootstrap_admin_password')) $('bootstrap_admin_password').value=''; if($('bootstrap_admin_confirm')) $('bootstrap_admin_confirm').value=''; const epoch=authBeginTransition(); authMarkOptimistic(); authApplySnapshot(Object.assign({},authState,data||{})); authFinishTransition(epoch); toast('tone-ok','Primeira conta criada',`A conta ${authState.username||username} agora administra este gateway.`); if(authAllowsDashboard()) bootstrapDashboardSession(); authScheduleStatusRefresh(epoch,1400);}).catch(()=>afterError('Falha ao criar a primeira conta','Nao foi possivel concluir o bootstrap administrativo agora.')));}
 function logoutDashboard(btn){return withBusy(btn||$('logout_btn'),'Saindo',()=>apiForm('/api/auth/logout',{}).then(({data})=>{authEpoch+=1; authTransitionInFlight=false; authClearSessionToken(); authState=Object.assign(authStateDefaults(),data||{}, {authenticated:false,password_change_required:false,role:'',username:'',session_expires_in:0,backendReady:true,capabilities:authCapsDefaults()}); authUsers=[]; if($('auth_password')) $('auth_password').value=''; if($('auth_current_password')) $('auth_current_password').value=''; if($('auth_new_password')) $('auth_new_password').value=''; if($('auth_confirm_password')) $('auth_confirm_password').value=''; applyAuthState(); toast('tone-info','Sessao encerrada',authBootstrapOpen()?'O dispositivo voltou ao bootstrap local aberto.':'A dashboard voltou para a tela de login.');}).catch(()=>afterError('Falha ao sair','Nao foi possivel encerrar a sessao agora.')));}
