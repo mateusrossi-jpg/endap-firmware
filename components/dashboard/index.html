@@ -715,20 +715,15 @@ function apiFetch(url,opts){
       json: () => {
         if (url.includes('/api/profile')) {
           return Promise.resolve({
-            inputs: [{id: 100, gpio: 4, name: 'Interruptor Sala', role: 'Botão'}, {id: 101, gpio: 5, role: 'Sensor'}],
-            outputs: [{id: 200, gpio: 12, name: 'Lâmpada Sala', role: 'Luz'}, {id: 201, gpio: 13, role: 'Relé'}]
+            inputs: [],
+            outputs: []
           });
         }
         if (url.includes('/api/status')) {
           return Promise.resolve({ inputs: {'100':1, '101':0}, outputs: {'200':1, '201':0} });
         }
         if (url.includes('/api/automation/list')) {
-          return Promise.resolve({
-            rules: [
-              {input: 100, output: 200, mode: 'follow'},
-              {input: 101, output: 201, mode: 'toggle_on_rise'}
-            ]
-          });
+          return Promise.resolve({ rules: [] });
         }
         return Promise.resolve({});
       },
