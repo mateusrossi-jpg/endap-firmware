@@ -23,3 +23,7 @@ patch.txt
 test_httpd.c
 measure_sizes.c
 diagnostics.c
+.env
+*.env
+secrets.h
+include/secrets.h
