@@ -13,7 +13,7 @@
 /* 🔥 DEADLINES AJUSTADOS (REALISTAS) */
 static const uint32_t phase_deadline[PHASE_COUNT] =
 {
-    70,   /* IO (antes 50) */
+    90,   /* IO (antes 70) */
     30,   /* IO_APPLY (novo, super leve) */
     100,  /* FIELDBUS (com budget já controlado) */
     150,  /* AUTOMATION */

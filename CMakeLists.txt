@@ -23,6 +23,7 @@ set(EXTRA_COMPONENT_DIRS
     components/runtime/network/runtime_network
     components/runtime/network/captive_dns
     components/runtime/http_server
+    components/runtime/ladder
     components/runtime/input_learning
     components/runtime/io_binding
     components/runtime/io_driver
@@ -41,6 +42,7 @@ set(EXTRA_COMPONENT_DIRS
     components/hal/rs485
 
     components/util/logger
+    components/drivers/sensor
     
     components/cluster
     components/cluster/node_identity
@@ -53,6 +55,8 @@ set(EXTRA_COMPONENT_DIRS
     
     components/dashboard
     components/security/auth
+    components/onboarding
+    components/runtime/network_v1
 )
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)

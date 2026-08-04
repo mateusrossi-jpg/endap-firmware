@@ -1,12 +1,12 @@
 idf_component_register(
     SRCS "http_server.c"
     INCLUDE_DIRS "include"
-    REQUIRES 
+    REQUIRES  kernel_trace
     esp_http_server
     state
     event_set
     io_command
-    automation
+    automation ladder
     dashboard
     wifi_manager
     network_ready
@@ -17,7 +17,9 @@ idf_component_register(
     io_driver
     input_learning
     io_binding
+    pve
     auth
+    onboarding
     nvs_flash
     kernel_metrics
     phase_load_test
@@ -25,4 +27,6 @@ idf_component_register(
     rs485
     rs485_engine
     rs485_master
+    ethernet_manager
+    network_v1
 )

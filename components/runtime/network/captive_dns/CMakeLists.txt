@@ -1,5 +1,5 @@
 idf_component_register(
     SRCS "captive_dns.c"
     INCLUDE_DIRS "include"
-    REQUIRES lwip
+    REQUIRES lwip kernel_trace
 )

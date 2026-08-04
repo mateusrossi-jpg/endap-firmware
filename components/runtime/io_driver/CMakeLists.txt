@@ -8,6 +8,9 @@ idf_component_register(
         failsafe
         io_image
         cluster
-    PRIV_REQUIRES
+    PRIV_REQUIRES kernel_trace
         http_server
+        esp_driver_gpio
+        esp_adc
+        pve
 )

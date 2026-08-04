@@ -1,0 +1,47 @@
+name: ENDAP v1 CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build Firmware (ESP32)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # Necessário para o git diff
+        
+    - name: Verificação de Alterações no Kernel
+      run: |
+        if git diff --quiet origin/main HEAD -- components/kernel/; then
+          echo "✅ Nenhum arquivo em components/kernel/ foi modificado."
+        else
+          echo "⚠️ AVISO: Modificações detectadas no Kernel (components/kernel/)."
+          echo "O Kernel v1 está congelado. Qualquer alteração deve ser justificada e auditada."
+        fi
+        
+    - name: Build with ESP-IDF
+      uses: espressif/esp-idf-ci-action@v1
+      with:
+        esp_idf_version: v5.2 # Ajustar conforme a versão usada no projeto
+        target: esp32
+        path: '.'
+        
+    - name: Gerar Relatório de Tamanho do Binário
+      run: |
+        python -m esptool --chip esp32 image_info build/ENDAP.bin || true
+        
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: endap-firmware-binaries
+        path: |
+          build/bootloader/bootloader.bin
+          build/partition_table/partition-table.bin
+          build/ENDAP.bin

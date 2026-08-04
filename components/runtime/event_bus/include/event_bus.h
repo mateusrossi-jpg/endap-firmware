@@ -14,6 +14,8 @@ typedef enum
     EVENT_INPUT_CHANGE,
     EVENT_STATE_CHANGE,
     EVENT_TIMER,
+    EVENT_PVE_ALARM_HIGH,
+    EVENT_PVE_ALARM_LOW,
     EVENT_TYPE_MAX
 
 } endap_event_type_t;

@@ -348,7 +348,12 @@ static void rs485_poll_rx(void)
         return;
     }
 
-    len = uart_read_bytes(cfg.uart_num, data, sizeof(data), 0);
+    size_t buffered_len = 0;
+    if (uart_get_buffered_data_len(cfg.uart_num, &buffered_len) != ESP_OK || buffered_len == 0)
+        return;
+
+    size_t to_read = (buffered_len < sizeof(data)) ? buffered_len : sizeof(data);
+    len = uart_read_bytes(cfg.uart_num, data, to_read, 0);
     if (len <= 0)
         return;
 

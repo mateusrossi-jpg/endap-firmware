@@ -87,3 +87,39 @@ config ENDAP_W5500_RESET_GPIO
     depends on ENDAP_ETHERNET_ENABLED && ENDAP_ETH_BACKEND_W5500
 
 endmenu
+
+menu "ENDAP Sensors"
+
+config ENDAP_SENSOR_AHT10_ENABLED
+    bool "Enable AHT10 (I2C)"
+    default y
+
+config ENDAP_SENSOR_AHT10_SDA_GPIO
+    int "AHT10 SDA GPIO"
+    default 16
+    depends on ENDAP_SENSOR_AHT10_ENABLED
+
+config ENDAP_SENSOR_AHT10_SCL_GPIO
+    int "AHT10 SCL GPIO"
+    default 17
+    depends on ENDAP_SENSOR_AHT10_ENABLED
+
+config ENDAP_SENSOR_DHT11_ENABLED
+    bool "Enable DHT11 (1-wire)"
+    default y
+
+config ENDAP_SENSOR_DHT11_GPIO
+    int "DHT11 GPIO"
+    default 4
+    depends on ENDAP_SENSOR_DHT11_ENABLED
+
+config ENDAP_SENSOR_DS18B20_ENABLED
+    bool "Enable DS18B20 (1-wire)"
+    default y
+
+config ENDAP_SENSOR_DS18B20_GPIO
+    int "DS18B20 GPIO"
+    default 33
+    depends on ENDAP_SENSOR_DS18B20_ENABLED
+
+endmenu

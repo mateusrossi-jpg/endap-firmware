@@ -1,7 +1,10 @@
 #include "cluster_transport.h"
+#include "cluster_transport_now.h"
+#include "cluster_transport_mesh.h"
 #include "network_ready.h"
 #include "device_profile.h"
 #include "rs485_engine.h"
+#include "system_diag.h"
 
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -25,27 +28,8 @@ static const char *TAG = "CLUSTER_TRANS";
 #define HEARTBEAT_MSG_TYPE 1U
 #define CLUSTER_TRANSPORT_RX_STACK_WORDS 4096
 
-typedef struct __attribute__((packed))
-{
-    uint8_t type;
-    uint32_t node_id;
-    uint32_t timestamp;
-} cluster_transport_heartbeat_msg_v1_t;
 
-typedef struct __attribute__((packed))
-{
-    uint8_t type;
-    uint32_t node_id;
-    uint32_t timestamp;
-    uint8_t transport_type;
-} cluster_transport_heartbeat_msg_t;
 
-typedef struct __attribute__((packed))
-{
-    uint32_t node_id;
-    uint32_t timestamp_ms;
-    uint8_t transport_type;
-} cluster_transport_rs485_heartbeat_payload_t;
 
 static int discovery_sock = -1;
 static int frame_sock = -1;
@@ -131,20 +115,22 @@ static void cluster_transport_on_rs485_frame(const rs485_frame_t *frame)
 
     if (frame->type == RS485_FRAME_TYPE_CLUSTER_HEARTBEAT)
     {
-        if (heartbeat_callback && frame->len >= sizeof(cluster_transport_rs485_heartbeat_payload_t))
+        if (heartbeat_callback && frame->len >= sizeof(endap_heartbeat_t))
         {
-            cluster_transport_rs485_heartbeat_payload_t payload = {0};
-            memcpy(&payload, frame->payload, sizeof(payload));
+            endap_heartbeat_t hb = {0};
+            memcpy(&hb, frame->payload, sizeof(hb));
 
-            if (payload.node_id == self_node_id)
+            if (hb.magic != 0x454E4450 || hb.node_id == self_node_id)
                 return;
 
             cluster_transport_heartbeat_t heartbeat = {
-                .node_id = payload.node_id,
-                .timestamp_ms = payload.timestamp_ms,
+                .node_id = hb.node_id,
+                .timestamp_ms = hb.uptime_seconds * 1000U,
                 .source_ip = 0U,
-                .source_transport = payload.transport_type ?
-                    payload.transport_type : (uint8_t)CLUSTER_TRANSPORT_RS485,
+                .source_transport = (uint8_t)CLUSTER_TRANSPORT_RS485,
+                .device_profile = hb.node_type,
+                .uptime_seconds = hb.uptime_seconds,
+                .flags = hb.state
             };
 
             heartbeat_callback(&heartbeat);
@@ -162,16 +148,6 @@ static void cluster_transport_on_rs485_frame(const rs485_frame_t *frame)
     }
 }
 
-static cluster_transport_type_t cluster_transport_type_for_link(network_ready_link_t link)
-{
-    if (link == NETWORK_READY_LINK_ETHERNET)
-        return CLUSTER_TRANSPORT_ETHERNET_UDP;
-
-    if (link == NETWORK_READY_LINK_WIFI_AP || link == NETWORK_READY_LINK_WIFI_STA)
-        return CLUSTER_TRANSPORT_WIFI_UDP;
-
-    return CLUSTER_TRANSPORT_NONE;
-}
 
 static bool cluster_transport_profile_allows(cluster_transport_type_t type)
 {
@@ -183,16 +159,17 @@ static bool cluster_transport_profile_allows(cluster_transport_type_t type)
             return device_profile_transport_enabled(DEVICE_PROFILE_TRANSPORT_WIFI);
         case CLUSTER_TRANSPORT_RS485:
             return device_profile_transport_enabled(DEVICE_PROFILE_TRANSPORT_RS485);
+        case CLUSTER_TRANSPORT_WIFI_NOW:
+            return device_profile_transport_enabled(DEVICE_PROFILE_TRANSPORT_ESPNOW);
+        case CLUSTER_TRANSPORT_WIFI_MESH:
+            return device_profile_transport_enabled(DEVICE_PROFILE_TRANSPORT_MESH);
         case CLUSTER_TRANSPORT_NONE:
         default:
             return true;
     }
 }
 
-static uint8_t cluster_transport_current_source_code(void)
-{
-    return (uint8_t)cluster_transport_active_type();
-}
+
 
 static uint32_t cluster_transport_compute_broadcast_addr(uint32_t ip_addr, uint32_t netmask_addr)
 {
@@ -256,7 +233,7 @@ static void cluster_transport_discovery_rx_task(void *arg)
 
     while (1)
     {
-        uint8_t raw[sizeof(cluster_transport_heartbeat_msg_t)] = {0};
+        uint8_t raw[sizeof(endap_heartbeat_t)] = {0};
         struct sockaddr_in source_addr = {0};
         socklen_t addr_len = sizeof(source_addr);
         int len = recvfrom(discovery_sock,
@@ -266,38 +243,77 @@ static void cluster_transport_discovery_rx_task(void *arg)
                            (struct sockaddr *)&source_addr,
                            &addr_len);
 
-        if (len != (int)sizeof(cluster_transport_heartbeat_msg_v1_t) &&
-            len != (int)sizeof(cluster_transport_heartbeat_msg_t))
+        if (len < (int)sizeof(endap_heartbeat_t))
             continue;
 
         if (heartbeat_callback)
         {
-            cluster_transport_heartbeat_t heartbeat = {0};
+            endap_heartbeat_t *msg = (endap_heartbeat_t *)raw;
+            if (msg->magic != 0x454E4450)
+                continue;
 
-            if (len == (int)sizeof(cluster_transport_heartbeat_msg_t))
-            {
-                cluster_transport_heartbeat_msg_t msg = {0};
-                memcpy(&msg, raw, sizeof(msg));
-                if (msg.type != HEARTBEAT_MSG_TYPE || msg.node_id == self_node_id)
-                    continue;
-                heartbeat.node_id = msg.node_id;
-                heartbeat.timestamp_ms = msg.timestamp;
-                heartbeat.source_transport = msg.transport_type ?
-                    msg.transport_type : (uint8_t)cluster_transport_active_type();
-            }
-            else
-            {
-                cluster_transport_heartbeat_msg_v1_t msg = {0};
-                memcpy(&msg, raw, sizeof(msg));
-                if (msg.type != HEARTBEAT_MSG_TYPE || msg.node_id == self_node_id)
-                    continue;
-                heartbeat.node_id = msg.node_id;
-                heartbeat.timestamp_ms = msg.timestamp;
-                heartbeat.source_transport = (uint8_t)cluster_transport_active_type();
-            }
+            uint32_t incoming_node_id = msg->node_id;
+            if (incoming_node_id == self_node_id)
+                continue;
 
-            heartbeat.source_ip = source_addr.sin_addr.s_addr;
+            cluster_transport_heartbeat_t heartbeat = {
+                .node_id = incoming_node_id,
+                .timestamp_ms = (uint32_t)(esp_timer_get_time() / 1000ULL),
+                .source_ip = source_addr.sin_addr.s_addr,
+                .source_transport = (uint8_t)cluster_transport_active_type(),
+                .device_profile = msg->node_type,
+                .uptime_seconds = msg->uptime_seconds,
+                .flags = msg->state
+            };
+
             heartbeat_callback(&heartbeat);
+        }
+    }
+}
+
+#include "endap_onboarding.h"
+#include "freertos/semphr.h"
+
+static SemaphoreHandle_t remote_claim_sem = NULL;
+static endap_remote_claim_msg_t remote_claim_response = {0};
+
+static void cluster_transport_handle_claim_frame(const uint8_t *data, uint16_t len)
+{
+    if (!data || len < sizeof(endap_remote_claim_msg_t))
+        return;
+
+    const endap_remote_claim_msg_t *msg = (const endap_remote_claim_msg_t *)data;
+    if (msg->magic != ENDAP_REMOTE_CLAIM_MAGIC)
+        return;
+
+    if (msg->msg_type == ENDAP_REMOTE_CLAIM_REQ)
+    {
+        // Se a mensagem for direcionada a este nó
+        if (msg->target_node_id == self_node_id)
+        {
+            ESP_LOGI(TAG, "Claim remoto recebido do Gateway %" PRIu32 " para perfil %u", msg->gateway_id, msg->profile);
+            esp_err_t err = endap_onboarding_claim((node_profile_t)msg->profile, msg->gateway_id, msg->node_name);
+
+            // Responde a confirmacao
+            endap_remote_claim_msg_t resp = {
+                .magic = ENDAP_REMOTE_CLAIM_MAGIC,
+                .msg_type = ENDAP_REMOTE_CLAIM_RESP,
+                .profile = msg->profile,
+                .status_code = (uint16_t)err,
+                .target_node_id = self_node_id,
+                .gateway_id = msg->gateway_id,
+            };
+            snprintf(resp.node_name, sizeof(resp.node_name), "%s", msg->node_name);
+            cluster_transport_broadcast_frame((const uint8_t *)&resp, sizeof(resp));
+        }
+    }
+    else if (msg->msg_type == ENDAP_REMOTE_CLAIM_RESP)
+    {
+        // Resposta recebida pelo Gateway
+        if (msg->gateway_id == self_node_id && remote_claim_sem != NULL)
+        {
+            memcpy(&remote_claim_response, msg, sizeof(remote_claim_response));
+            xSemaphoreGive(remote_claim_sem);
         }
     }
 }
@@ -323,9 +339,47 @@ static void cluster_transport_frame_rx_task(void *arg)
         if (len <= 0)
             continue;
 
+        cluster_transport_handle_claim_frame(rx_buffer, (uint16_t)len);
+
         if (frame_callback)
             frame_callback(rx_buffer, (uint16_t)len);
     }
+}
+
+bool cluster_transport_send_remote_claim(uint32_t target_node_id, uint8_t profile, uint32_t gateway_id, const char *node_name, uint32_t timeout_ms)
+{
+    if (remote_claim_sem == NULL) {
+        remote_claim_sem = xSemaphoreCreateBinary();
+        if (!remote_claim_sem) return false;
+    }
+
+    xSemaphoreTake(remote_claim_sem, 0); // Limpa sinal previo
+    memset(&remote_claim_response, 0, sizeof(remote_claim_response));
+
+    endap_remote_claim_msg_t req = {
+        .magic = ENDAP_REMOTE_CLAIM_MAGIC,
+        .msg_type = ENDAP_REMOTE_CLAIM_REQ,
+        .profile = profile,
+        .status_code = 0,
+        .target_node_id = target_node_id,
+        .gateway_id = gateway_id,
+    };
+    if (node_name) {
+        snprintf(req.node_name, sizeof(req.node_name), "%s", node_name);
+    }
+
+    if (!cluster_transport_broadcast_frame((const uint8_t *)&req, sizeof(req))) {
+        ESP_LOGE(TAG, "Falha ao enviar frame de claim remoto");
+        return false;
+    }
+
+    TickType_t ticks = pdMS_TO_TICKS(timeout_ms ? timeout_ms : 3000U);
+    if (xSemaphoreTake(remote_claim_sem, ticks) == pdTRUE) {
+        return (remote_claim_response.status_code == 0);
+    }
+
+    ESP_LOGW(TAG, "Timeout aguardando resposta de claim do no %" PRIu32, target_node_id);
+    return false;
 }
 
 static bool cluster_transport_start_udp_runtime(void)
@@ -386,6 +440,44 @@ static bool cluster_transport_start_udp_runtime(void)
     return true;
 }
 
+static cluster_transport_type_t cluster_transport_select_best(const network_ready_snapshot_t *snapshot)
+{
+    // 1. Ethernet UDP
+    if (snapshot && snapshot->ethernet_up && cluster_transport_profile_allows(CLUSTER_TRANSPORT_ETHERNET_UDP))
+    {
+        return CLUSTER_TRANSPORT_ETHERNET_UDP;
+    }
+
+    // 2. WiFi UDP / MESH / NOW
+    if (snapshot && (snapshot->wifi_sta_up || snapshot->wifi_ap_up))
+    {
+        const device_network_profile_t *net = device_profile_network();
+        if (net)
+        {
+            if (net->wifi_mode == DEVICE_PROFILE_WIFI_MODE_MESH && cluster_transport_profile_allows(CLUSTER_TRANSPORT_WIFI_MESH))
+                return CLUSTER_TRANSPORT_WIFI_MESH;
+            if (net->wifi_mode == DEVICE_PROFILE_WIFI_MODE_NOW && cluster_transport_profile_allows(CLUSTER_TRANSPORT_WIFI_NOW))
+                return CLUSTER_TRANSPORT_WIFI_NOW;
+        }
+        if (cluster_transport_profile_allows(CLUSTER_TRANSPORT_WIFI_UDP))
+            return CLUSTER_TRANSPORT_WIFI_UDP;
+    }
+
+    // 3. Fallback ESP-NOW
+    if (cluster_transport_profile_allows(CLUSTER_TRANSPORT_WIFI_NOW))
+    {
+        return CLUSTER_TRANSPORT_WIFI_NOW;
+    }
+
+    // 4. Fallback RS485
+    if (cluster_transport_profile_allows(CLUSTER_TRANSPORT_RS485) && cluster_transport_rs485_available())
+    {
+        return CLUSTER_TRANSPORT_RS485;
+    }
+
+    return CLUSTER_TRANSPORT_NONE;
+}
+
 static void cluster_transport_apply_network_snapshot(const network_ready_snapshot_t *snapshot,
                                                      cluster_transport_type_t fallback_type)
 {
@@ -396,23 +488,21 @@ static void cluster_transport_apply_network_snapshot(const network_ready_snapsho
     bool changed = false;
     char ip_text[20];
     char broadcast_text[20];
-    cluster_transport_type_t preferred_ip_type = CLUSTER_TRANSPORT_NONE;
+    cluster_transport_type_t preferred_type = cluster_transport_select_best(snapshot);
 
-    if (snapshot && snapshot->ready)
+    if (preferred_type != CLUSTER_TRANSPORT_NONE)
     {
-        cluster_transport_type_t link_type = cluster_transport_type_for_link(snapshot->active_link);
-
-        if (cluster_transport_profile_allows(link_type))
-            preferred_ip_type = link_type;
-
-        if (preferred_ip_type != CLUSTER_TRANSPORT_NONE)
+        if (cluster_transport_type_uses_udp(preferred_type))
         {
             if (cluster_transport_start_udp_runtime())
             {
-                next_type = preferred_ip_type;
-                next_broadcast_addr = cluster_transport_compute_broadcast_addr(
-                    snapshot->active_ip_addr,
-                    snapshot->active_netmask_addr);
+                next_type = preferred_type;
+                if (snapshot)
+                {
+                    next_broadcast_addr = cluster_transport_compute_broadcast_addr(
+                        snapshot->active_ip_addr,
+                        snapshot->active_netmask_addr);
+                }
             }
             else if (cluster_transport_profile_allows(CLUSTER_TRANSPORT_RS485) &&
                      cluster_transport_rs485_available())
@@ -421,21 +511,10 @@ static void cluster_transport_apply_network_snapshot(const network_ready_snapsho
                 next_type = CLUSTER_TRANSPORT_RS485;
             }
         }
-        else if (cluster_transport_profile_allows(CLUSTER_TRANSPORT_RS485) &&
-                 cluster_transport_rs485_available())
+        else
         {
-            next_type = CLUSTER_TRANSPORT_RS485;
+            next_type = preferred_type;
         }
-        else if (cluster_transport_profile_allows(fallback_type))
-        {
-            if (!cluster_transport_type_uses_udp(fallback_type) || cluster_transport_start_udp_runtime())
-                next_type = fallback_type;
-        }
-    }
-    else if (cluster_transport_profile_allows(CLUSTER_TRANSPORT_RS485) &&
-             cluster_transport_rs485_available())
-    {
-        next_type = CLUSTER_TRANSPORT_RS485;
     }
     else if (cluster_transport_profile_allows(fallback_type))
     {
@@ -470,6 +549,24 @@ static void cluster_transport_apply_network_snapshot(const network_ready_snapsho
              cluster_transport_active_name(),
              ip_text[0] ? ip_text : "0.0.0.0",
              broadcast_text[0] ? broadcast_text : "255.255.255.255");
+             
+    if (next_type == CLUSTER_TRANSPORT_WIFI_NOW)
+    {
+        cluster_transport_now_init(self_node_id);
+    }
+    else if (previous_type == CLUSTER_TRANSPORT_WIFI_NOW)
+    {
+        cluster_transport_now_deinit();
+    }
+    
+    if (next_type == CLUSTER_TRANSPORT_WIFI_MESH)
+    {
+        cluster_transport_mesh_init(self_node_id);
+    }
+    else if (previous_type == CLUSTER_TRANSPORT_WIFI_MESH)
+    {
+        cluster_transport_mesh_deinit();
+    }
 }
 
 static void cluster_transport_on_network_ready(const network_ready_snapshot_t *snapshot, void *ctx)
@@ -582,6 +679,10 @@ const char *cluster_transport_name(cluster_transport_type_t type)
             return "ethernet-udp";
         case CLUSTER_TRANSPORT_RS485:
             return "rs485";
+        case CLUSTER_TRANSPORT_WIFI_MESH:
+            return "wifi-mesh";
+        case CLUSTER_TRANSPORT_WIFI_NOW:
+            return "wifi-now";
         case CLUSTER_TRANSPORT_NONE:
         default:
             return "none";
@@ -596,22 +697,29 @@ const char *cluster_transport_active_name(void)
 void cluster_transport_register_heartbeat_callback(cluster_transport_heartbeat_cb_t cb)
 {
     heartbeat_callback = cb;
+    cluster_transport_now_register_callbacks(heartbeat_callback, frame_callback);
+    cluster_transport_mesh_register_callbacks(heartbeat_callback, frame_callback);
 }
 
 void cluster_transport_register_frame_callback(cluster_transport_frame_cb_t cb)
 {
     frame_callback = cb;
+    cluster_transport_now_register_callbacks(heartbeat_callback, frame_callback);
+    cluster_transport_mesh_register_callbacks(heartbeat_callback, frame_callback);
 }
 
 bool cluster_transport_send_heartbeat(void)
 {
     cluster_transport_type_t type;
-    cluster_transport_heartbeat_msg_t msg = {
-        .type = HEARTBEAT_MSG_TYPE,
-        .node_id = self_node_id,
-        .timestamp = (uint32_t)(esp_timer_get_time() / 1000ULL),
-        .transport_type = cluster_transport_current_source_code(),
-    };
+    endap_heartbeat_t msg = {0};
+    
+    msg.magic = ENDAP_CLUSTER_MAGIC;
+    msg.node_id = self_node_id;
+    msg.boot_counter = system_diag_get_boot_count();
+    msg.uptime_seconds = (uint32_t)(esp_timer_get_time() / 1000000ULL);
+    msg.node_type = 1; // Default
+    msg.state = 1; // ONLINE
+
     struct sockaddr_in dest_addr;
     int sock;
 
@@ -622,21 +730,25 @@ bool cluster_transport_send_heartbeat(void)
 
     if (type == CLUSTER_TRANSPORT_RS485)
     {
-        cluster_transport_rs485_heartbeat_payload_t payload = {
-            .node_id = self_node_id,
-            .timestamp_ms = (uint32_t)(esp_timer_get_time() / 1000ULL),
-            .transport_type = (uint8_t)CLUSTER_TRANSPORT_RS485,
-        };
         rs485_frame_t frame = {
             .node = (uint8_t)self_node_id,
             .msg_id = cluster_transport_next_rs485_msg_id(),
             .type = RS485_FRAME_TYPE_CLUSTER_HEARTBEAT,
-            .len = (uint8_t)sizeof(payload),
+            .len = (uint8_t)sizeof(msg),
         };
 
-        memcpy(frame.payload, &payload, sizeof(payload));
+        memcpy(frame.payload, &msg, sizeof(msg));
         rs485_engine_send(&frame);
         return true;
+    }
+    
+    if (type == CLUSTER_TRANSPORT_WIFI_NOW)
+    {
+        return cluster_transport_now_send((const uint8_t*)&msg, sizeof(msg));
+    }
+    else if (type == CLUSTER_TRANSPORT_WIFI_MESH)
+    {
+        return cluster_transport_mesh_send((const uint8_t*)&msg, sizeof(msg));
     }
 
     portENTER_CRITICAL(&cluster_transport_lock);
@@ -678,6 +790,15 @@ bool cluster_transport_broadcast_frame(const uint8_t *data, uint16_t len)
         memcpy(frame.payload, data, len);
         rs485_engine_send(&frame);
         return true;
+    }
+
+    if (type == CLUSTER_TRANSPORT_WIFI_NOW)
+    {
+        return cluster_transport_now_send(data, len);
+    }
+    else if (type == CLUSTER_TRANSPORT_WIFI_MESH)
+    {
+        return cluster_transport_mesh_send(data, len);
     }
 
     portENTER_CRITICAL(&cluster_transport_lock);

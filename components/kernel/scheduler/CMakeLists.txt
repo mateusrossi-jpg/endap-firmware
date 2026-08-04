@@ -1,9 +1,9 @@
 idf_component_register(
-
     SRCS "scheduler.c"
     INCLUDE_DIRS "include"
+    WHOLE_ARCHIVE
     REQUIRES
-    PRIV_REQUIRES 
+    PRIV_REQUIRES kernel_trace
     	io_image
     	driver
 	fieldbus

@@ -3,7 +3,7 @@ idf_component_register(
     INCLUDE_DIRS "include"
     REQUIRES
         nvs_flash
-    PRIV_REQUIRES
+    PRIV_REQUIRES kernel_trace
         state
         logger
         event_bus

@@ -1,3 +1,5 @@
+#include "device_profile_templates.h"
+#include "device_profile_sensors.h"
 #include "device_profile.h"
 
 #include "io_map.h"
@@ -9,15 +11,20 @@
 #include <inttypes.h>
 #include <stddef.h>
 #include <string.h>
+#include "endap_nvs.h"
 
 #define TAG "DEV_PROFILE"
 #define ARRAY_LEN(x) ((int)(sizeof(x) / sizeof((x)[0])))
 #define DEVICE_PROFILE_NETWORK_NAMESPACE "dev_profile"
 #define DEVICE_PROFILE_NETWORK_KEY "net_cfg_v2"
+#define DEVICE_PROFILE_NODE_KEY "node_profile"
 #define DEVICE_PROFILE_NETWORK_MAGIC 0x454E4450U
-#define DEVICE_PROFILE_NETWORK_VERSION 3U
+#define DEVICE_PROFILE_NETWORK_VERSION 4U
 #define DEVICE_PROFILE_FAILOVER_DELAY_DEFAULT_MS 5000U
 #define DEVICE_PROFILE_RECOVERY_HYST_DEFAULT_MS 15000U
+
+static node_profile_t current_node_profile = NODE_PROFILE_FIELD;
+
 
 #ifndef CONFIG_ENDAP_WIFI_ENABLED
 #define CONFIG_ENDAP_WIFI_ENABLED 1
@@ -65,49 +72,45 @@
 
 static const device_input_profile_t input_profile[] =
 {
-    {ENDAP_INPUT_ID(0), "Input 10", "GPIO 18 • active-low • debounced", GPIO_NUM_18, true, 5},
-    {ENDAP_INPUT_ID(1), "Input 11", "GPIO 19 • active-low • debounced", GPIO_NUM_19, true, 5},
-    {ENDAP_INPUT_ID(2), "Input 12", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(3), "Input 13", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(4), "Input 14", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(5), "Input 15", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(6), "Input 16", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(7), "Input 17", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(8), "Input 18", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(9), "Input 19", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(10), "Input 20", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(11), "Input 21", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(12), "Input 22", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(13), "Input 23", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(14), "Input 24", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(15), "Input 25", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(0), "GPIO16", "Entrada Digital GPIO 16", GPIO_NUM_NC, true, 5},
+    {ENDAP_INPUT_ID(1), "GPIO17", "Entrada Digital GPIO 17", GPIO_NUM_NC, true, 5},
+    {ENDAP_INPUT_ID(2), "GPIO18", "Entrada Digital GPIO 18", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(3), "GPIO19", "Entrada Digital GPIO 19", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(4), "GPIO21", "Entrada Digital GPIO 21", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(5), "GPIO22", "Entrada Digital GPIO 22", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(6), "GPIO23", "Entrada Digital GPIO 23", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(7), "GPIO25", "Entrada Digital / ADC2 GPIO 25", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(8), "GPIO26", "Entrada Digital / ADC2 GPIO 26", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(9), "GPIO27", "Entrada Digital / ADC2 GPIO 27", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(10), "GPIO32", "Entrada Digital / ADC1 GPIO 32", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(11), "GPIO33", "Entrada Digital / ADC1 GPIO 33", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(12), "GPIO34", "Entrada Apenas / ADC1 GPIO 34", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(13), "GPIO35", "Entrada Apenas / ADC1 GPIO 35", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(14), "GPIO36", "Entrada Apenas / ADC1 GPIO 36 (VP)", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(15), "GPIO39", "Entrada Apenas / ADC1 GPIO 39 (VN)", GPIO_NUM_NC, false, 5},
 };
 
 static const device_output_profile_t output_profile[] =
 {
-    {ENDAP_OUTPUT_ID(0), "Output 100", "GPIO 2 • relay channel • active-low", GPIO_NUM_2, true},
-    {ENDAP_OUTPUT_ID(1), "Output 101", "GPIO 4 • relay channel • active-low", GPIO_NUM_4, true},
-    {ENDAP_OUTPUT_ID(2), "Output 102", "GPIO 5 • relay channel • active-low", GPIO_NUM_5, true},
-    {ENDAP_OUTPUT_ID(3), "Output 103", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(4), "Output 104", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(5), "Output 105", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(6), "Output 106", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(7), "Output 107", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(8), "Output 108", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(9), "Output 109", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(10), "Output 110", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(11), "Output 111", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(12), "Output 112", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(13), "Output 113", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(14), "Output 114", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(15), "Output 115", "Canal adicional • escolha um GPIO pela dashboard", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(0), "GPIO2", "Saída / Relé / LED GPIO 2", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(1), "GPIO4", "Saída / Relé 1 GPIO 4", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(2), "GPIO5", "Saída / Relé 2 GPIO 5", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(3), "GPIO13", "Saída / Relé 3 GPIO 13", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(4), "GPIO14", "Saída / Relé 4 GPIO 14", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(5), "GPIO16", "Saída / Relé GPIO 16", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(6), "GPIO17", "Saída / Relé GPIO 17", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(7), "GPIO18", "Saída / Relé GPIO 18", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(8), "GPIO19", "Saída / Relé GPIO 19", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(9), "GPIO21", "Saída / Relé GPIO 21", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(10), "GPIO22", "Saída / Relé GPIO 22", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(11), "GPIO23", "Saída / Relé GPIO 23", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(12), "GPIO25", "Saída / Relé GPIO 25", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(13), "GPIO26", "Saída / Relé GPIO 26", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(14), "GPIO27", "Saída / Relé GPIO 27", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(15), "GPIO32", "Saída / Relé GPIO 32", GPIO_NUM_NC, false},
 };
 
-static const device_default_automation_t default_automation[] =
-{
-    {ENDAP_INPUT_0_ID, ENDAP_OUTPUT_0_ID, 0},
-    {ENDAP_INPUT_1_ID, ENDAP_OUTPUT_1_ID, 0},
-};
+static const device_default_automation_t default_automation[] = {};
 
 static const device_gpio_option_t input_gpio_options[] =
 {
@@ -274,7 +277,28 @@ typedef struct
     uint8_t onboarding_pending;
     uint8_t primary_transport;
     uint8_t fallback_transport;
-    uint16_t reserved0;
+    uint8_t wifi_mode;
+    uint8_t allow_local_ap;
+    uint8_t allow_dashboard;
+    uint8_t allow_ota;
+    uint16_t reserved1;
+    uint32_t failover_delay_ms;
+    uint32_t recovery_hysteresis_ms;
+    uint32_t crc;
+} device_profile_network_blob_v4_t;
+
+typedef struct
+{
+    uint32_t magic;
+    uint16_t version;
+    uint8_t wifi_enabled;
+    uint8_t ethernet_enabled;
+    uint8_t rs485_enabled;
+    uint8_t onboarding_pending;
+    uint8_t primary_transport;
+    uint8_t fallback_transport;
+    uint8_t wifi_mode;
+    uint8_t reserved0;
     uint32_t failover_delay_ms;
     uint32_t recovery_hysteresis_ms;
     uint32_t crc;
@@ -329,14 +353,27 @@ static gpio_num_t gpio_from_config(int value)
 
 static bool device_profile_gpio_reserved_for_platform(gpio_num_t gpio)
 {
+    // UART Console
+    if (gpio == GPIO_NUM_1 || gpio == GPIO_NUM_3)
+        return true;
+
+    const device_sensor_profile_t *sensors = device_profile_get_sensors();
+    if (sensors) {
+        if (sensors->dht11_enabled && gpio == sensors->dht11_gpio)
+            return true;
+        if (sensors->ds18b20_enabled && gpio == sensors->ds18b20_gpio)
+            return true;
+    }
+
+    // RS485
     const device_network_profile_t *network = device_profile_network();
+    if (network && network->rs485_supported && network->rs485_enabled)
+    {
+        if (gpio == GPIO_NUM_25 || gpio == GPIO_NUM_26 || gpio == GPIO_NUM_27)
+            return true;
+    }
 
-    if (!network || !network->rs485_supported || !network->rs485_enabled)
-        return false;
-
-    return gpio == GPIO_NUM_25 ||
-           gpio == GPIO_NUM_26 ||
-           gpio == GPIO_NUM_27;
+    return false;
 }
 
 static bool device_profile_gpio_is_listed(const device_gpio_option_t *options, int count, gpio_num_t gpio)
@@ -426,7 +463,8 @@ static void device_profile_apply_legacy_transport_policy(bool wifi_enabled,
 
 static void device_profile_apply_manual_network_selection(bool wifi_enabled,
                                                           bool ethernet_enabled,
-                                                          bool rs485_enabled)
+                                                          bool rs485_enabled,
+                                                          device_profile_wifi_mode_t wifi_mode)
 {
     const bool wifi_allowed = network_profile.wifi_supported && wifi_enabled;
     const bool ethernet_allowed = network_profile.ethernet_supported && ethernet_enabled;
@@ -436,6 +474,7 @@ static void device_profile_apply_manual_network_selection(bool wifi_enabled,
     network_profile.wifi_enabled = wifi_allowed;
     network_profile.ethernet_enabled = ethernet_allowed;
     network_profile.rs485_enabled = rs485_allowed;
+    network_profile.wifi_mode = wifi_mode;
     network_profile.primary_transport = DEVICE_PROFILE_TRANSPORT_NONE;
     network_profile.fallback_transport = DEVICE_PROFILE_TRANSPORT_NONE;
 
@@ -559,6 +598,12 @@ static const char *device_profile_network_label_from_profile(const device_networ
     if (network->primary_transport == DEVICE_PROFILE_TRANSPORT_WIFI)
         return "wifi-primary";
 
+    if (network->primary_transport == DEVICE_PROFILE_TRANSPORT_ESPNOW)
+        return "espnow-primary";
+
+    if (network->primary_transport == DEVICE_PROFILE_TRANSPORT_MESH)
+        return "mesh-primary";
+
     if (network->primary_transport == DEVICE_PROFILE_TRANSPORT_RS485)
         return "rs485-primary";
 
@@ -594,12 +639,28 @@ static bool device_profile_gpio_reserved_for_network(gpio_num_t gpio)
 
 static void device_profile_load_network_config(void)
 {
-    uint8_t raw[sizeof(device_profile_network_blob_v3_t)] = {0};
+    uint8_t raw[sizeof(device_profile_network_blob_v4_t) > sizeof(device_profile_network_blob_v3_t) ? sizeof(device_profile_network_blob_v4_t) : sizeof(device_profile_network_blob_v3_t)] = {0};
     nvs_handle_t nvs;
     size_t len = sizeof(raw);
 
     if (nvs_open(DEVICE_PROFILE_NETWORK_NAMESPACE, NVS_READONLY, &nvs) != ESP_OK)
         return;
+
+    // Default: Field Node. Se a chave NVS "node_profile" nao existir, o onboarding deve ser forcado.
+    uint8_t prof_val = 0;
+    if (nvs_get_u8(nvs, DEVICE_PROFILE_NODE_KEY, &prof_val) == ESP_OK)
+    {
+        if (prof_val < NODE_PROFILE_MAX)
+        {
+            current_node_profile = (node_profile_t)prof_val;
+        }
+    }
+    else
+    {
+        // NVS nao possui "node_profile": manter default FIELD e forcar onboarding pendente
+        current_node_profile = NODE_PROFILE_FIELD;
+        network_profile.onboarding_pending = true;
+    }
 
     if (nvs_get_blob(nvs, DEVICE_PROFILE_NETWORK_KEY, raw, &len) != ESP_OK)
     {
@@ -609,13 +670,41 @@ static void device_profile_load_network_config(void)
 
     nvs_close(nvs);
 
+    if (len == sizeof(device_profile_network_blob_v4_t))
+    {
+        const device_profile_network_blob_v4_t *blob = (const device_profile_network_blob_v4_t *)raw;
+        uint32_t crc = device_profile_crc32(raw, sizeof(*blob) - sizeof(blob->crc));
+
+        if (blob->magic != DEVICE_PROFILE_NETWORK_MAGIC ||
+            blob->version != DEVICE_PROFILE_NETWORK_VERSION ||
+            blob->crc != crc)
+        {
+            ESP_LOGW(TAG, "Blob de rede v4 invalido; usando defaults do build");
+            return;
+        }
+
+        network_profile.wifi_enabled = network_profile.wifi_supported ? (blob->wifi_enabled != 0U) : false;
+        network_profile.ethernet_enabled = network_profile.ethernet_supported ? (blob->ethernet_enabled != 0U) : false;
+        network_profile.rs485_enabled = network_profile.rs485_supported ? (blob->rs485_enabled != 0U) : false;
+        network_profile.wifi_mode = blob->wifi_mode <= 2 ? (device_profile_wifi_mode_t)blob->wifi_mode : DEVICE_PROFILE_WIFI_MODE_INFRA;
+        network_profile.onboarding_pending = (blob->onboarding_pending != 0U);
+        network_profile.primary_transport = (device_profile_transport_t)blob->primary_transport;
+        network_profile.fallback_transport = (device_profile_transport_t)blob->fallback_transport;
+        network_profile.failover_delay_ms = blob->failover_delay_ms;
+        network_profile.recovery_hysteresis_ms = blob->recovery_hysteresis_ms;
+        network_profile.allow_local_ap = (blob->allow_local_ap != 0U);
+        network_profile.allow_dashboard = (blob->allow_dashboard != 0U);
+        network_profile.allow_ota = (blob->allow_ota != 0U);
+        return;
+    }
+
     if (len == sizeof(device_profile_network_blob_v3_t))
     {
         const device_profile_network_blob_v3_t *blob = (const device_profile_network_blob_v3_t *)raw;
         uint32_t crc = device_profile_crc32(raw, sizeof(*blob) - sizeof(blob->crc));
 
         if (blob->magic != DEVICE_PROFILE_NETWORK_MAGIC ||
-            blob->version != DEVICE_PROFILE_NETWORK_VERSION ||
+            blob->version != 3U ||
             blob->crc != crc)
         {
             ESP_LOGW(TAG, "Blob de rede v3 invalido; usando defaults do build");
@@ -625,11 +714,17 @@ static void device_profile_load_network_config(void)
         network_profile.wifi_enabled = network_profile.wifi_supported ? (blob->wifi_enabled != 0U) : false;
         network_profile.ethernet_enabled = network_profile.ethernet_supported ? (blob->ethernet_enabled != 0U) : false;
         network_profile.rs485_enabled = network_profile.rs485_supported ? (blob->rs485_enabled != 0U) : false;
+        network_profile.wifi_mode = blob->wifi_mode <= 2 ? (device_profile_wifi_mode_t)blob->wifi_mode : DEVICE_PROFILE_WIFI_MODE_INFRA;
         network_profile.onboarding_pending = (blob->onboarding_pending != 0U);
         network_profile.primary_transport = (device_profile_transport_t)blob->primary_transport;
         network_profile.fallback_transport = (device_profile_transport_t)blob->fallback_transport;
         network_profile.failover_delay_ms = blob->failover_delay_ms;
         network_profile.recovery_hysteresis_ms = blob->recovery_hysteresis_ms;
+        
+        /* Migracao transparente para v4 preservando acesso humano */
+        network_profile.allow_local_ap = true;
+        network_profile.allow_dashboard = true;
+        network_profile.allow_ota = true;
         return;
     }
 
@@ -639,7 +734,7 @@ static void device_profile_load_network_config(void)
         uint32_t crc = device_profile_crc32(raw, sizeof(*blob) - sizeof(blob->crc));
 
         if (blob->magic != DEVICE_PROFILE_NETWORK_MAGIC ||
-            blob->version != DEVICE_PROFILE_NETWORK_VERSION ||
+            blob->version != 2U ||
             blob->crc != crc)
         {
             ESP_LOGW(TAG, "Blob de rede v2 invalido; usando defaults do build");
@@ -709,6 +804,9 @@ static void device_profile_init_network_profile(void)
     network_profile.fallback_transport = DEVICE_PROFILE_TRANSPORT_NONE;
     network_profile.failover_delay_ms = DEVICE_PROFILE_FAILOVER_DELAY_DEFAULT_MS;
     network_profile.recovery_hysteresis_ms = DEVICE_PROFILE_RECOVERY_HYST_DEFAULT_MS;
+    network_profile.allow_local_ap = true;
+    network_profile.allow_dashboard = true;
+    network_profile.allow_ota = true;
     network_profile.ethernet_mode = device_profile_detect_ethernet_mode();
     network_profile.w5500.spi_host_id = CONFIG_ENDAP_W5500_SPI_HOST;
     network_profile.w5500.mosi_gpio = gpio_from_config(CONFIG_ENDAP_W5500_MOSI_GPIO);
@@ -730,7 +828,7 @@ static void device_profile_init_network_profile(void)
 
 static device_profile_network_config_result_t device_profile_persist_network_config(void)
 {
-    device_profile_network_blob_v3_t blob = {0};
+    device_profile_network_blob_v4_t blob = {0};
     nvs_handle_t nvs;
 
     blob.magic = DEVICE_PROFILE_NETWORK_MAGIC;
@@ -738,11 +836,15 @@ static device_profile_network_config_result_t device_profile_persist_network_con
     blob.wifi_enabled = network_profile.wifi_enabled ? 1U : 0U;
     blob.ethernet_enabled = network_profile.ethernet_enabled ? 1U : 0U;
     blob.rs485_enabled = network_profile.rs485_enabled ? 1U : 0U;
+    blob.wifi_mode = (uint8_t)network_profile.wifi_mode;
     blob.onboarding_pending = network_profile.onboarding_pending ? 1U : 0U;
     blob.primary_transport = (uint8_t)network_profile.primary_transport;
     blob.fallback_transport = (uint8_t)network_profile.fallback_transport;
     blob.failover_delay_ms = network_profile.failover_delay_ms;
     blob.recovery_hysteresis_ms = network_profile.recovery_hysteresis_ms;
+    blob.allow_local_ap = network_profile.allow_local_ap ? 1U : 0U;
+    blob.allow_dashboard = network_profile.allow_dashboard ? 1U : 0U;
+    blob.allow_ota = network_profile.allow_ota ? 1U : 0U;
     blob.crc = device_profile_crc32((const uint8_t *)&blob, sizeof(blob) - sizeof(blob.crc));
 
     if (nvs_open(DEVICE_PROFILE_NETWORK_NAMESPACE, NVS_READWRITE, &nvs) != ESP_OK)
@@ -752,7 +854,7 @@ static device_profile_network_config_result_t device_profile_persist_network_con
     }
 
     if (nvs_set_blob(nvs, DEVICE_PROFILE_NETWORK_KEY, &blob, sizeof(blob)) != ESP_OK ||
-        nvs_commit(nvs) != ESP_OK)
+        endap_nvs_commit(nvs) != ESP_OK)
     {
         nvs_close(nvs);
         ESP_LOGE(TAG, "Falha ao persistir configuracao de rede");
@@ -1057,16 +1159,22 @@ uint32_t device_profile_recovery_hysteresis_ms(void)
 
 device_profile_network_config_result_t device_profile_set_network_enabled(bool wifi_enabled,
                                                                           bool ethernet_enabled,
-                                                                          bool rs485_enabled)
+                                                                          bool rs485_enabled,
+                                                                          device_profile_wifi_mode_t wifi_mode)
 {
     device_profile_init_network_profile();
+    if (wifi_enabled && !network_profile.wifi_supported)
+        return DEVICE_PROFILE_NETWORK_CONFIG_UNSUPPORTED;
 
-    device_profile_apply_manual_network_selection(wifi_enabled,
-                                                  ethernet_enabled,
-                                                  rs485_enabled);
+    if (ethernet_enabled && !network_profile.ethernet_supported)
+        return DEVICE_PROFILE_NETWORK_CONFIG_UNSUPPORTED;
+
+    if (rs485_enabled && !network_profile.rs485_supported)
+        return DEVICE_PROFILE_NETWORK_CONFIG_UNSUPPORTED;
+
+    device_profile_apply_manual_network_selection(wifi_enabled, ethernet_enabled, rs485_enabled, wifi_mode);
     device_profile_normalize_transport_policy();
     network_profile.label = device_profile_network_label_from_profile(&network_profile);
-
     ESP_LOGI(TAG,
              "Configuracao de rede manual salva: wifi=%s ethernet=%s rs485=%s => primary=%d fallback=%d onboarding=%d",
              wifi_enabled ? "on" : "off",
@@ -1176,7 +1284,7 @@ bool device_profile_is_extra_output_id(uint16_t id)
 
 int device_profile_default_automation_count(void)
 {
-    return ARRAY_LEN(default_automation);
+    return 0;
 }
 
 const device_default_automation_t *device_profile_default_automation_at(int index)
@@ -1186,3 +1294,82 @@ const device_default_automation_t *device_profile_default_automation_at(int inde
 
     return &default_automation[index];
 }
+
+bool device_profile_is_valid(node_profile_t type)
+{
+    return ((int)type >= 0 && (int)type < NODE_PROFILE_MAX);
+}
+
+const node_profile_desc_t *device_profile_get_template(node_profile_t type)
+{
+    if (!device_profile_is_valid(type))
+    {
+        return NULL;
+    }
+
+    return node_profile_templates[type];
+}
+
+const node_profile_desc_t *device_profile_get_current(void)
+{
+    const node_profile_desc_t *desc = device_profile_get_template(current_node_profile);
+    if (!desc)
+    {
+        // Fallback seguro se o perfil armazenado estiver inconsistente
+        desc = device_profile_get_template(NODE_PROFILE_FIELD);
+    }
+    return desc;
+}
+
+esp_err_t device_profile_set_current(node_profile_t type)
+{
+    if (!device_profile_is_valid(type))
+    {
+        return ESP_ERR_INVALID_ARG;
+    }
+
+    current_node_profile = type;
+
+    nvs_handle_t nvs;
+    if (nvs_open(DEVICE_PROFILE_NETWORK_NAMESPACE, NVS_READWRITE, &nvs) == ESP_OK)
+    {
+        nvs_set_u8(nvs, DEVICE_PROFILE_NODE_KEY, (uint8_t)type);
+        nvs_commit(nvs);
+        nvs_close(nvs);
+    }
+
+    return ESP_OK;
+}
+
+esp_err_t device_profile_apply_template(node_profile_t type)
+{
+    if (!device_profile_is_valid(type))
+    {
+        return ESP_ERR_INVALID_ARG;
+    }
+
+    const node_profile_desc_t *tpl = device_profile_get_template(type);
+    if (!tpl || !tpl->network)
+    {
+        return ESP_ERR_NOT_FOUND;
+    }
+
+    // Copiar configuracao de rede do template para a runtime profile
+    device_profile_init_network_profile();
+
+    const device_network_profile_t *net = tpl->network;
+    device_profile_set_network_enabled(net->wifi_enabled,
+                                       net->ethernet_enabled,
+                                       net->rs485_enabled,
+                                       net->wifi_mode);
+
+    device_profile_set_transport_policy(net->onboarding_pending,
+                                         net->primary_transport,
+                                         net->fallback_transport,
+                                         net->failover_delay_ms,
+                                         net->recovery_hysteresis_ms);
+
+    return device_profile_set_current(type);
+}
+
+

@@ -3,6 +3,7 @@
 #include "cluster_transport.h"
 #include "node_registry.h"
 #include "protocol.h"
+#include "state.h"
 
 #include <stdint.h>
 #include <inttypes.h>
@@ -322,6 +323,45 @@ void cluster_io_handle_node_online(uint32_t node_id)
     }
 
     cluster_io_sync_all();
+}
+
+void cluster_io_sync_state_to_node(uint32_t node_id)
+{
+    if (node_id == self_node)
+        return;
+
+    for (int i = 0; i < MAX_IO; i++)
+    {
+        uint32_t io_id = 0;
+        int found = 0;
+
+        portENTER_CRITICAL(&cluster_io_lock);
+        if (io_table[i].valid && io_table[i].owner == node_id)
+        {
+            io_id = io_table[i].io_id;
+            found = 1;
+        }
+        portEXIT_CRITICAL(&cluster_io_lock);
+
+        if (found)
+        {
+            int32_t current_val = 0;
+            if (state_get_int(io_id, &current_val))
+            {
+                protocol_msg_t msg = {0};
+                msg.type = PROTOCOL_MSG_OUTPUT_COMMAND;
+                msg.data.output_command.target_node = node_id;
+                msg.data.output_command.requester_node = self_node;
+                msg.data.output_command.output_id = io_id;
+                msg.data.output_command.value = current_val;
+
+                if (cluster_transport_broadcast_frame((const uint8_t *)&msg, sizeof(msg)))
+                {
+                    ESP_LOGI(TAG, "FAILBACK SYNC: Node %" PRIu32 " IO %" PRIu32 " = %" PRId32, node_id, io_id, current_val);
+                }
+            }
+        }
+    }
 }
 
 /* ============================================================

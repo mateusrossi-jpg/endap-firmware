@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include "cluster_metrics.h"
+#include "cluster_transport.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,17 +18,9 @@ typedef enum {
 
 typedef struct {
     uint32_t node_id;
-    uint32_t ip;
-
     uint32_t last_seen_ms;
-    uint32_t age_ms;
-
+    int8_t rssi;
     cluster_node_state_t state;
-
-    uint32_t missed_heartbeats;
-    uint32_t recoveries;
-
-    uint8_t health; // 0-100%
 } cluster_node_t;
 
 /* Init */
@@ -35,7 +28,7 @@ void cluster_manager_start(uint32_t self_node_id);
 void cluster_manager_process(void);
 
 /* Update via discovery */
-void cluster_manager_update_node(uint32_t node_id, uint32_t ip);
+void cluster_manager_update_node(const cluster_transport_heartbeat_t *hb);
 void cluster_manager_remove_node(uint32_t node_id);
 
 /* Metrics */

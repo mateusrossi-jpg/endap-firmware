@@ -13,6 +13,7 @@
 #include <ctype.h>
 #include <inttypes.h>
 #include <string.h>
+#include "endap_nvs.h"
 
 #define TAG "NODE_REG"
 #define NODE_REGISTRY_NAMESPACE "node_registry"
@@ -335,7 +336,7 @@ static bool node_registry_save_blob(const node_registry_blob_t *blob)
         return false;
     }
 
-    if (nvs_commit(nvs) != ESP_OK)
+    if (endap_nvs_commit(nvs) != ESP_OK)
     {
         nvs_close(nvs);
         ESP_LOGE(TAG, "Falha ao confirmar node registry");

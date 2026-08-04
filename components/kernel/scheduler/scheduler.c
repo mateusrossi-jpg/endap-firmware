@@ -1,5 +1,6 @@
 #include "scheduler.h"
 #include "esp_attr.h"
+#include "esp_log.h"
 
 #include "io_driver.h"
 #include "io_image.h"
@@ -32,6 +33,7 @@ void IRAM_ATTR scheduler_run_io(void)
     while (budget-- && io_command_pop(&cmd))
     {
         state_set_int(cmd.id, cmd.value);
+        /* ESP_LOGW removed from hot-path to preserve 1ms determinism */
     }
 }
 

@@ -8,7 +8,8 @@ idf_component_register(
         device_profile
         failsafe
         nvs_flash
+        pve
         protocol
-    PRIV_REQUIRES
+    PRIV_REQUIRES kernel_trace
         esp_timer
 )

@@ -195,12 +195,12 @@ Current project state can be summarized as:
 - fieldbus baseline
 - cluster baseline
 
-### Current implementation priority
-- close product-oriented v1 flow
-- improve onboarding and operation
-- validate gateway ↔ node behavior
-- preserve determinism while increasing usability
-- finish hardware-oriented validation path
+### Current Project Phase (V1 Product Freeze)
+- **Product-oriented v1 flow**: COMPLETED
+- **Onboarding and basic operation**: COMPLETED
+- **Gateway ↔ Node behavior**: COMPLETED
+- **Determinism and UX alignment**: COMPLETED
+- **Hardware-oriented validation path**: IN PROGRESS (Current Focus)
 
 ### Immediate validation direction
 1. Wi-Fi common workflow
@@ -221,6 +221,38 @@ Current project state can be summarized as:
 
 ---
 
+## 🧪 Protocolo de Testes de Bancada (Bench Test Protocol)
+
+### [TESTE 1: DETERMINISMO E JITTER DO LOOP DE 1 MS]
+* **Objetivo:** Provar que o loop de controle não estoura a janela de 1000 µs.
+* **Procedimento:** Executar o nó por 10 minutos realizando leituras e escritas de E/S.
+* **Métrica de Sucesso:** `max_jitter_us` < 50 µs e `deadline_miss_count` == 0.
+
+### [TESTE 2: RESILIÊNCIA E TEMPO DE SAFE_STATE]
+* **Objetivo:** Medir o tempo de resposta do acionamento autônomo de segurança ao desconectar o barramento RS-485.
+* **Procedimento:** Conectar o Nó ao Gateway Master com irrigação simulada LIGADA e desengatar fisicamente a linha RS-485.
+* **Métrica de Sucesso:** O canal de irrigação deve DESLIGAR em exatamente **500 ms** (`FIELDBUS_TIMEOUT_MS`) e registrar o evento de `SAFE_STATE` na auditoria.
+
+### [TESTE 3: ISOLAMENTO E IMUNIDADE A RUÍDO]
+* **Objetivo:** Garantir que o chaveamento indutivo não cause resets nem estáticos no ESP32.
+* **Procedimento:** Comutar solenoides de 24VDC 100 vezes consecutivas.
+* **Métrica de Sucesso:** 0 resets por Watchdog e 0 erros de leitura nas entradas optoacopladas.
+
+---
+
+## 🎓 Roteiro de Apresentação TCC / Pitch Executivo
+
+1. **Slide 1: Capa** — ENDAP: Automação Distribuída de Borda para Agricultura de Precisão.
+2. **Slide 2: O Problema** — Risco de perda de safras por travamentos em sistemas amadores vs. CLPs caros de R$ 50 mil.
+3. **Slide 3: A Solução ENDAP** — Arquitetura distribuída local-first com determinismo de 1 ms e hardware blindado.
+4. **Slide 4: Leis Arquiteturais** — Zero Malloc, Failsafe < 500 ms, execução isolada no Core 1.
+5. **Slide 5: Hardware Blindado** — Optoacoplamento PC817, Diodos TVS SM712 e Proteção Indutiva para Solenoides.
+6. **Slide 6: Software & Determinismo** — Pipeline em 5 fases e medições empíricas de jitter.
+7. **Slide 7: Demonstração ao Vivo** — Dashboard embarcada e transição autônoma para `SAFE_STATE`.
+8. **Slide 8: Conclusão & Evolução** — Expansão da plataforma e produto comercial v1.0.
+
+---
+
 ## Development Philosophy
 
 **Simple, deterministic, robust, usable, and incrementally scalable.**
@@ -230,3 +262,4 @@ Current project state can be summarized as:
 ## Author
 
 Mateus Rossi
+

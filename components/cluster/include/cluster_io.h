@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-#define MAX_IO 64
+#define MAX_IO 256
 
 typedef struct
 {
@@ -24,6 +24,7 @@ void cluster_io_handle_node_offline(uint32_t failed_node);
 
 /* Failback */
 void cluster_io_handle_node_online(uint32_t node_id);
+void cluster_io_sync_state_to_node(uint32_t node_id);
 
 /* Query */
 int cluster_io_is_local(uint32_t io_id);

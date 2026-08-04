@@ -8,20 +8,25 @@ idf_component_register(
         "node_registry.c"
         "cluster_self_test.c"
         "cluster_transport.c"
+        "cluster_transport_now.c"
+        "cluster_transport_mesh.c"
 
     INCLUDE_DIRS
         "."
         "include"
 
     REQUIRES
+        core
         device_profile
         esp_timer
         failsafe
         network_ready
         nvs_flash
         node_identity
+        onboarding
         protocol
         state
-    PRIV_REQUIRES
+    PRIV_REQUIRES kernel_trace
         rs485_engine
+        esp_wifi
 )

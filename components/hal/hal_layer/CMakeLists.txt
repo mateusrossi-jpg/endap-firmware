@@ -8,8 +8,10 @@ idf_component_register(
     INCLUDE_DIRS
         "include"
 
-    PRIV_REQUIRES
+    PRIV_REQUIRES kernel_trace
         driver
         esp_timer
+        esp_driver_gpio
+        esp_driver_uart
 )
 

@@ -8,7 +8,7 @@
    CONFIG
 ============================================================ */
 
-#define RS485_ENGINE_MAX_NODES   16
+#define RS485_ENGINE_MAX_NODES   64
 #define RS485_ENGINE_TIMEOUT_MS  100
 #define RS485_ENGINE_MAX_RETRY   3
 

@@ -46,6 +46,10 @@ static TaskHandle_t control_task_handle = NULL;
    RUNTIME STATE
 ============================================================ */
 
+#ifdef CONFIG_ENDAP_ENABLE_CHAOS_TESTING
+volatile bool g_chaos_inject_delay = false;
+#endif
+
 static uint64_t expected_cycle_time = 0;
 static uint32_t cycle_counter = 0;
 
@@ -208,6 +212,18 @@ static void IRAM_ATTR control_loop_run(void *arg)
 
         determinism_probe_cycle_start(start);
         kernel_trace_cycle_start(start);
+
+        /* ============================================================
+           CHAOS MONKEY INJECTION (TCC PRESENTATION)
+        ============================================================ */
+#ifdef CONFIG_ENDAP_ENABLE_CHAOS_TESTING
+        if (g_chaos_inject_delay)
+        {
+            g_chaos_inject_delay = false;
+            ESP_LOGE(TAG, "[CHAOS] Injetando atraso intencional de 15ms no loop critico!");
+            esp_rom_delay_us(15000);
+        }
+#endif
 
         /* ============================================================
            PHASE EXECUTION

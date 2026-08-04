@@ -11,6 +11,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
+#include "endap_nvs.h"
 
 #define TAG "FAILSAFE"
 #define FAILSAFE_NAMESPACE "failsafe"
@@ -338,7 +339,7 @@ bool failsafe_save(void)
         return false;
 
     if (nvs_set_blob(nvs, FAILSAFE_KEY, &blob, sizeof(blob)) != ESP_OK ||
-        nvs_commit(nvs) != ESP_OK)
+        endap_nvs_commit(nvs) != ESP_OK)
     {
         nvs_close(nvs);
         return false;

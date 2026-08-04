@@ -9,4 +9,5 @@ idf_component_register(
     	kernel_metrics
     	phase_monitor
         phase_load_test
+    PRIV_REQUIRES esp_driver_gptimer
 )

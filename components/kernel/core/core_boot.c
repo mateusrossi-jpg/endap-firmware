@@ -11,6 +11,7 @@
 #include "driver/uart.h"
 #include "driver/gpio.h"
 #include "nvs_flash.h"
+#include "esp_ota_ops.h"
 #include <inttypes.h>
 #include <stdbool.h>
 
@@ -48,6 +49,8 @@
 ============================================================ */
 
 #include "automation_engine.h"
+#include "ladder_engine.h"
+
 #include "event_bus.h"
 #include "io_command.h"
 #include "kernel_metrics.h"
@@ -55,8 +58,13 @@
 #include "kernel_trace.h"
 #include "input_learning.h"
 #include "io_binding.h"
+#include "io_mapping_persistence.h"
 #include "failsafe.h"
 #include "phase_load_test.h"
+#include "pve_self_test.h"
+#include "pve.h"
+#include "telemetry.h"
+#include "system_diag.h"
 
 /* ============================================================
    SAFETY
@@ -78,6 +86,7 @@
 #include "node_registry.h"
 #include "node_identity.h"
 #include "device_profile.h"
+#include "device_profile_sensors.h"
 
 /* ============================================================
    IO DRIVER
@@ -117,6 +126,8 @@ static portMUX_TYPE http_start_lock = portMUX_INITIALIZER_UNLOCKED;
 static uint64_t primary_link_down_since_us = 0;
 static bool fallback_activation_attempted = false;
 
+void core_mem_audit(const char *phase);
+
 static void core_log_current_task_stack(const char *label)
 {
     UBaseType_t free_bytes = uxTaskGetStackHighWaterMark(NULL);
@@ -139,6 +150,10 @@ static const char *core_transport_name(device_profile_transport_t transport)
             return "ethernet";
         case DEVICE_PROFILE_TRANSPORT_RS485:
             return "rs485";
+        case DEVICE_PROFILE_TRANSPORT_ESPNOW:
+            return "espnow";
+        case DEVICE_PROFILE_TRANSPORT_MESH:
+            return "mesh";
         case DEVICE_PROFILE_TRANSPORT_NONE:
         default:
             return "none";
@@ -148,10 +163,31 @@ static const char *core_transport_name(device_profile_transport_t transport)
 static cluster_transport_type_t cluster_transport_type_for_link(network_ready_link_t link)
 {
     if (link == NETWORK_READY_LINK_ETHERNET)
+    {
+        ESP_LOGI(TAG, "CLUSTER:\nSelected transport = ETHERNET_UDP");
         return CLUSTER_TRANSPORT_ETHERNET_UDP;
+    }
 
     if (link == NETWORK_READY_LINK_WIFI_AP || link == NETWORK_READY_LINK_WIFI_STA)
+    {
+        const device_network_profile_t *net = device_profile_network();
+        if (net)
+        {
+            if (net->primary_transport == DEVICE_PROFILE_TRANSPORT_ESPNOW)
+            {
+                ESP_LOGI(TAG, "CLUSTER:\nSelected transport = ESPNOW");
+                return CLUSTER_TRANSPORT_WIFI_NOW;
+            }
+            if (net->primary_transport == DEVICE_PROFILE_TRANSPORT_MESH)
+            {
+                ESP_LOGI(TAG, "CLUSTER:\nSelected transport = MESH");
+                return CLUSTER_TRANSPORT_WIFI_MESH;
+            }
+        }
+        
+        ESP_LOGI(TAG, "CLUSTER:\nSelected transport = WIFI_UDP");
         return CLUSTER_TRANSPORT_WIFI_UDP;
+    }
 
     return CLUSTER_TRANSPORT_NONE;
 }
@@ -293,6 +329,7 @@ static void core_start_cluster_transport_explicit(const char *reason,
     ESP_LOGI(TAG, "STEP cluster_discovery_start");
     cluster_discovery_start();
     ESP_LOGI(TAG, "STEP cluster_discovery_start ok");
+    core_mem_audit("POST_CLUSTER_DISCOVERY");
 
     ESP_LOGI(TAG, "STEP cluster_io_sync_all skipped");
 
@@ -383,6 +420,7 @@ static void http_start_poll(void)
     http_server_start();
     http_started = true;
     ESP_LOGI(TAG, "STEP http_server_start ok");
+    core_mem_audit("POST_HTTP_START");
 }
 
 static void core_network_policy_poll(void)
@@ -491,13 +529,14 @@ static void core_init_infrastructure(void)
             .uart_num           = UART_NUM_2,
             .tx_pin             = 25,
             .rx_pin             = 26,
-            .de_pin             = -1,
+            .de_pin             = 27,
             .baudrate           = 9600,
-            .auto_direction     = true,
+            .auto_direction     = false,
             .tx_guard_us        = 3000,
             .rx_recovery_us     = 2000,
             .tx_done_timeout_ms = 20,
         });
+
     }
     else
     {
@@ -544,6 +583,7 @@ static void core_aux_task(void *arg)
             core_log_current_task_stack("aux_post_cluster");
         }
 
+
         vTaskDelay(pdMS_TO_TICKS(AUX_TASK_PERIOD_MS));
     }
 }
@@ -570,15 +610,21 @@ static void core_init_services(void)
 
     snapshot_init();
     automation_engine_init();
+    ladder_engine_init();
+
     input_learning_init();
     io_binding_init();
+    io_mapping_persistence_init();
     failsafe_init();
     register_default_automation();
     io_command_init();
     determinism_probe_init();
     kernel_trace_init();
 
+    pve_load_config();
+    telemetry_init();
     io_driver_init();
+    (void)pve_run_self_tests();
     network_ready_init();
     network_ready_register_callback(on_network_ready, NULL);
     node_registry_init();
@@ -589,27 +635,53 @@ static void core_init_services(void)
 
     net = device_profile_network();
     ESP_LOGI(TAG,
-             "NET policy: onboarding=%d primary=%s fallback=%s wifi_enabled=%d eth_enabled=%d rs485_enabled=%d failover=%" PRIu32 "ms",
+             "NET policy: onboarding=%d primary=%s fallback=%s wifi_enabled=%d eth_enabled=%d rs485_enabled=%d ap=%d dash=%d ota=%d failover=%" PRIu32 "ms",
              net ? (net->onboarding_pending ? 1 : 0) : 0,
              net ? core_transport_name(net->primary_transport) : "none",
              net ? core_transport_name(net->fallback_transport) : "none",
              net ? (net->wifi_enabled ? 1 : 0) : 0,
              net ? (net->ethernet_enabled ? 1 : 0) : 0,
              net ? (net->rs485_enabled ? 1 : 0) : 0,
+             net ? (net->allow_local_ap ? 1 : 0) : 0,
+             net ? (net->allow_dashboard ? 1 : 0) : 0,
+             net ? (net->allow_ota ? 1 : 0) : 0,
              net ? net->failover_delay_ms : 0U);
 
     if (device_profile_should_start_wifi_on_boot())
+    {
         wifi_manager_init();
-
-    if (device_profile_should_start_ethernet_on_boot())
+        core_mem_audit("POST_WIFI_INIT");
+    }
+    else if (device_profile_should_start_ethernet_on_boot())
+    {
         ethernet_manager_init();
-
-    core_try_rs485_cluster_bootstrap();
+        core_mem_audit("POST_ETHERNET_INIT");
+    }
+    else if (device_profile_should_start_rs485_on_boot())
+    {
+        core_try_rs485_cluster_bootstrap();
+    }
 }
 
 /* ============================================================
    CORE START
 ============================================================ */
+
+#include "esp_heap_caps.h"
+
+void core_mem_audit(const char *phase)
+{
+    static uint32_t last_free = 0;
+    uint32_t free_heap = heap_caps_get_free_size(MALLOC_CAP_8BIT);
+    uint32_t largest_block = heap_caps_get_largest_free_block(MALLOC_CAP_8BIT);
+    int tasks = uxTaskGetNumberOfTasks();
+    int32_t delta = (last_free == 0) ? 0 : ((int32_t)free_heap - (int32_t)last_free);
+    
+    ESP_LOGI("MEM_AUDIT", "[%s] free=%u largest=%u tasks=%d delta=%d",
+             phase, (unsigned int)free_heap, (unsigned int)largest_block, tasks, (int)delta);
+             
+    last_free = free_heap;
+}
 
 void core_start(void)
 {
@@ -622,11 +694,16 @@ void core_start(void)
         nvs_flash_init();
     }
 
-    ESP_LOGI(TAG, "Boot ENDAP");
+    system_diag_init();
 
+    ESP_LOGI(TAG, "Boot ENDAP");
+    core_mem_audit("BOOT_START");
+
+    device_profile_sensors_init();
     core_init_infrastructure();
     core_init_domain();
     core_init_services();
+    core_mem_audit("POST_INIT_SERVICES");
 
     ESP_LOGI(TAG, "Starting Control Loop");
 
@@ -646,4 +723,9 @@ void core_start(void)
             0
         );
     }
+
+#ifdef CONFIG_APP_ROLLBACK_ENABLE
+    esp_ota_mark_app_valid_cancel_rollback();
+    ESP_LOGI(TAG, "OTA Rollback Cancelled - Firmware is healthy");
+#endif
 }

@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "endap_nvs.h"
 
 #define TAG "IO_BINDING"
 #define IO_BINDING_NAMESPACE "io_binding"
@@ -155,8 +156,8 @@ static const io_binding_backend_view_t binding_backends[] =
     {
         .backend = DEVICE_CHANNEL_BACKEND_ADC_NATIVE,
         .channel_class = DEVICE_CHANNEL_CLASS_ANALOG_INPUT,
-        .implemented_now = false,
-        .selectable_now = false,
+        .implemented_now = true,
+        .selectable_now = true,
         .expansion_path = true,
         .backend_code = "adc-native",
         .label = "ADC nativo",
@@ -265,6 +266,8 @@ static bool io_binding_backend_allows_input(device_channel_backend_t backend)
             return true;
         case DEVICE_CHANNEL_BACKEND_MCP23X17:
             return expansion && expansion->supports_mcp23x17;
+        case DEVICE_CHANNEL_BACKEND_ADC_NATIVE:
+            return true;
         default:
             return false;
     }
@@ -340,6 +343,9 @@ bool io_binding_backend_address_valid(device_channel_backend_t backend,
         case DEVICE_CHANNEL_BACKEND_MCP23X17:
             return io_binding_backend_selectable_now(backend, for_input) &&
                    io_binding_mcp_address_valid(backend_instance, endpoint_index);
+        case DEVICE_CHANNEL_BACKEND_ADC_NATIVE:
+            return for_input && io_binding_backend_selectable_now(backend, for_input) &&
+                   ((gpio == 34 && endpoint_index == 6) || (gpio == 35 && endpoint_index == 7));
         default:
             return false;
     }
@@ -596,7 +602,9 @@ static void io_binding_prepare_input_entry(io_binding_input_entry_t *entry,
     entry->id = id;
     entry->gpio = (int16_t)gpio;
     entry->backend = (uint8_t)backend;
-    entry->channel_class = (uint8_t)DEVICE_CHANNEL_CLASS_DIGITAL_INPUT;
+    entry->channel_class = (backend == DEVICE_CHANNEL_BACKEND_ADC_NATIVE || backend == DEVICE_CHANNEL_BACKEND_ADC_EXTERNAL)
+        ? (uint8_t)DEVICE_CHANNEL_CLASS_ANALOG_INPUT
+        : (uint8_t)DEVICE_CHANNEL_CLASS_DIGITAL_INPUT;
     entry->backend_instance = (int16_t)backend_instance;
     entry->endpoint_index = (int16_t)endpoint_index;
     io_binding_copy_text(entry->name, sizeof(entry->name), (name && name[0]) ? name : (profile ? profile->name : "Entrada"));
@@ -761,14 +769,22 @@ static void io_binding_apply_input_defaults(void)
         if (!profile)
             continue;
 
+        device_channel_backend_t backend = DEVICE_CHANNEL_BACKEND_GPIO;
+        int endpoint_index = (int)profile->gpio;
+        if (profile->gpio == GPIO_NUM_34 || profile->gpio == GPIO_NUM_35)
+        {
+            backend = DEVICE_CHANNEL_BACKEND_ADC_NATIVE;
+            endpoint_index = (profile->gpio == GPIO_NUM_34) ? 6 : 7;
+        }
+
         io_binding_prepare_input_entry(&input_entries[input_entry_count],
                                        profile->id,
                                        profile->name,
                                        io_binding_default_input_role_for(profile),
-                                       DEVICE_CHANNEL_BACKEND_GPIO,
+                                       backend,
                                        profile->gpio,
                                        0,
-                                       (int)profile->gpio,
+                                       endpoint_index,
                                        profile);
         input_entry_count++;
     }
@@ -821,7 +837,7 @@ static void io_binding_persist_inputs(void)
     }
 
     if (nvs_set_blob(nvs, IO_BINDING_KEY_INPUTS, &blob, sizeof(blob)) == ESP_OK &&
-        nvs_commit(nvs) == ESP_OK)
+        endap_nvs_commit(nvs) == ESP_OK)
     {
         ESP_LOGI(TAG, "Bindings de input persistidos (%d canal(is))", input_entry_count);
     }
@@ -854,7 +870,7 @@ static void io_binding_persist_outputs(void)
     }
 
     if (nvs_set_blob(nvs, IO_BINDING_KEY_OUTPUTS, &blob, sizeof(blob)) == ESP_OK &&
-        nvs_commit(nvs) == ESP_OK)
+        endap_nvs_commit(nvs) == ESP_OK)
     {
         ESP_LOGI(TAG, "Bindings de output persistidos (%d canal(is))", output_entry_count);
     }
@@ -1479,6 +1495,14 @@ io_binding_result_t io_binding_set_input_ex(uint16_t id,
     {
         resolved_gpio = GPIO_NUM_NC;
     }
+    else if (backend == DEVICE_CHANNEL_BACKEND_ADC_NATIVE)
+    {
+        resolved_gpio = (gpio >= 0) ? (gpio_num_t)gpio : (gpio_num_t)entry->gpio;
+        if (resolved_gpio == GPIO_NUM_34)
+            endpoint_index = 6;
+        else if (resolved_gpio == GPIO_NUM_35)
+            endpoint_index = 7;
+    }
     else
     {
         return IO_BINDING_RESULT_INVALID_BACKEND;
@@ -1488,6 +1512,8 @@ io_binding_result_t io_binding_set_input_ex(uint16_t id,
         backend_instance = entry->backend_instance;
     if (backend == DEVICE_CHANNEL_BACKEND_MCP23X17 && endpoint_index < 0)
         endpoint_index = entry->endpoint_index;
+    if (backend == DEVICE_CHANNEL_BACKEND_ADC_NATIVE && backend_instance < 0)
+        backend_instance = 0;
 
     addr_result = io_binding_validate_input_address(id, backend, resolved_gpio, backend_instance, endpoint_index);
     if (addr_result != IO_BINDING_RESULT_OK)
@@ -1503,7 +1529,9 @@ io_binding_result_t io_binding_set_input_ex(uint16_t id,
 
     entry->gpio = (int16_t)resolved_gpio;
     entry->backend = (uint8_t)backend;
-    entry->channel_class = (uint8_t)DEVICE_CHANNEL_CLASS_DIGITAL_INPUT;
+    entry->channel_class = (backend == DEVICE_CHANNEL_BACKEND_ADC_NATIVE || backend == DEVICE_CHANNEL_BACKEND_ADC_EXTERNAL)
+        ? (uint8_t)DEVICE_CHANNEL_CLASS_ANALOG_INPUT
+        : (uint8_t)DEVICE_CHANNEL_CLASS_DIGITAL_INPUT;
     entry->backend_instance = (int16_t)backend_instance;
     entry->endpoint_index = (int16_t)endpoint_index;
     io_binding_copy_text(entry->name, sizeof(entry->name), (name && name[0]) ? name : profile->name);

@@ -63,7 +63,16 @@ typedef enum
     DEVICE_PROFILE_TRANSPORT_WIFI = 1,
     DEVICE_PROFILE_TRANSPORT_ETHERNET = 2,
     DEVICE_PROFILE_TRANSPORT_RS485 = 3,
+    DEVICE_PROFILE_TRANSPORT_ESPNOW = 4,
+    DEVICE_PROFILE_TRANSPORT_MESH = 5,
 } device_profile_transport_t;
+
+typedef enum
+{
+    DEVICE_PROFILE_WIFI_MODE_INFRA = 0,
+    DEVICE_PROFILE_WIFI_MODE_MESH = 1,
+    DEVICE_PROFILE_WIFI_MODE_NOW = 2,
+} device_profile_wifi_mode_t;
 
 typedef enum
 {
@@ -139,12 +148,16 @@ typedef struct
     bool wifi_enabled;
     bool ethernet_enabled;
     bool rs485_enabled;
+    device_profile_wifi_mode_t wifi_mode;
     bool onboarding_pending;
     device_profile_transport_t primary_transport;
     device_profile_transport_t fallback_transport;
     uint32_t failover_delay_ms;
     uint32_t recovery_hysteresis_ms;
     device_profile_ethernet_mode_t ethernet_mode;
+    bool allow_local_ap;
+    bool allow_dashboard;
+    bool allow_ota;
     const char *label;
     device_network_w5500_profile_t w5500;
 } device_network_profile_t;
@@ -200,8 +213,9 @@ uint32_t device_profile_failover_delay_ms(void);
 uint32_t device_profile_recovery_hysteresis_ms(void);
 
 device_profile_network_config_result_t device_profile_set_network_enabled(bool wifi_enabled,
-                                                                          bool ethernet_enabled,
-                                                                          bool rs485_enabled);
+                                                                          bool eth_enabled,
+                                                                          bool rs485_enabled,
+                                                                          device_profile_wifi_mode_t wifi_mode);
 
 device_profile_network_config_result_t device_profile_set_transport_policy(bool onboarding_pending,
                                                                           device_profile_transport_t primary_transport,
@@ -216,5 +230,84 @@ int device_profile_copy_local_io_ids(uint16_t *out_ids, int max_ids);
 int device_profile_default_input_count(void);
 int device_profile_default_output_count(void);
 
+/**
+ * @brief Perfis de nós suportados na plataforma ENDAP v1.
+ */
+typedef enum
+{
+    NODE_PROFILE_GATEWAY = 0,   /*!< Nó central - gerencia rede, onboarding, dashboard e cluster */
+    NODE_PROFILE_FIELD   = 1,   /*!< Nó de campo - I/O local + expansão */
+    NODE_PROFILE_RELAY   = 2,   /*!< Nó especializado em atuadores / relés */
+    NODE_PROFILE_SENSOR  = 3,   /*!< Nó especializado em sensores / entradas */
+    NODE_PROFILE_CUSTOM  = 4,   /*!< Reservado para perfil estendido/custom */
+} node_profile_t;
+
+#define NODE_PROFILE_MAX (NODE_PROFILE_CUSTOM + 1)
+
+/**
+ * @brief Descritor imutável de perfil de nó.
+ */
+typedef struct
+{
+    node_profile_t type;                             /*!< Tipo do perfil */
+    const char *label;                               /*!< Nome legível do perfil */
+    const device_node_capabilities_t *node_caps;     /*!< Capacidades de I/O e expansão */
+    const device_expansion_capabilities_t *exp_caps; /*!< Capacidades de hardware expandido (MCP/ADC) */
+    const device_network_profile_t *network;         /*!< Configuração padrão de rede para este perfil */
+    const device_channel_inventory_group_t *chan_groups; /*!< Grupos de inventário de canais */
+    size_t chan_groups_len;                          /*!< Quantidade de grupos de canais */
+} node_profile_desc_t;
+
 int device_profile_default_automation_count(void);
 const device_default_automation_t *device_profile_default_automation_at(int index);
+
+/**
+ * @brief Verifica se um determinado tipo de perfil é válido.
+ *
+ * @param type Tipo de perfil a validar
+ * @return true se o tipo for válido e reconhecido, false caso contrário.
+ */
+bool device_profile_is_valid(node_profile_t type);
+
+/**
+ * @brief Obtém o template imutável correspondente ao tipo de perfil informado.
+ *
+ * @param type Tipo de perfil (enum node_profile_t)
+ * @return const node_profile_desc_t* Ponteiro estático para o template ou NULL se inválido.
+ */
+const node_profile_desc_t *device_profile_get_template(node_profile_t type);
+
+/**
+ * @brief Obtém o perfil ativo atualmente configurado no nó.
+ * Nunca retorna NULL (retorna fallback seguro para FIELD se necessário).
+ *
+ * @return const node_profile_desc_t* Ponteiro para o descritor do perfil ativo.
+ */
+const node_profile_desc_t *device_profile_get_current(void);
+
+/**
+ * @brief Define o perfil ativo do nó.
+ *
+ * ATENÇÃO: Esta função só pode ser chamada durante a fase de inicialização
+ * ou durante o fluxo de Onboarding. Nunca chame em runtime normal ou no hot-path.
+ * A chamada grava imediatamente o valor na NVS.
+ *
+ * @param type Tipo de perfil a ser ativado
+ * @return esp_err_t ESP_OK em caso de sucesso, ESP_ERR_INVALID_ARG se type for inválido.
+ */
+esp_err_t device_profile_set_current(node_profile_t type);
+
+/**
+ * @brief Aplica o template de um perfil e o torna o perfil ativo.
+ * Usado pelo Onboarding v1.
+ *
+ * - Copia as configurações relevantes do template para o estado de rede/capacidades do runtime
+ * - Chama device_profile_set_current()
+ * - Retorna ESP_OK se tudo correu bem
+ *
+ * @param type Tipo de perfil a aplicar
+ * @return esp_err_t ESP_OK em caso de sucesso ou código de erro se inválido/falhar
+ */
+esp_err_t device_profile_apply_template(node_profile_t type);
+
+

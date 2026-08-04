@@ -5,7 +5,7 @@ idf_component_register(
         rs485
         parser
         
-    PRIV_REQUIRES
+    PRIV_REQUIRES kernel_trace
     	esp_timer
     	node_identity
 )

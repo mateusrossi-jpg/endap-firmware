@@ -26,13 +26,13 @@
 #define SELF_TEST_OFFLINE_WAIT_MS   7500
 #define SELF_TEST_FAILOVER_VIEW_MS  2500
 #define SELF_TEST_FAILBACK_VIEW_MS  2000
-static TaskHandle_t self_test_task_handle = NULL;
 static uint32_t self_node_id = 0;
 static volatile bool self_test_running = false;
 static volatile bool self_test_requested = false;
 static const char *self_test_phase_name = "IDLE";
 
 #if CLUSTER_SELF_TEST_ENABLED
+static TaskHandle_t self_test_task_handle = NULL;
 static void cluster_self_test_register_local_io(void)
 {
     int input_count = device_profile_input_count();
@@ -228,12 +228,9 @@ bool cluster_self_test_trigger(void)
     if (!cluster_self_test_available())
         return false;
 
-    if (self_test_task_handle == NULL || self_node_id == 0)
-        return false;
+    cluster_self_test_init(self_node_id ? self_node_id : 1);
 
-    if (self_test_running || self_test_requested)
-        return false;
-
+    self_test_running = false;
     self_test_requested = true;
     return true;
 }

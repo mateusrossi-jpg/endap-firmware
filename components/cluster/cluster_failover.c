@@ -92,6 +92,7 @@ static void cluster_failover_event_handler(cluster_event_t *evt)
                 evt->node_id);
 
             cluster_io_handle_node_online(evt->node_id);
+            cluster_io_sync_state_to_node(evt->node_id);
             break;
         }
 

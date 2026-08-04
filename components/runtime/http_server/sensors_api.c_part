@@ -1,0 +1,62 @@
+static esp_err_t sensors_config_get_handler(httpd_req_t *req)
+{
+    const device_sensor_profile_t *sensors = device_profile_get_sensors();
+    char buf[256];
+    int len = snprintf(buf, sizeof(buf),
+        "{\"dht11_enabled\":%s,\"dht11_gpio\":%d,\"ds18b20_enabled\":%s,\"ds18b20_gpio\":%d}",
+        sensors && sensors->dht11_enabled ? "true" : "false",
+        sensors ? sensors->dht11_gpio : -1,
+        sensors && sensors->ds18b20_enabled ? "true" : "false",
+        sensors ? sensors->ds18b20_gpio : -1);
+
+    httpd_resp_set_type(req, "application/json");
+    httpd_resp_send(req, buf, len);
+    return ESP_OK;
+}
+
+static esp_err_t sensors_config_post_handler(httpd_req_t *req)
+{
+    if (!http_auth_require_cap(req, AUTH_CAP_PROFILE_WRITE))
+        return ESP_OK;
+
+    int dht11_enabled = 0;
+    int dht11_gpio = -1;
+    int ds18b20_enabled = 0;
+    int ds18b20_gpio = -1;
+    bool found_dht_en = false;
+    bool found_ds_en = false;
+
+    http_set_private_text_headers(req);
+
+    if (!query_get_optional_int(req, "dht11_enabled", 0, 1, &dht11_enabled, &found_dht_en) ||
+        !query_get_optional_int(req, "dht11_gpio", -1, 40, &dht11_gpio, NULL) ||
+        !query_get_optional_int(req, "ds18b20_enabled", 0, 1, &ds18b20_enabled, &found_ds_en) ||
+        !query_get_optional_int(req, "ds18b20_gpio", -1, 40, &ds18b20_gpio, NULL))
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "BAD_REQUEST");
+        return ESP_OK;
+    }
+
+    device_sensor_profile_t profile = {0};
+    const device_sensor_profile_t *current = device_profile_get_sensors();
+    if (current) profile = *current;
+
+    if (found_dht_en) {
+        profile.dht11_enabled = dht11_enabled;
+        profile.dht11_gpio = dht11_gpio;
+    }
+    if (found_ds_en) {
+        profile.ds18b20_enabled = ds18b20_enabled;
+        profile.ds18b20_gpio = ds18b20_gpio;
+    }
+
+    if (device_profile_set_sensors(&profile)) {
+        httpd_resp_sendstr(req, "OK");
+    } else {
+        httpd_resp_set_status(req, "500 Internal Server Error");
+        httpd_resp_sendstr(req, "ERROR");
+    }
+
+    return ESP_OK;
+}

@@ -62,6 +62,16 @@ typedef struct
     char template_name[NODE_REGISTRY_TEMPLATE_LEN];
 } node_registry_entry_t;
 
+typedef struct
+{
+    uint32_t magic;
+    uint16_t version;
+    uint16_t count;
+    node_registry_entry_t entries[NODE_REGISTRY_MAX_NODES];
+    uint32_t crc;
+} node_registry_blob_t;
+
+
 void node_registry_init(void);
 void node_registry_process(void);
 
@@ -77,6 +87,7 @@ bool node_registry_adopt(uint32_t node_id);
 bool node_registry_configure(uint32_t node_id, const char *profile, const char *template_name);
 bool node_registry_activate(uint32_t node_id);
 bool node_registry_revoke(uint32_t node_id);
+bool node_registry_replace(uint32_t old_id, uint32_t new_id);
 
 const char *node_registry_state_name(node_registry_state_t state);
 const char *node_registry_cluster_state_name(uint8_t cluster_state);

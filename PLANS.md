@@ -743,3 +743,178 @@ Antes de implementar qualquer uma das tarefas acima:
 ## 🔥 Regra de ouro
 
 **"Se a tarefa não cabe em um plano simples, ela está grande demais."**
+
+---
+
+## 🧩 Plano 08 — Motor de Aplicação de Templates (Templates v1)
+
+### 🎯 Objetivo
+Criar a fundação para que o Gateway aplique "perfis" predefinidos (ex: *Nó Sensor*, *Nó Relé Duplo*) em um *Field Node* recém-adotado. Isso automatiza a configuração de I/O e regras de automação padrão sem exigir configuração manual pino a pino.
+
+### 🏷️ Tipo da tarefa
+- services
+- gateway
+- templates
+
+### 📦 Escopo
+
+#### Inclui:
+- Estrutura de dados para representar um "Template" mínimo.
+- Nova API `/api/nodes/{id}/template` no Gateway para disparar a aplicação.
+- Controle rigoroso para **não** sobrescrever nós que já possuem configurações de automação ativas.
+- Interface na Dashboard para selecionar e aplicar o template no nó de forma segura.
+
+#### NÃO inclui:
+- Sincronização complexa bidirecional.
+- Versionamento de templates.
+- Perfis dinâmicos criados pelo usuário (apenas os hardcoded iniciais validados serão usados nesta fase).
+
+#### Fora de escopo:
+- Clonagem real de nó para nó (isso virá no próximo plano).
+
+### ⚠️ Riscos e Mitigações
+1. **Risco:** Sobrescrever configurações já feitas pelo usuário acidentalmente.
+   - **Mitigação:** O motor só permitirá aplicar o template se o nó estiver em um estado "recém-adotado" ou vazio, ou exigirá uma flag explícita de `overwrite`.
+2. **Risco:** Criar templates muito complexos que quebrem as restrições do motor de regras atual.
+   - **Mitigação:** Os templates disponíveis serão estáticos (hardcoded no firmware do gateway) e validados previamente contra os perfis base do ENDAP.
+
+### 🛠️ Estratégia
+1. Definir uma estrutura `endap_template_t` contendo a definição do papel desejado.
+2. Criar uma função de *service* segura que lê um template e injeta as regras/bindings no nó alvo.
+3. Adicionar uma rota na API HTTP `/api/nodes/template/apply`.
+4. Mostrar um menu simples de "Aplicar Perfil" na visão de detalhes do nó na Dashboard.
+
+### 🔄 Etapas
+1. Inserir a nova estrutura de dados no código do Gateway.
+2. Escrever a lógica de validação que protege configurações existentes.
+3. Conectar a API REST.
+4. Ajustar o frontend (`index.html`) para consumir a API.
+
+### 🧪 Validação
+- Compila corretamente e o sistema sobe.
+- Nó "limpo" recebe configurações do template.
+- Nó com regras existentes recusa o template a menos que seja forçado.
+- A aplicação não gera logs no hot path nem afeta o determinismo.
+
+### 📏 Impacto esperado
+- impacto no hot path: nenhum (operação restrita a HTTP e Services).
+- impacto em memória: muito pequeno (apenas structs estáticas e parsers leves).
+
+### ✅ Critério de conclusão
+- O operador consegue aplicar o perfil de "Nó Relé" no Dashboard e ver as regras e as IOs preenchidas no nó sem precisar fazê-lo manualmente.
+
+---
+
+## 🧩 Plano 09 — Clonagem e Substituição Básica de Nó
+
+### 🎯 Objetivo
+Permitir a clonagem de configuração de um nó existente para um novo nó adotado, além de facilitar a substituição de hardware (quando um nó queima e um novo entra em seu lugar assumindo sua identidade lógica).
+
+A meta é fornecer ferramentas administrativas básicas para escalar o número de nós rapidamente e se recuperar de falhas de hardware no nível de produto.
+
+---
+
+### 🏷️ Tipo da tarefa
+- services
+- gateway
+- dashboard
+- cluster
+
+---
+
+### 📦 Escopo
+
+#### Inclui:
+- **Clonagem**: Endpoint `POST /api/nodes/clone` que copia o mapeamento de I/Os e as automações de um `node_id` de origem para um `node_id` de destino (que acabou de ser adotado).
+- **Substituição (Replace)**: Fluxo no Dashboard para "assumir identidade": se um nó X está offline permanentemente, permitir que o usuário instrua um novo nó Y (recém-descoberto) a adotar a identidade e configurações de X.
+- UI simples no Dashboard para ambos os fluxos.
+
+#### NÃO inclui:
+- Replicação contínua ou sincronização distribuída complexa.
+- Backup completo de todo o banco de dados em arquivo (apenas manipulação de configurações de nó).
+
+#### Fora de escopo:
+- Alta disponibilidade (HA) de múltiplos gateways (isso não é replicação de gateway, apenas de field nodes).
+
+---
+
+### ⚠️ Riscos
+- **Inconsistência de IDs Globais**: Copiar um nó pode gerar conflito de "global_code" ou IDs de I/O se não houver lógica de offset.
+- **Risco de Segurança**: Substituir um nó pode ser abusado se não for devidamente restrito por autenticação de administrador.
+
+---
+
+### 🛠️ Estratégia
+1. **Substituição (Replace)**: É o mais simples. O Gateway simplesmente reescreve a tabela do `node_registry` trocando o ID físico original pelo ID do novo nó, e repassa todos os bindings e mapas para o novo ID.
+2. **Clonagem**: Para evitar conflitos de ID Global, o clone deve gerar novos aliases (ex: "Sensor 1 (Cópia)") e deixar os campos de global_code vazios ou auto-incrementados.
+3. As operações ocorrem fora do hot path, manipulando diretamente o `node_registry` e o `installation_map`.
+
+---
+
+### 🔄 Etapas
+1. Implementar função de substituição de ID (`node_registry_replace_node` e atualizações atômicas no `installation_map`).
+2. Criar endpoint `/api/nodes/replace` e `/api/nodes/clone`.
+3. Adicionar interface de substituição na aba Cluster para nós que aparecem como "Offline".
+4. Validar que um nó substituto assume as automações do nó antigo perfeitamente.
+
+---
+
+### 🧪 Validação
+- Compila corretamente.
+- Nó "morto" é substituído por um nó recém-descoberto com sucesso.
+- O novo nó passa a responder aos comandos e as automações antigas funcionam porque o mapeamento foi atualizado.
+
+---
+
+### 📏 Impacto esperado
+- impacto arquitetural: facilita manutenção do produto.
+
+---
+
+## 🧩 Plano 10 — Recovery e Reconexão Básica
+
+### 🎯 Objetivo
+Garantir que um nó recupere e sincronize o seu estado com o master do cluster quando ele volta de um estado offline. Isso completa a história de failback e reconexão.
+
+---
+
+### 🏷️ Tipo da tarefa
+- cluster
+- reliability
+- sync
+
+---
+
+### 📦 Escopo
+
+#### Inclui:
+- Sincronização do estado atual (`state.c`) do gateway para as saídas que o nó reconectado possui.
+- Trigger através do `EVENT_NODE_ONLINE` no `cluster_failover.c`.
+
+#### NÃO inclui:
+- Complex logic handling para falhas particionadas avançadas ou split-brain.
+
+---
+
+### 🛠️ Estratégia
+1. Criar função `cluster_io_sync_state_to_node(node_id)` que itera sobre as saídas do nó e reenvia `PROTOCOL_MSG_OUTPUT_COMMAND` com os valores globais corretos guardados no master.
+2. Injetar a chamada desta função no `cluster_failover.c` assim que o "failback" local de permissões de porta for finalizado.
+
+---
+
+### 🔄 Etapas
+1. Adicionar include do `state.h` no `cluster_io.c`.
+2. Criar a implementação de `cluster_io_sync_state_to_node`.
+3. Executá-la em `cluster_failover.c` no case de `EVENT_NODE_ONLINE`.
+
+---
+
+### 🧪 Validação
+- Compila corretamente.
+- Se o gateway mantiver o estado `1` em uma saída, quando o nó correspondente reconectar e voltar de offline para online, ele receberá o comando com o estado `1` automaticamente.
+
+---
+
+### ✅ Critério de conclusão (Concluído)
+- Lógica implementada e estado resincronizado automaticamente após a devolução dos IOs pelo Failover.
+

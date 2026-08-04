@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define MAX_IO 32
+#define MAX_IO 256
 
 typedef struct {
     uint32_t owner_node;

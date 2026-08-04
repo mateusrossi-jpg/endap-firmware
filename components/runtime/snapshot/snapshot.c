@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stddef.h>
 #include <inttypes.h>
+#include "endap_nvs.h"
 
 #define TAG "SNAPSHOT"
 #define SNAPSHOT_DEBOUNCE_MS 5000
@@ -71,7 +72,7 @@ static bool snapshot_backend_write(const void *buffer, uint32_t len)
         return false;
     }
 
-    nvs_commit(nvs);
+    endap_nvs_commit(nvs);
     nvs_close(nvs);
     return true;
 }

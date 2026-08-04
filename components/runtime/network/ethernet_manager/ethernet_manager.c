@@ -14,23 +14,33 @@
 #include "esp_log.h"
 #include "esp_mac.h"
 #include "esp_netif.h"
+#include <arpa/inet.h>
+#include "nvs.h"
+
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
 #include <string.h>
 
+#if CONFIG_ENDAP_ETH_BACKEND_W5500
+#include "esp_eth_mac_spi.h"
+#include "endap_nvs.h"
+#endif
+
 #define TAG "ETH"
 
 static bool ethernet_initialized = false;
 static bool ethernet_ready = false;
 static bool ethernet_handlers_registered = false;
+#if CONFIG_ENDAP_ETH_BACKEND_W5500
 static bool ethernet_spi_bus_initialized = false;
 static int ethernet_spi_bus_host = -1;
 
 static esp_eth_handle_t ethernet_handle = NULL;
 static esp_eth_netif_glue_handle_t ethernet_glue = NULL;
 static esp_netif_t *ethernet_netif = NULL;
+#endif
 
 static const char *ethernet_mode_name(device_profile_ethernet_mode_t mode)
 {
@@ -46,6 +56,7 @@ static const char *ethernet_mode_name(device_profile_ethernet_mode_t mode)
     }
 }
 
+#if CONFIG_ENDAP_ETH_BACKEND_W5500
 static void ethernet_manager_seed_local_mac(esp_eth_handle_t handle)
 {
     uint8_t mac_addr[6] = {0};
@@ -83,8 +94,9 @@ static void ethernet_manager_reset_w5500(const device_network_w5500_profile_t *c
     gpio_set_level(cfg->reset_gpio, 1);
     vTaskDelay(pdMS_TO_TICKS(120));
 }
+#endif
 
-#if CONFIG_ETH_SPI_ETHERNET_W5500
+#if CONFIG_ENDAP_ETH_BACKEND_W5500
 static esp_err_t ethernet_manager_start_w5500(const device_network_w5500_profile_t *cfg)
 {
     esp_err_t ret;
@@ -179,6 +191,45 @@ static esp_err_t ethernet_manager_start_w5500(const device_network_w5500_profile
         goto fail;
     }
 
+    // Apply Static IP if configured
+    eth_ip_config_t ip_cfg;
+    ethernet_manager_get_ip_config(&ip_cfg);
+    if (ip_cfg.static_ip_enabled) {
+        esp_err_t stop_dhcp_err = esp_netif_dhcpc_stop(ethernet_netif);
+        if (stop_dhcp_err == ESP_OK || stop_dhcp_err == ESP_ERR_ESP_NETIF_DHCP_ALREADY_STOPPED) {
+            esp_netif_ip_info_t ip_info;
+            memset(&ip_info, 0, sizeof(ip_info));
+            ip_info.ip.addr = inet_addr(ip_cfg.ip);
+            ip_info.netmask.addr = inet_addr(ip_cfg.netmask);
+            ip_info.gw.addr = inet_addr(ip_cfg.gateway);
+            
+            esp_err_t set_ip_err = esp_netif_set_ip_info(ethernet_netif, &ip_info);
+            if (set_ip_err == ESP_OK) {
+                ESP_LOGI(TAG, "IP estatico configurado no netif Ethernet: %s", ip_cfg.ip);
+            } else {
+                ESP_LOGE(TAG, "Falha ao definir IP estatico no netif: %s", esp_err_to_name(set_ip_err));
+            }
+            
+            if (ip_cfg.dns[0] != '\0') {
+                esp_netif_dns_info_t dns_info;
+                memset(&dns_info, 0, sizeof(dns_info));
+                dns_info.ip.u_addr.ip4.addr = inet_addr(ip_cfg.dns);
+                dns_info.ip.type = IPADDR_TYPE_V4;
+                esp_netif_set_dns_info(ethernet_netif, ESP_NETIF_DNS_MAIN, &dns_info);
+            }
+            if (ip_cfg.dns_sec[0] != '\0') {
+                esp_netif_dns_info_t dns_info_sec;
+                memset(&dns_info_sec, 0, sizeof(dns_info_sec));
+                dns_info_sec.ip.u_addr.ip4.addr = inet_addr(ip_cfg.dns_sec);
+                dns_info_sec.ip.type = IPADDR_TYPE_V4;
+                esp_netif_set_dns_info(ethernet_netif, ESP_NETIF_DNS_BACKUP, &dns_info_sec);
+            }
+        } else {
+            ESP_LOGE(TAG, "Falha ao parar cliente DHCP: %s", esp_err_to_name(stop_dhcp_err));
+        }
+    }
+
+
     ret = esp_eth_start(ethernet_handle);
     if (ret != ESP_OK)
     {
@@ -238,6 +289,19 @@ static void ethernet_event_handler(void *arg,
         {
             case ETHERNET_EVENT_CONNECTED:
                 ESP_LOGI(TAG, "Link Ethernet conectado");
+                {
+                    eth_ip_config_t ip_cfg;
+                    ethernet_manager_get_ip_config(&ip_cfg);
+                    if (ip_cfg.static_ip_enabled)
+                    {
+                        ethernet_ready = true;
+                        network_ready_publish_up(
+                            NETWORK_READY_LINK_ETHERNET,
+                            inet_addr(ip_cfg.ip),
+                            inet_addr(ip_cfg.netmask));
+                        ESP_LOGI(TAG, "Ethernet com IP estatico publicado");
+                    }
+                }
                 break;
             case ETHERNET_EVENT_DISCONNECTED:
             case ETHERNET_EVENT_STOP:
@@ -309,7 +373,7 @@ void ethernet_manager_init(void)
 
     switch (network->ethernet_mode)
     {
-#if CONFIG_ETH_SPI_ETHERNET_W5500
+#if CONFIG_ENDAP_ETH_BACKEND_W5500
         case DEVICE_PROFILE_ETH_SPI_W5500:
             ret = ethernet_manager_start_w5500(&network->w5500);
             if (ret == ESP_ERR_NOT_FOUND)
@@ -317,7 +381,11 @@ void ethernet_manager_init(void)
                 ESP_LOGW(TAG, "Perfil W5500 ainda sem pinagem SPI definida");
                 return;
             }
-            ESP_ERROR_CHECK(ret);
+            if (ret != ESP_OK)
+            {
+                ESP_LOGE(TAG, "Falha critica ao iniciar W5500 (verifique os fios/pinos SPI!): %s", esp_err_to_name(ret));
+                return;
+            }
             break;
 #else
         case DEVICE_PROFILE_ETH_SPI_W5500:
@@ -337,3 +405,34 @@ bool ethernet_manager_is_ready(void)
 {
     return ethernet_ready;
 }
+
+void ethernet_manager_get_ip_config(eth_ip_config_t *cfg) {
+    if (!cfg) return;
+    memset(cfg, 0, sizeof(eth_ip_config_t));
+    nvs_handle_t nvs;
+    if (nvs_open("eth_ip", NVS_READONLY, &nvs) == ESP_OK) {
+        size_t size = 0;
+        if (nvs_get_blob(nvs, "config", NULL, &size) == ESP_OK) {
+            if (size > sizeof(eth_ip_config_t)) {
+                size = sizeof(eth_ip_config_t);
+            }
+            nvs_get_blob(nvs, "config", cfg, &size);
+        } else {
+            cfg->static_ip_enabled = 0;
+        }
+        nvs_close(nvs);
+    } else {
+        cfg->static_ip_enabled = 0;
+    }
+}
+
+void ethernet_manager_set_ip_config(const eth_ip_config_t *cfg) {
+    if (!cfg) return;
+    nvs_handle_t nvs;
+    if (nvs_open("eth_ip", NVS_READWRITE, &nvs) == ESP_OK) {
+        nvs_set_blob(nvs, "config", cfg, sizeof(eth_ip_config_t));
+        endap_nvs_commit(nvs);
+        nvs_close(nvs);
+    }
+}
+

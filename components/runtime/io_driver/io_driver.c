@@ -12,6 +12,8 @@
 #include "http_server.h"
 #include "io_image.h"
 #include "state.h"
+#include "esp_adc/adc_oneshot.h"
+#include "pve.h"
 
 #include <inttypes.h>
 #include <string.h>
@@ -24,6 +26,8 @@
 
 static uint8_t last_index = 0;
 static uint64_t last_diag_report_us = 0;
+static adc_oneshot_unit_handle_t adc1_handle = NULL;
+static bool adc1_initialized = false;
 
 /* ============================================================
    OUTPUT TABLE
@@ -59,6 +63,9 @@ typedef struct
     uint32_t recent_raw_edges;
     uint32_t recent_stable_edges;
     uint32_t recent_noise_edges;
+    device_channel_backend_t backend;
+    int endpoint_index;
+    int32_t last_adc_raw;
 } input_channel_t;
 
 static input_channel_t input_table[IO_DRIVER_MAX_INPUTS];
@@ -135,6 +142,9 @@ static void io_driver_load_profile(void)
             .gpio = (gpio_num_t)binding->gpio,
             .active_low = cfg->active_low,
             .debounce_samples = io_driver_clamp_debounce_samples(cfg->debounce_samples),
+            .backend = binding->backend,
+            .endpoint_index = binding->endpoint_index,
+            .last_adc_raw = 0,
         };
         input_count++;
     }
@@ -170,6 +180,23 @@ void io_driver_init(void)
         int32_t restored_value = 0;
         int32_t boot_value = 0;
         const char *boot_origin = "startup-policy";
+
+        if (output_table[i].gpio == GPIO_NUM_NC)
+        {
+            io_image_set_output(output_table[i].id, 0);
+            io_driver_state_shadow_assign(state_shadow, output_table[i].id, 0);
+
+            ESP_LOGI(TAG,
+                "Output %u -> GPIO %d (%s, restored=%" PRId32 ", boot=%" PRId32 ", origin=%s)",
+                output_table[i].id,
+                output_table[i].gpio,
+                output_table[i].active_low ? "active-low" : "active-high",
+                restored_value,
+                boot_value,
+                boot_origin ? boot_origin : "startup-policy");
+            continue;
+        }
+
         gpio_config_t cfg =
         {
             .pin_bit_mask = (1ULL << output_table[i].gpio),
@@ -204,43 +231,140 @@ void io_driver_init(void)
         local_mask |= (1U << i);
     }
 
+    int analog_channels_loaded = 0;
     for (size_t i = 0; i < input_count; i++)
     {
-        gpio_config_t cfg =
+        if (input_table[i].backend == DEVICE_CHANNEL_BACKEND_ADC_NATIVE)
         {
-            .pin_bit_mask = (1ULL << input_table[i].gpio),
-            .mode = GPIO_MODE_INPUT,
-            .pull_up_en = device_profile_gpio_is_input_only(input_table[i].gpio)
-                ? GPIO_PULLUP_DISABLE
-                : (input_table[i].active_low ? GPIO_PULLUP_ENABLE : GPIO_PULLUP_DISABLE),
-            .pull_down_en = device_profile_gpio_is_input_only(input_table[i].gpio)
-                ? GPIO_PULLDOWN_DISABLE
-                : (input_table[i].active_low ? GPIO_PULLDOWN_DISABLE : GPIO_PULLDOWN_ENABLE),
-            .intr_type = GPIO_INTR_DISABLE
-        };
+            if (!adc1_initialized)
+            {
+                adc_oneshot_unit_init_cfg_t init_config = {
+                    .unit_id = ADC_UNIT_1,
+                };
+                esp_err_t err = adc_oneshot_new_unit(&init_config, &adc1_handle);
+                if (err == ESP_OK)
+                {
+                    adc1_initialized = true;
+                }
+                else
+                {
+                    ESP_LOGE(TAG, "Falha ao inicializar ADC1 oneshot unit: %s", esp_err_to_name(err));
+                }
+            }
 
-        gpio_config(&cfg);
+            if (adc1_initialized)
+            {
+                adc_channel_t channel;
+                adc_unit_t unit;
+                esp_err_t err = adc_oneshot_io_to_channel(input_table[i].gpio, &unit, &channel);
+                if (err == ESP_OK && unit == ADC_UNIT_1)
+                {
+                    input_table[i].endpoint_index = (int)channel;
+                    adc_oneshot_chan_cfg_t config = {
+                        .atten = ADC_ATTEN_DB_12,
+                        .bitwidth = ADC_BITWIDTH_DEFAULT,
+                    };
+                    err = adc_oneshot_config_channel(adc1_handle, channel, &config);
+                    if (err != ESP_OK)
+                    {
+                        ESP_LOGE(TAG, "Falha ao configurar canal ADC %d: %s", channel, esp_err_to_name(err));
+                    }
+                    else
+                    {
+                        ESP_LOGI(TAG, "Canal ADC %d configurado com sucesso para GPIO %d", channel, input_table[i].gpio);
+                    }
+                }
+                else
+                {
+                    ESP_LOGE(TAG, "GPIO %d nao mapeia para um canal ADC1 valido ou erro: %s", input_table[i].gpio, esp_err_to_name(err));
+                }
+            }
 
-        int level = gpio_get_level(input_table[i].gpio);
-        uint8_t logical = input_table[i].active_low ? (level == 0) : (level != 0);
+            input_table[i].last_adc_raw = 0;
+            input_table[i].stable_value = 0;
+            input_table[i].stable_count = (uint8_t)(analog_channels_loaded % 10);
+            analog_channels_loaded++;
 
-        input_table[i].last_sample = logical;
-        input_table[i].stable_value = logical;
-        input_table[i].stable_count = input_table[i].debounce_samples;
+            int initial_raw = 0;
+            if (adc1_initialized && adc_oneshot_read(adc1_handle, (adc_channel_t)input_table[i].endpoint_index, &initial_raw) == ESP_OK)
+            {
+                input_table[i].last_adc_raw = initial_raw;
+                input_table[i].stable_value = initial_raw;
+            }
 
-        io_image_set_input(input_table[i].id, logical);
-        io_driver_state_shadow_assign(state_shadow, input_table[i].id, logical);
+            io_image_set_input(input_table[i].id, input_table[i].last_adc_raw);
+            io_driver_state_shadow_assign(state_shadow, input_table[i].id, input_table[i].last_adc_raw);
 
-        ESP_LOGI(TAG,
-            "Input %u -> GPIO %d (%s, pull-%s, debounce=%u%s)",
-            input_table[i].id,
-            input_table[i].gpio,
-            input_table[i].active_low ? "active-low" : "active-high",
-            device_profile_gpio_is_input_only(input_table[i].gpio)
-                ? "externo"
-                : (input_table[i].active_low ? "up" : "down"),
-            input_table[i].debounce_samples,
-            device_profile_gpio_is_input_only(input_table[i].gpio) ? ", input-only" : "");
+            if (input_table[i].gpio == GPIO_NUM_34) {
+                pve_update(&pve_variables[0], input_table[i].last_adc_raw);
+            } else if (input_table[i].gpio == GPIO_NUM_35) {
+                pve_update(&pve_variables[1], input_table[i].last_adc_raw);
+            }
+
+            ESP_LOGI(TAG,
+                "Input %u (Analogico) -> GPIO %d (ADC1 Ch %d, initial_raw=%d)",
+                input_table[i].id,
+                input_table[i].gpio,
+                input_table[i].endpoint_index,
+                initial_raw);
+        }
+        else
+        {
+            if (input_table[i].gpio == GPIO_NUM_NC)
+            {
+                input_table[i].last_sample = 0;
+                input_table[i].stable_value = 0;
+                input_table[i].stable_count = input_table[i].debounce_samples;
+
+                io_image_set_input(input_table[i].id, 0);
+                io_driver_state_shadow_assign(state_shadow, input_table[i].id, 0);
+
+                ESP_LOGI(TAG,
+                    "Input %u -> GPIO %d (%s, pull-%s, debounce=%u)",
+                    input_table[i].id,
+                    input_table[i].gpio,
+                    input_table[i].active_low ? "active-low" : "active-high",
+                    input_table[i].active_low ? "up" : "down",
+                    input_table[i].debounce_samples);
+                continue;
+            }
+
+            gpio_config_t cfg =
+            {
+                .pin_bit_mask = (1ULL << input_table[i].gpio),
+                .mode = GPIO_MODE_INPUT,
+                .pull_up_en = device_profile_gpio_is_input_only(input_table[i].gpio)
+                    ? GPIO_PULLUP_DISABLE
+                    : (input_table[i].active_low ? GPIO_PULLUP_ENABLE : GPIO_PULLUP_DISABLE),
+                .pull_down_en = device_profile_gpio_is_input_only(input_table[i].gpio)
+                    ? GPIO_PULLDOWN_DISABLE
+                    : (input_table[i].active_low ? GPIO_PULLDOWN_DISABLE : GPIO_PULLDOWN_ENABLE),
+                .intr_type = GPIO_INTR_DISABLE
+            };
+
+            gpio_config(&cfg);
+
+            int level = gpio_get_level(input_table[i].gpio);
+            uint8_t logical = input_table[i].active_low ? (level == 0) : (level != 0);
+
+            input_table[i].last_sample = logical;
+            input_table[i].stable_value = logical;
+            input_table[i].stable_count = input_table[i].debounce_samples;
+
+            io_image_set_input(input_table[i].id, logical);
+            io_driver_state_shadow_assign(state_shadow, input_table[i].id, logical);
+
+            ESP_LOGI(TAG,
+                "Input %u -> GPIO %d (%s, pull-%s, debounce=%u%s)",
+                input_table[i].id,
+                input_table[i].gpio,
+                input_table[i].active_low ? "active-low" : "active-high",
+                device_profile_gpio_is_input_only(input_table[i].gpio)
+                    ? "externo"
+                    : (input_table[i].active_low ? "up" : "down"),
+                input_table[i].debounce_samples,
+                device_profile_gpio_is_input_only(input_table[i].gpio) ? ", input-only" : "");
+        }
     }
 
     state_import_snapshot(state_shadow, STATE_MAX_ENTRIES);
@@ -297,6 +421,40 @@ void IRAM_ATTR io_driver_scan_inputs(void)
     for (size_t i = 0; i < input_count; i++)
     {
         input_channel_t *ch = &input_table[i];
+
+        if (ch->backend == DEVICE_CHANNEL_BACKEND_ADC_NATIVE)
+        {
+            ch->stable_count++;
+            if (ch->stable_count < 10)
+            {
+                continue;
+            }
+            ch->stable_count = 0;
+
+            if (adc1_initialized)
+            {
+                int raw_val = 0;
+                if (adc_oneshot_read(adc1_handle, (adc_channel_t)ch->endpoint_index, &raw_val) == ESP_OK)
+                {
+                    int32_t diff = raw_val - ch->last_adc_raw;
+                    if (diff < 0) diff = -diff;
+                    if (diff >= 8 || ch->last_adc_raw == 0)
+                    {
+                        ch->last_adc_raw = raw_val;
+                        state_set_int(ch->id, raw_val);
+                    }
+                    io_image_set_input(ch->id, raw_val);
+
+                    if (ch->gpio == GPIO_NUM_34) {
+                        pve_update(&pve_variables[0], raw_val);
+                    } else if (ch->gpio == GPIO_NUM_35) {
+                        pve_update(&pve_variables[1], raw_val);
+                    }
+                }
+            }
+            continue;
+        }
+
         int level = gpio_get_level(ch->gpio);
         uint8_t logical = ch->active_low ? (level == 0) : (level != 0);
 
@@ -451,16 +609,40 @@ void IRAM_ATTR io_driver_update(void)
         {
             if (!cluster_io_is_local(output_table[i].id))
             {
-                gpio_set_level(output_table[i].gpio,
-                    io_driver_output_gpio_level(&output_table[i], false));
+                uint32_t target_level = io_driver_output_gpio_level(&output_table[i], false);
+                if (output_table[i].gpio != GPIO_NUM_NC && (int)output_table[i].gpio >= 0)
+                {
+                    ESP_LOGW("MANUAL_IO",
+                             "Applying output=%u state=%u",
+                             (uint32_t)output_table[i].id,
+                             0U);
+                    ESP_LOGW("MANUAL_IO",
+                             "GPIO=%u -> level=%u",
+                             (uint32_t)output_table[i].gpio,
+                             (uint32_t)target_level);
+                    gpio_set_level(output_table[i].gpio, target_level);
+                }
             }
             else
             {
                 int32_t value;
 
                 if (state_get_int(output_table[i].id, &value))
-                    gpio_set_level(output_table[i].gpio,
-                        io_driver_output_gpio_level(&output_table[i], value != 0));
+                {
+                    uint32_t target_level = io_driver_output_gpio_level(&output_table[i], value != 0);
+                    if (output_table[i].gpio != GPIO_NUM_NC && (int)output_table[i].gpio >= 0)
+                    {
+                        ESP_LOGW("MANUAL_IO",
+                                 "Applying output=%u state=%u",
+                                 (uint32_t)output_table[i].id,
+                                 (uint32_t)(value != 0));
+                        ESP_LOGW("MANUAL_IO",
+                                 "GPIO=%u -> level=%u",
+                                 (uint32_t)output_table[i].gpio,
+                                 (uint32_t)target_level);
+                        gpio_set_level(output_table[i].gpio, target_level);
+                    }
+                }
             }
 
             /* 🔥 remove só este bit */

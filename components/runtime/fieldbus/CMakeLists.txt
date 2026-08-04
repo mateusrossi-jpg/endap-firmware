@@ -5,7 +5,7 @@ idf_component_register(
     INCLUDE_DIRS
         "include"
     REQUIRES
-    PRIV_REQUIRES
+    PRIV_REQUIRES kernel_trace
         rs485_master
         rs485_engine
         parser

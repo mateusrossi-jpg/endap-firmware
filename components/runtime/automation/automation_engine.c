@@ -11,14 +11,20 @@
 
 #include "event_bus.h"
 #include "state.h"
+#include "pve.h"
 #include "esp_attr.h"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "nvs.h"
 
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "freertos/queue.h"
+
 #include <inttypes.h>
 #include <string.h>
 #include <stdint.h>
+#include "endap_nvs.h"
 
 /* ============================================================
    CONFIG
@@ -132,6 +138,43 @@ static const automation_mode_info_t mode_table[] =
     {AUTOMATION_MODE_FORCE_ON, "force_on", "FORCE_ON"},
     {AUTOMATION_MODE_FORCE_OFF, "force_off", "FORCE_OFF"},
 };
+
+/* ============================================================
+   DISPATCH QUEUE E TASK
+============================================================ */
+
+typedef struct
+{
+    uint32_t target_node;
+    uint32_t requester_node;
+    uint16_t output_id;
+    int32_t value;
+} automation_remote_cmd_t;
+
+static QueueHandle_t automation_remote_queue = NULL;
+
+static void automation_dispatcher_task(void *arg)
+{
+    automation_remote_cmd_t cmd;
+    protocol_msg_t msg = {0};
+
+    while (1)
+    {
+        if (xQueueReceive(automation_remote_queue, &cmd, portMAX_DELAY) == pdTRUE)
+        {
+            if (!cluster_transport_is_ready())
+                continue;
+
+            msg.type = PROTOCOL_MSG_OUTPUT_COMMAND;
+            msg.data.output_command.target_node = cmd.target_node;
+            msg.data.output_command.requester_node = cmd.requester_node;
+            msg.data.output_command.output_id = cmd.output_id;
+            msg.data.output_command.value = cmd.value;
+
+            cluster_transport_broadcast_frame((const uint8_t *)&msg, sizeof(msg));
+        }
+    }
+}
 
 /* ============================================================
    CRC
@@ -387,7 +430,6 @@ static automation_action_result_t automation_dispatch_output(uint16_t output,
                                                              int rule_index)
 {
     cluster_metrics_t metrics = cluster_get_metrics();
-    protocol_msg_t msg = {0};
     uint32_t owner = cluster_io_get_owner(output);
     uint32_t original_owner = cluster_io_get_original_owner(output);
     bool target_local = cluster_io_is_local(output);
@@ -403,11 +445,6 @@ static automation_action_result_t automation_dispatch_output(uint16_t output,
                                     &effective_value,
                                     &failsafe_reason))
         {
-            ESP_LOGW(TAG,
-                     "Automacao bloqueada por fail-safe: output=%u rule=%d reason=%s",
-                     output,
-                     rule_index,
-                     failsafe_reason ? failsafe_reason : "unknown");
             automation_diag_mark_action(rule_index,
                                         value,
                                         AUTOMATION_ACTION_BLOCKED_FAILSAFE,
@@ -449,24 +486,27 @@ static automation_action_result_t automation_dispatch_output(uint16_t output,
         return AUTOMATION_ACTION_REMOTE_OWNER_OFFLINE;
     }
 
-    if (!cluster_transport_is_ready())
+    if (automation_remote_queue != NULL)
     {
-        automation_diag_mark_action(rule_index,
-                                    value,
-                                    AUTOMATION_ACTION_DISPATCH_FAILED,
-                                    false,
-                                    owner,
-                                    original_owner);
-        return AUTOMATION_ACTION_DISPATCH_FAILED;
+        automation_remote_cmd_t cmd = {
+            .target_node = owner,
+            .requester_node = metrics.self_node,
+            .output_id = output,
+            .value = value
+        };
+
+        if (xQueueSend(automation_remote_queue, &cmd, 0) != pdTRUE)
+        {
+            automation_diag_mark_action(rule_index,
+                                        value,
+                                        AUTOMATION_ACTION_DISPATCH_FAILED,
+                                        false,
+                                        owner,
+                                        original_owner);
+            return AUTOMATION_ACTION_DISPATCH_FAILED;
+        }
     }
-
-    msg.type = PROTOCOL_MSG_OUTPUT_COMMAND;
-    msg.data.output_command.target_node = owner;
-    msg.data.output_command.requester_node = metrics.self_node;
-    msg.data.output_command.output_id = output;
-    msg.data.output_command.value = value;
-
-    if (!cluster_transport_broadcast_frame((const uint8_t *)&msg, sizeof(msg)))
+    else
     {
         automation_diag_mark_action(rule_index,
                                     value,
@@ -627,7 +667,7 @@ static void automation_persist(void)
     }
 
     if (nvs_set_blob(nvs, AUTOMATION_KEY_RULES, &blob, sizeof(blob)) == ESP_OK &&
-        nvs_commit(nvs) == ESP_OK)
+        endap_nvs_commit(nvs) == ESP_OK)
     {
         persisted_config = true;
         ESP_LOGI(TAG, "Automacao persistida (%d regra(s))", node_count);
@@ -862,7 +902,8 @@ static void automation_event_handler(const endap_event_t *ev)
         if(n->input != ev->source)
             continue;
 
-        condition_now = automation_eval_rule(n, ev->data);
+        int32_t eval_val = pve_get_scaled_value(ev->source, ev->data);
+        condition_now = automation_eval_rule(n, eval_val);
         rising_edge = condition_now && !rt->condition;
         rt->condition = condition_now ? 1U : 0U;
         automation_diag_mark_eval(i, condition_now, trigger_ms);
@@ -1155,7 +1196,21 @@ void automation_engine_init(void)
     persisted_config = false;
     automation_tick_ms = 0;
 
+    if (automation_remote_queue == NULL)
+    {
+        automation_remote_queue = xQueueCreate(16, sizeof(automation_remote_cmd_t));
+        if (automation_remote_queue != NULL)
+        {
+            xTaskCreate(automation_dispatcher_task, "auto_disp", 3072, NULL, 5, NULL);
+        }
+    }
+
     automation_load();
+
+    if (node_count == 0 && !persisted_config)
+    {
+        ESP_LOGI(TAG, "Nenhuma automação prévia. Inicialização limpa aguardando regras do operador.");
+    }
 
     protocol_register_output_command_callback(automation_handle_output_command);
 

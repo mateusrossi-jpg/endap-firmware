@@ -26,6 +26,20 @@ To mitigate these hardware limitations and ensure the highest possible determini
 3. **Wi-Fi Persistence Isolation**: The Wi-Fi subsystem is configured to use `WIFI_STORAGE_RAM` (`esp_wifi_set_storage(WIFI_STORAGE_RAM)`). This completely eliminates unpredictable automatic NVS housekeeping operations by the internal Wi-Fi stack during regular connection events.
 4. **Deliberate Configuration Saves**: Configuration changes (like saving a Device Profile or updating Wi-Fi credentials) are explicitly triggered events. During these events, a latency spike is acknowledged as a necessary and acceptable side effect of writing to flash.
 
+## Known Architectural Risk (V1 Scope): Sequential Flash Persistence
+
+In ENDAP V1, there is no global queue/serializer interleaving LittleFS file operations (`io_mapping_persistence.c`) and NVS driver operations (`nvs_commit` for onboarding or factory reset).
+- Each subsystem relies on driver-level mutex protection (NVS internal mutex for NVS partitions, `s_io_mapping_mutex` for LittleFS `io_mapping.json`).
+- If an operator triggers an `io_mapping` save immediately adjacent to a full onboarding commit or factory reset, the underlying SPI Flash driver serializes the sector erases sequentially at hardware level.
+- **Combined Stall Latency**: Up to **35 ms – 40 ms** (~40 consecutive `control_loop` period misses).
+- **V1 Acceptability Assessment**: The Kernel watchdog fault threshold is `DEADLINE_FAULT_THRESHOLD = 200` cycles (200 ms). A 40-cycle cumulative stall represents **~20% of the threshold**, providing an 80% safety margin. This is acceptable for V1 product release, but documented as an explicit architectural constraint.
+
+## Known Latency Factor: Unthrottled HTTP 404 Log Floods
+
+During captive portal probes, mobile clients may issue rapid unthrottled HTTP requests to unregistered endpoints.
+- If the HTTP server outputs serial UART debug logs for every 404 error, the shared UART driver write queue can introduce execution delays on Core 1 (`exec_max` spikes up to ~1.6 ms).
+- **Mitigation**: Standardizing static captive portal URI registrations (`/auth.html`, `/index.html`, `/dash`) eliminates 404 log generation during onboarding and keeps `exec_max` within nominal limits (< 50 µs).
+
 ## Future Mitigations
 
 For ENDAP V1, the system remains non-IRAM to prioritize simplicity, functionality, and memory budget constraints. IRAM optimization is deferred until a future release unless burn-in testing demonstrates a reproducible realtime defect that affects normal operation.
