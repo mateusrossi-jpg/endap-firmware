@@ -9,8 +9,8 @@
 #define ENDAP_MAX_INPUT_SLOTS          16U
 #define ENDAP_MAX_OUTPUT_SLOTS         16U
 
-#define ENDAP_DEFAULT_ACTIVE_INPUTS    4U
-#define ENDAP_DEFAULT_ACTIVE_OUTPUTS   3U
+#define ENDAP_DEFAULT_ACTIVE_INPUTS    6U
+#define ENDAP_DEFAULT_ACTIVE_OUTPUTS   6U
 
 #define ENDAP_INPUT_ID(slot)   ((uint16_t)(ENDAP_INPUT_BASE_ID + (uint16_t)(slot)))
 #define ENDAP_OUTPUT_ID(slot)  ((uint16_t)(ENDAP_OUTPUT_BASE_ID + (uint16_t)(slot)))

@@ -785,7 +785,7 @@ static void auth_record_login_success(const char *username, bool bootstrap_sessi
     auth_audit_log("login_success", detail);
 }
 
-static void auth_record_login_failure(const char *username)
+static void __attribute__((unused)) auth_record_login_failure(const char *username)
 {
     uint32_t block_seconds = 0U;
     char detail[80];

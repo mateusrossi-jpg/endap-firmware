@@ -96,7 +96,7 @@ static cluster_node_t *get_or_create_node(uint32_t node_id)
    HEALTH
 ============================================================ */
 
-static uint8_t calculate_health(const cluster_node_t *node)
+static uint8_t __attribute__((unused)) calculate_health(const cluster_node_t *node)
 {
     return 100;
 }

@@ -1,5 +1,5 @@
 idf_component_register(
-    SRCS "wifi_manager.c"
+    SRCS "wifi_manager.c" "endap_mdns.c"
     INCLUDE_DIRS "." "include"
     REQUIRES 
         network_ready
@@ -7,6 +7,7 @@ idf_component_register(
         esp_wifi
         esp_event
         esp_netif
+        mdns
     PRIV_REQUIRES kernel_trace
         nvs_flash
         device_profile

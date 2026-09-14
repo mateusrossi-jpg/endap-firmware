@@ -26,8 +26,8 @@ static void cluster_discovery_on_heartbeat(const cluster_transport_heartbeat_t *
     if (!heartbeat || heartbeat->node_id == self_node_id)
         return;
 
-    // V1 Simplificada: aceita qualquer nó descoberto (Sem adoção)
     cluster_manager_update_node(heartbeat);
+    node_registry_note_transport(heartbeat->node_id, heartbeat->source_transport, heartbeat->source_ip);
 
     ESP_LOGI(TAG,
              "Node detectado via %s: %" PRIu32,

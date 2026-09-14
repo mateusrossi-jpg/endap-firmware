@@ -37,6 +37,7 @@ static rs485_config_t cfg;
 static rs485_hal_metrics_t metrics;
 static bool driver_installed = false;
 static bool de_pin_configured = false;
+static bool re_pin_configured = false;
 static portMUX_TYPE rs485_lock = portMUX_INITIALIZER_UNLOCKED;
 
 static uint8_t rx_buffer[RX_BUFFER_SIZE];
@@ -56,7 +57,7 @@ static bool rs485_has_valid_data_pins(const rs485_config_t *config)
 
 static bool rs485_uses_external_direction(void)
 {
-    return !cfg.auto_direction && cfg.de_pin >= 0;
+    return !cfg.auto_direction && (cfg.de_pin >= 0 || cfg.re_pin >= 0);
 }
 
 static void rs485_apply_defaults(rs485_config_t *config)
@@ -65,7 +66,10 @@ static void rs485_apply_defaults(rs485_config_t *config)
         return;
 
     if (config->auto_direction)
+    {
         config->de_pin = -1;
+        config->re_pin = -1;
+    }
 
     if (config->tx_guard_us == 0U)
         config->tx_guard_us = config->auto_direction ? RS485_AUTO_TX_GUARD_US : RS485_DEFAULT_TX_GUARD_US;
@@ -99,14 +103,30 @@ static uint32_t rs485_estimate_tx_time_us(uint16_t len)
 
 void rs485_set_tx_mode(void)
 {
-    if (de_pin_configured && rs485_uses_external_direction())
+    if (!rs485_uses_external_direction())
+        return;
+
+    /* 1. Desabilita receptor: /RE = HIGH */
+    if (re_pin_configured)
+        gpio_set_level((gpio_num_t)cfg.re_pin, 1);
+
+    /* 2. Habilita transmissor: DE = HIGH */
+    if (de_pin_configured)
         gpio_set_level((gpio_num_t)cfg.de_pin, 1);
 }
 
 void rs485_set_rx_mode(void)
 {
-    if (de_pin_configured && rs485_uses_external_direction())
+    if (!rs485_uses_external_direction())
+        return;
+
+    /* 1. Desabilita transmissor: DE = LOW */
+    if (de_pin_configured)
         gpio_set_level((gpio_num_t)cfg.de_pin, 0);
+
+    /* 2. Habilita receptor: /RE = LOW */
+    if (re_pin_configured)
+        gpio_set_level((gpio_num_t)cfg.re_pin, 0);
 }
 
 /* ============================
@@ -240,40 +260,52 @@ void rs485_init(const rs485_config_t *config)
 
     if (rs485_uses_external_direction())
     {
-        gpio_config_t io_cfg = {
-            .pin_bit_mask = 1ULL << (uint64_t)cfg.de_pin,
-            .mode = GPIO_MODE_OUTPUT,
-            .pull_up_en = GPIO_PULLUP_DISABLE,
-            .pull_down_en = GPIO_PULLDOWN_DISABLE,
-            .intr_type = GPIO_INTR_DISABLE,
-        };
+        uint64_t pin_mask = 0;
+        if (cfg.de_pin >= 0)
+            pin_mask |= (1ULL << (uint64_t)cfg.de_pin);
+        if (cfg.re_pin >= 0)
+            pin_mask |= (1ULL << (uint64_t)cfg.re_pin);
 
-        err = gpio_config(&io_cfg);
-        if (err != ESP_OK)
+        if (pin_mask != 0)
         {
-            ESP_LOGE(TAG, "Falha ao configurar DE do RS485: %s", esp_err_to_name(err));
-            uart_driver_delete(cfg.uart_num);
-            driver_installed = false;
-            return;
+            gpio_config_t io_cfg = {
+                .pin_bit_mask = pin_mask,
+                .mode = GPIO_MODE_OUTPUT,
+                .pull_up_en = GPIO_PULLUP_DISABLE,
+                .pull_down_en = GPIO_PULLDOWN_DISABLE,
+                .intr_type = GPIO_INTR_DISABLE,
+            };
+
+            err = gpio_config(&io_cfg);
+            if (err != ESP_OK)
+            {
+                ESP_LOGE(TAG, "Falha ao configurar DE/RE do RS485: %s", esp_err_to_name(err));
+                uart_driver_delete(cfg.uart_num);
+                driver_installed = false;
+                return;
+            }
         }
 
-        de_pin_configured = true;
+        de_pin_configured = (cfg.de_pin >= 0);
+        re_pin_configured = (cfg.re_pin >= 0);
         rs485_set_rx_mode();
     }
     else
     {
         de_pin_configured = false;
+        re_pin_configured = false;
     }
 
     uart_flush_input(cfg.uart_num);
     metrics.initialized = true;
 
     ESP_LOGI(TAG,
-             "Driver RS485 inicializado (uart=%d tx=%d rx=%d de=%d baud=%d auto=%d guard=%" PRIu32 "us rx_recovery=%" PRIu32 "us)",
+             "Driver RS485 inicializado (uart=%d tx=%d rx=%d de=%d re=%d baud=%d auto=%d guard=%" PRIu32 "us rx_recovery=%" PRIu32 "us)",
              cfg.uart_num,
              cfg.tx_pin,
              cfg.rx_pin,
              cfg.de_pin,
+             cfg.re_pin,
              cfg.baudrate,
              cfg.auto_direction ? 1 : 0,
              cfg.tx_guard_us,
@@ -415,18 +447,10 @@ uint8_t rs485_read_byte(void)
 
 int rs485_read_frame(uint8_t *buf, int max_len)
 {
-    int count = 0;
-
     if (!buf || max_len <= 0)
         return 0;
 
-    rs485_tx_service();
-    rs485_poll_rx();
-
-    while (rx_head != rx_tail && count < max_len)
-        buf[count++] = rs485_read_byte();
-
-    return count;
+    return rs485_read_bytes(buf, (uint16_t)max_len);
 }
 
 int rs485_read_bytes(uint8_t *buffer, uint16_t max_len)
@@ -439,8 +463,13 @@ int rs485_read_bytes(uint8_t *buffer, uint16_t max_len)
     rs485_tx_service();
     rs485_poll_rx();
 
+    portENTER_CRITICAL(&rs485_lock);
     while ((rx_head != rx_tail) && (count < max_len))
-        buffer[count++] = rs485_read_byte();
+    {
+        buffer[count++] = rx_buffer[rx_tail];
+        rx_tail = (uint16_t)((rx_tail + 1U) % RX_BUFFER_SIZE);
+    }
+    portEXIT_CRITICAL(&rs485_lock);
 
     return (int)count;
 }

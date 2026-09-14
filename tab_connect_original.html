@@ -1,0 +1,335 @@
+<section class="tab-panel" id="tab_connect">
+<details class="system-section"><summary>SISTEMA · Rede, hardware, diagnóstico e manutenção</summary><div class="system-section-content">
+<div class="card" style="margin-bottom:24px">
+<div class="kicker">Configuração de Sensores</div>
+<h2>Ativação de Sensores Físicos (AHT10 / DHT11 / DS18B20)</h2>
+<p class="sub">Ative os sensores de temperatura e umidade conectados ao ESP32 e defina os pinos GPIO utilizados.</p>
+<div class="form" style="margin-top:14px">
+<div class="form-grid">
+<div class="field full">
+<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#fff;text-transform:none"><input id="sensor_aht10_en" style="width:auto;margin:0" type="checkbox"/> Habilitar Sensor AHT10 / AHT20 (I2C Barramento)</label>
+</div>
+<div class="field">
+<label>Pino SDA (Dados I2C)</label>
+<select id="sensor_aht10_sda"></select>
+</div>
+<div class="field">
+<label>Pino SCL (Clock I2C)</label>
+<select id="sensor_aht10_scl"></select>
+</div>
+<div class="field full helper" style="color:var(--warn);background:var(--warn-soft);padding:10px 12px;border-radius:12px;border:1px solid rgba(243,156,18,0.3)">
+
+              💡 <strong>Inteligência de Pinos ESP32:</strong> A lista exibe somente pinos livres e compatíveis. Pinos já ocupados por reles ou entradas digitais são removidos automaticamente.
+
+            </div>
+<div class="field full" style="margin-top:10px">
+<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#fff;text-transform:none"><input id="sensor_dht11_en" style="width:auto;margin:0" type="checkbox"/> Habilitar Sensor DHT11 (Digital)</label>
+</div>
+<div class="field">
+<label>Pino de Dados DHT11</label>
+<select id="sensor_dht11_gpio"></select>
+</div>
+<div class="field full" style="margin-top:10px">
+<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#fff;text-transform:none"><input id="sensor_ds18b20_en" style="width:auto;margin:0" type="checkbox"/> Habilitar Sensor DS18B20 (OneWire)</label>
+</div>
+<div class="field">
+<label>Pino de Dados DS18B20</label>
+<select id="sensor_ds18b20_gpio"></select>
+</div>
+</div>
+<div class="actions" style="margin-top:16px">
+<button class="primary-btn" onclick="saveSensorsConfigUI(this)">Salvar Sensores</button>
+<button class="soft-btn" onclick="loadSensorsConfigUI()">Recarregar Configuração</button>
+</div>
+<div class="hero"><div class="kicker" id="connect_hero_kicker">Infraestrutura e Sistema</div><h1 id="connect_hero_title">Configurações de rede, hardware e manutenção.</h1><p id="connect_hero_desc">Gerencie a rede Wi-Fi, transporte de dados, diagnóstico de sistema e configurações técnicas do gateway.</p><div class="hero-actions"><button class="primary-btn" id="connect_scan_cta" onclick="loadWifiScan(true)">Buscar redes</button><button class="soft-btn" id="connect_save_cta" onclick="saveWifi(this)">Conectar</button></div></div>
+<div class="grid two">
+<div class="card" id="connect_setup_card"><div class="kicker" id="connect_setup_kicker">Entrar na rede</div><h2 id="connect_setup_title">Conexão Wi‑Fi</h2><div class="empty hidden" id="connect_protocol_note"></div><div class="form" id="connect_wifi_form"><div class="form-grid"><div class="field full"><label>Redes encontradas</label><select id="wifi_select"></select></div><div class="field full"><label>Senha</label><input id="wifi_pass" placeholder="Senha da rede" type="password"/></div></div><div class="preview"><small>Resumo</small><div id="wifi_summary">Escolha uma rede e digite a senha para este ESP entrar na rede principal.</div></div><div class="helper" id="scan_info" style="margin-top:10px">Use Buscar redes para preencher a lista de SSIDs automaticamente.</div><div class="actions"><button class="soft-btn" id="scan_btn" onclick="loadWifiScan(true)">Buscar redes</button><button class="primary-btn" id="wifi_save_btn" onclick="saveWifi(this)">Conectar</button></div></div>
+<details id="connect_manual_details" style="margin-bottom: 12px; border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: var(--surface-2);"><summary style="font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer;">Minha rede não apareceu</summary><div class="form" style="margin-top:10px"><div class="form-grid"><div class="field full"><label>Nome da rede</label><input id="wifi_manual_ssid" placeholder="Nome da rede Wi‑Fi" type="text"/></div><div class="field full"><label>Senha</label><input id="wifi_manual_pass" placeholder="Senha da rede" type="password"/></div></div><div class="actions"><button class="soft-btn" onclick="copyManualToMain()">Usar esses dados</button></div></div></details>
+</div>
+<div class="card"><div class="kicker" id="connect_status_kicker">Status da conexão</div><h2 id="connect_status_title">Estado atual</h2><div class="list" id="connect_status"></div><div class="actions"><button class="soft-btn" id="connect_try_reconnect_btn" onclick="runRecovery('try_reconnect')">Tentar reconectar</button><button class="soft-btn" id="connect_wifi_retry_btn" onclick="runRecovery('re_enable_wifi')">Reativar Wi‑Fi</button><button class="danger-btn" id="connect_recovery_ap_btn" onclick="runRecovery('force_recovery')">Abrir recovery AP</button></div></div>
+</div>
+<div class="advanced-shell" id="connect_advanced"><div class="grid two"><div class="card" id="connect_transport_card"><div class="kicker">Interfaces Físicas</div><h2>Ativação de Hardware</h2><div class="form"><div class="form-grid"><div class="field" id="cfg_wifi_field"><label>Wi‑Fi</label><select id="cfg_wifi"><option value="1">Ativo no próximo boot</option><option value="0">Desativado no próximo boot</option></select></div><div class="field" id="cfg_eth_field"><label>RJ45 / Ethernet</label><select id="cfg_eth"><option value="1">Ativo no próximo boot</option><option value="0">Desativado no próximo boot</option></select></div><div class="field" id="cfg_rs485_field"><label>RS485</label><select id="cfg_rs485"><option value="1">Ativo no próximo boot</option><option value="0">Desativado no próximo boot</option></select></div></div><div class="preview"><small>Resumo</small><div id="connect_transport_summary">Cada transporte habilitado reserva seus GPIOs; se desabilitado, libera os pinos para uso geral (IO).</div></div><div class="actions"><button class="soft-btn" id="transport_save_btn" onclick="saveTransportConfig(this)">Salvar Hardware</button></div></div></div><div class="card"><div class="kicker" id="connect_advanced_kicker">Rede e Sincronismo</div><h2 id="connect_advanced_title">Diagnóstico do Sistema</h2><div class="list" id="connect_advanced_content"></div></div></div></div>
+<details style="margin-bottom: 12px; border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: var(--surface-2);"><summary style="font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer;">REDE E ESCALABILIDADE (Dispositivos)</summary><div class="advanced-shell"><div class="micro-grid">
+<div class="micro-card"><div class="label">Escala do sistema</div><div class="value" id="scale_mode">-</div><div class="sub" id="scale_mode_sub">Carregando modelo.</div></div>
+<div class="micro-card"><div class="label">Capacidade local</div><div class="value" id="scale_local_capacity">-</div><div class="sub" id="scale_local_capacity_sub">Entradas / saídas deste nó.</div></div>
+<div class="micro-card"><div class="label">Nós remotos</div><div class="value" id="scale_remote_nodes">-</div><div class="sub" id="scale_remote_nodes_sub">Expansão distribuída.</div></div>
+<div class="micro-card"><div class="label">Expansão</div><div class="value" id="scale_expansion">-</div><div class="sub" id="scale_expansion_sub">Digital local opcional.</div></div>
+</div><div class="card"><div class="kicker">Escalabilidade do ENDAP</div><h2>Como este sistema cresce</h2><div class="list" id="scale_notes"><div class="empty">Carregando capacidade do nó.</div></div></div><div class="card"><div class="kicker">Expansão local</div><h2>MCP e analógico</h2><div class="list" id="scale_expansion_notes"><div class="empty">Carregando opções de expansão.</div></div></div></div></details><details style="margin-bottom: 12px; border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: var(--surface-2);"><summary style="font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer;">AUTOMAÇÃO AVANÇADA</summary><div class="advanced-shell"><div class="advanced-shell" id="automation_advanced"><div class="grid two"><div class="card"><div class="kicker">Mapeamento em Lote</div><h2>Modo de Aprendizado</h2><div class="list" id="learn_box"></div><div class="actions"><button class="soft-btn" onclick="armInputLearn(this)">Armar Leitura</button><button class="soft-btn" onclick="cancelInputLearn(this)">Cancelar</button><button class="danger-btn" onclick="clearInputLearn(this)">Limpar Base</button></div></div><div class="card"><div class="kicker">Criação Detalhada</div><h2>Editor Lógico Direto</h2><div class="form"><div class="form-grid" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 15px; background: var(--surface-2); padding: 16px; border-radius: 8px; border: 1px solid var(--border);"><div class="field" style="flex: 1 1 auto; min-width: 120px; display: flex; flex-direction: column;"><label style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Gatilho (Input)</label><select id="tech_input"></select></div><div class="field" style="flex: 1 1 auto; min-width: 120px; display: flex; flex-direction: column;"><label style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Operador Lógico</label><select id="tech_op"><option value="gt">&gt;</option><option value="ge">&gt;=</option><option value="eq">==</option><option value="ne">!=</option><option value="le">&lt;=</option><option value="lt">&lt;</option></select></div><div class="field" style="flex: 1 1 auto; min-width: 120px; display: flex; flex-direction: column;"><label style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Limiar (Threshold)</label><input id="tech_threshold" type="number" value="0"/></div><div class="field" style="flex: 1 1 auto; min-width: 120px; display: flex; flex-direction: column;"><label style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Modo de Ativação</label><select id="tech_mode"><option value="follow">Acompanhar (FOLLOW)</option><option value="pulse_ms">Pulso (PULSE_MS)</option><option value="on_delay_ms">Atrasar Liga (ON_DELAY)</option><option value="off_delay_ms">Atrasar Desliga (OFF_DELAY)</option><option value="toggle">Alternar (TOGGLE)</option><option value="force_on">Forçar Ligar (FORCE_ON)</option><option value="force_off">Forçar Desligar (FORCE_OFF)</option></select></div><div class="field" id="tech_duration_field" style="flex: 1 1 auto; min-width: 120px; display: flex; flex-direction: column;"><label style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Duração (ms)</label><input id="tech_duration" type="number" value="0"/></div><div class="field" style="flex: 1 1 auto; min-width: 120px; display: flex; flex-direction: column;"><label style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Alvo (Output)</label><select id="tech_output"></select></div><div class="field" style="flex: 1 1 auto; min-width: 120px; display: flex; flex-direction: column;"><label style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Se Verdadeiro</label><select id="tech_on_true"><option value="1">Ligar (ON)</option><option value="0">Desligar (OFF)</option></select></div><div class="field" style="flex: 1 1 auto; min-width: 120px; display: flex; flex-direction: column;"><label style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Se Falso</label><select id="tech_on_false"><option value="0">Desligar (OFF)</option><option value="1">Ligar (ON)</option></select></div></div><div class="preview"><small>Verificação do Compilador</small><div id="tech_preview">A estrutura compilada aparecerá aqui.</div></div><div class="actions"><button class="soft-btn" onclick="addTechnicalAutomation()">Injetar Regra</button></div></div></div></div></div></div></details><details style="margin-bottom: 12px; border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: var(--surface-2);"><summary style="font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer;">INFRAESTRUTURA E ONBOARDING (Movidos)</summary><div class="advanced-shell"><div class="card" style="margin-top:16px;margin-bottom:16px">
+<div class="kicker">Onboarding &amp; Perfil de Nó v1</div>
+<h2>Status do Nó Local</h2>
+<div class="micro-grid" style="margin-top:14px">
+<div class="micro-card"><div class="label">Perfil de Nó</div><div class="value" id="local_profile_val">--</div><div class="sub" id="local_profile_sub">Carregando...</div></div>
+<div class="micro-card"><div class="label">Estado Onboarding</div><div class="value" id="local_onboarding_val">--</div><div class="sub" id="local_onboarding_sub">Carregando...</div></div>
+<div class="micro-card"><div class="label">Nó Adotado Por</div><div class="sub" id="local_gw_sub">Gateway ID</div></div>
+<div class="micro-card"><div class="label">Nome do Nó</div><div class="sub" id="local_nodename_sub">Nome amigável</div></div>
+</div>
+<div class="actions" style="margin-top:16px">
+<button class="primary-btn" onclick="openClaimModal()">Adotar / Claim Nó</button>
+<button class="danger-btn" onclick="resetOnboardingLocal(this)">Reset Onboarding</button>
+<button class="soft-btn" onclick="forceNetworkReconnect(this)">Forçar Reconectar Rede</button>
+</div>
+</div><div class="card" style="margin-top:16px;margin-bottom:16px">
+<div class="kicker">Network v1 Telemetria</div>
+<h2>Métricas de Saúde &amp; Transporte de Rede</h2>
+<p class="sub">Métricas leves em tempo real da camada de enlace e transporte do nó local (Wi-Fi / RS485 / Ethernet).</p>
+<div class="micro-grid" style="margin-top:14px">
+<div class="micro-card"><div class="label">🌐 Estado da Rede</div><div class="sub" id="net_state_sub">Network v1 State</div></div>
+<div class="micro-card"><div class="label">📡 Transporte Ativo</div><div class="sub" id="net_transport_sub">Enlace de dados</div></div>
+<div class="micro-card"><div class="label">📦 Pacotes (Tx / Rx)</div><div class="value" id="net_packets_val">0 / 0</div><div class="sub" id="net_packets_sub">Enviados / Recebidos</div></div>
+<div class="micro-card"><div class="label">⚠️ Drops / Failover</div><div class="value" id="net_drops_val">0 / 0</div><div class="sub" id="net_drops_sub">Perdas / Trocas de link</div></div>
+<div class="micro-card"><div class="label">⏱️ RTT Atual</div><div class="value" id="net_rtt_val">0 ms</div><div class="sub" id="net_rtt_sub">Latência de ida e volta</div></div>
+<div class="micro-card"><div class="label">📊 Jitter Máximo</div><div class="value" id="net_jitter_val">0 ms</div><div class="sub" id="net_jitter_sub">Variação de tempo</div></div>
+</div>
+</div><div class="grid two">
+</div></div></details><details style="margin-bottom: 12px; border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: var(--surface-2);"><summary style="font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer;">Manutenção do Equipamento</summary><div class="advanced-shell"><div class="card"><div class="kicker">Controle Técnico</div><h2>Ações Perigosas e Avançadas</h2><div class="actions" style="margin-top: 14px;"><button class="ghost-btn" id="advanced_toggle" onclick="toggleAdvancedMode()">Modo técnico</button><button class="danger-btn" id="reboot_btn" onclick="rebootLocal(this)">Reiniciar este ESP</button></div></div></div></details></div></div><details style="margin-bottom: 12px; border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: var(--surface-2);"><summary style="font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer;">Configuração de Hardware e MCP</summary><div class="advanced-shell" id="nodes_advanced">
+<div class="grid two">
+<div class="card">
+<div class="kicker">GPIO do nó</div>
+<h2>Pinos disponíveis</h2>
+<div class="list" id="pins_panel" style="margin-top: 16px;"></div>
+</div>
+<div class="card">
+<div class="kicker">Ações e recovery</div>
+<h2>Controle técnico</h2>
+<div class="list" id="nodes_advanced_content" style="margin-top: 16px;"></div>
+</div>
+</div>
+<div class="card" id="node_binding_card" style="margin-top: 24px; border-color: var(--primary);">
+<div class="kicker">Configuração de Hardware</div>
+<h2>Mapeamento de Entradas e Saídas</h2>
+<p class="sub">
+
+      Ajuste manual de pinos. Cada canal lógico do sistema pode ser roteado para um GPIO nativo ou um expansor MCP23x17. O controlador selecionado define as opções de endereço.
+
+    </p>
+<div class="grid two" style="margin-top: 14px">
+<div class="form">
+<div class="kicker">Adicionar entrada</div>
+<div class="form-grid">
+<div class="field">
+<label>Slot disponível</label><select id="cfg_add_input_id"></select>
+</div>
+<div class="field">
+<label>Backend</label><select id="cfg_add_input_backend"></select>
+</div>
+<div class="field" id="cfg_add_input_gpio_field">
+<label>GPIO</label><select id="cfg_add_input_gpio"></select>
+</div>
+<div class="field hidden" id="cfg_add_input_mcp_instance_field">
+<label>Instância MCP</label><select id="cfg_add_input_backend_instance"></select>
+</div>
+<div class="field hidden" id="cfg_add_input_endpoint_field">
+<label>Canal MCP</label><select id="cfg_add_input_endpoint_index"></select>
+</div>
+<div class="field">
+<label>Nome</label><input id="cfg_add_input_name" placeholder="Nome da nova entrada" type="text"/>
+</div>
+<div class="field">
+<label>Papel</label><input id="cfg_add_input_role" placeholder="Ex.: Botão, Sensor" type="text"/>
+</div>
+</div>
+<div class="preview">
+<small>Resumo</small>
+<div id="cfg_add_input_hint">
+
+            Escolha um slot, um backend e um endereço válido.
+
+          </div>
+</div>
+<div class="actions">
+<button class="soft-btn" onclick="addInputSlot(this)">
+
+            Adicionar entrada
+
+          </button>
+</div>
+</div>
+<div class="form">
+<div class="kicker">Adicionar saída</div>
+<div class="form-grid">
+<div class="field">
+<label>Slot disponível</label><select id="cfg_add_output_id"></select>
+</div>
+<div class="field">
+<label>Backend</label><select id="cfg_add_output_backend"></select>
+</div>
+<div class="field" id="cfg_add_output_gpio_field">
+<label>GPIO</label><select id="cfg_add_output_gpio"></select>
+</div>
+<div class="field hidden" id="cfg_add_output_mcp_instance_field">
+<label>Instância MCP</label><select id="cfg_add_output_backend_instance"></select>
+</div>
+<div class="field hidden" id="cfg_add_output_endpoint_field">
+<label>Canal MCP</label><select id="cfg_add_output_endpoint_index"></select>
+</div>
+<div class="field">
+<label>Nome</label><input id="cfg_add_output_name" placeholder="Nome da nova saída" type="text"/>
+</div>
+<div class="field">
+<label>Papel</label><input id="cfg_add_output_role" placeholder="Ex.: Atuador, Relé" type="text"/>
+</div>
+</div>
+<div class="preview">
+<small>Resumo</small>
+<div id="cfg_add_output_hint">
+
+            Escolha um slot, um backend e um endereço válido.
+
+          </div>
+</div>
+<div class="actions">
+<button class="soft-btn" onclick="addOutputSlot(this)">
+
+            Adicionar saída
+
+          </button>
+</div>
+</div>
+</div>
+<div class="preview" style="margin-top: 14px">
+<small>Resumo dos slots</small>
+<div id="slot_summary">Carregando slots ativos e disponíveis.</div>
+</div>
+<div class="grid two">
+<div class="form">
+<div class="kicker">Entrada</div>
+<div class="form-grid">
+<div class="field">
+<label>Entrada</label><select id="cfg_input_id"></select>
+</div>
+<div class="field">
+<label>Backend</label><select id="cfg_input_backend"></select>
+</div>
+<div class="field" id="cfg_input_gpio_field">
+<label>GPIO</label><select id="cfg_input_gpio"></select>
+</div>
+<div class="field hidden" id="cfg_input_mcp_instance_field">
+<label>Instância MCP</label><select id="cfg_input_backend_instance"></select>
+</div>
+<div class="field hidden" id="cfg_input_endpoint_field">
+<label>Canal MCP</label><select id="cfg_input_endpoint_index"></select>
+</div>
+<div class="field">
+<label>Nome</label><input id="cfg_input_name" placeholder="Nome da entrada" type="text"/>
+</div>
+<div class="field">
+<label>Papel</label><input id="cfg_input_role" placeholder="Ex.: Botão, Sensor" type="text"/>
+</div>
+</div>
+<div class="preview">
+<small>Resumo</small>
+<div id="cfg_input_hint">Selecione uma entrada para configurar.</div>
+</div>
+<div class="actions">
+<button class="soft-btn" onclick="saveInputProfile(this)">
+
+            Salvar entrada</button><button class="danger-btn" onclick="resetInputProfile(this)">
+
+            Resetar entrada</button><button class="danger-btn" onclick="removeInputSlot(this)">
+
+            Remover entrada extra
+
+          </button>
+</div>
+</div>
+<div class="form">
+<div class="kicker">Saída</div>
+<div class="form-grid">
+<div class="field">
+<label>Saída</label><select id="cfg_output_id"></select>
+</div>
+<div class="field">
+<label>Backend</label><select id="cfg_output_backend"></select>
+</div>
+<div class="field" id="cfg_output_gpio_field">
+<label>GPIO</label><select id="cfg_output_gpio"></select>
+</div>
+<div class="field hidden" id="cfg_output_mcp_instance_field">
+<label>Instância MCP</label><select id="cfg_output_backend_instance"></select>
+</div>
+<div class="field hidden" id="cfg_output_endpoint_field">
+<label>Canal MCP</label><select id="cfg_output_endpoint_index"></select>
+</div>
+<div class="field">
+<label>Nome</label><input id="cfg_output_name" placeholder="Nome da saída" type="text"/>
+</div>
+<div class="field">
+<label>Papel</label><input id="cfg_output_role" placeholder="Ex.: Atuador, Relé" type="text"/>
+</div>
+</div>
+<div class="preview">
+<small>Resumo</small>
+<div id="cfg_output_hint">Selecione uma saída para configurar.</div>
+</div>
+<div class="actions">
+<button class="soft-btn" onclick="saveOutputProfile(this)">
+
+            Salvar saída</button><button class="danger-btn" onclick="resetOutputProfile(this)">
+
+            Resetar saída</button><button class="danger-btn" onclick="removeOutputSlot(this)">
+
+            Remover saída extra
+
+          </button>
+</div>
+</div>
+</div>
+<div class="grid two" style="margin-top: 14px">
+<div class="card">
+<div class="kicker">Endereçamento por backend</div>
+<h2>Guia rápido</h2>
+<div class="list" id="pin_mode_guide" style="margin-top: 16px;"></div>
+</div>
+<div class="card">
+<div class="kicker">Nota prática</div>
+<h2>Como usar</h2>
+<div class="list">
+<div class="item">
+<div>
+<strong>GPIO nativo</strong><span>Continua sujeito aos bloqueios de Wi‑Fi, RS485, W5500 e
+
+                conflitos com outros bindings.</span>
+</div>
+</div>
+<div class="item">
+<div>
+<strong>MCP23x17</strong><span>Usa instância e canal A0..B7. O binding já aceita esse backend;
+
+                a aplicação elétrica/runtime é a próxima camada.</span>
+</div>
+</div>
+<div class="item">
+<div>
+<strong>RS485 / Ethernet</strong><span>Continuam reservando pinos do transporte local. O preview
+
+                automático afeta apenas o backend GPIO.</span>
+</div>
+</div>
+<div class="item">
+<div>
+<strong>Input learning</strong><span>Segue valendo para entradas físicas locais. Canais MCP entram
+
+                pela configuração de backend/endereço.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid two" style="margin-top: 14px">
+<div class="card">
+<div class="kicker">Mapa MCP</div>
+<h2>Instâncias expandidas</h2>
+<div class="list" id="mcp_runtime_summary" style="margin-top: 16px;">
+<div class="empty">Carregando mapa MCP.</div>
+</div>
+</div>
+<div class="card">
+<div class="kicker">Ocupação dos canais</div>
+<h2>Endpoints MCP</h2>
+<div class="list" id="mcp_runtime_instances" style="margin-top: 16px;">
+<div class="empty">Carregando endpoints MCP.</div>
+</div>
+</div>
+</div>
+</div>
+</div></details></div></details></section>

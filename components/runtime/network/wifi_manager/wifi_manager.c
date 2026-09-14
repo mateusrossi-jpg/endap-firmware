@@ -4,7 +4,9 @@
 #include "network_ready.h"
 #include "node_identity.h"
 #include "device_profile.h"
-
+#include "esp_mac.h"
+#include "esp_timer.h"
+#include "endap_mdns.h"
 #include "esp_event.h"
 #include "esp_log.h"
 #include "esp_netif.h"
@@ -60,16 +62,64 @@ typedef enum
     WIFI_TARGET_MODE_NONE = 0,
     WIFI_TARGET_MODE_STA = 1,
     WIFI_TARGET_MODE_AP_FALLBACK = 2,
+    WIFI_TARGET_MODE_APSTA_TRANSITION = 3,
 } wifi_target_mode_t;
 
 static wifi_target_mode_t wifi_target_mode = WIFI_TARGET_MODE_NONE;
+
+static esp_timer_handle_t wifi_ap_grace_timer = NULL;
+
+static void wifi_manager_shutdown_ap_transition(void)
+{
+    if (wifi_target_mode != WIFI_TARGET_MODE_APSTA_TRANSITION)
+        return;
+
+    ESP_LOGI(TAG, "Transição AP -> STA concluída. Desligando SoftAP.");
+    wifi_target_mode = WIFI_TARGET_MODE_STA;
+
+    esp_wifi_set_mode(WIFI_MODE_STA);
+    captive_dns_stop();
+}
+
+static void wifi_ap_grace_timer_cb(void *arg)
+{
+    ESP_LOGI(TAG, "Grace period do AP expirou.");
+    wifi_manager_shutdown_ap_transition();
+}
+
+static void wifi_manager_start_grace_timer(void)
+{
+    if (wifi_target_mode != WIFI_TARGET_MODE_APSTA_TRANSITION)
+        return;
+
+    if (wifi_ap_grace_timer == NULL)
+    {
+        const esp_timer_create_args_t timer_args = {
+            .callback = &wifi_ap_grace_timer_cb,
+            .name = "wifi_ap_grace_timer"
+        };
+        esp_timer_create(&timer_args, &wifi_ap_grace_timer);
+    }
+    esp_timer_stop(wifi_ap_grace_timer);
+    // 60 seconds
+    esp_timer_start_once(wifi_ap_grace_timer, 60000000ULL);
+}
+
+static void wifi_manager_stop_grace_timer(void)
+{
+    if (wifi_ap_grace_timer)
+    {
+        esp_timer_stop(wifi_ap_grace_timer);
+    }
+}
 
 static esp_err_t wifi_build_sta_config(const char *ssid,
                                        const char *pass,
                                        wifi_config_t *out_sta_config);
 static esp_err_t wifi_manager_start_sta_with_config(wifi_config_t *sta_config,
                                                     const char *ssid,
-                                                    bool credentials_saved);
+                                                    bool credentials_saved,
+                                                    bool keep_ap_active);
 
 static uint32_t wifi_manager_default_ap_ip_addr(void)
 {
@@ -219,7 +269,7 @@ static esp_err_t wifi_manager_join_cluster_peer(const char *peer_ssid)
         return err;
 
     ESP_LOGI(TAG, "Peer host encontrado (%s). Entrando em STA do cluster", peer_ssid);
-    return wifi_manager_start_sta_with_config(&sta_config, peer_ssid, false);
+    return wifi_manager_start_sta_with_config(&sta_config, peer_ssid, false, false);
 }
 
 static void wifi_manager_cluster_scan_task(void *arg)
@@ -556,7 +606,7 @@ static esp_err_t wifi_manager_start_ap_fallback(bool credentials_saved,
     if (err != ESP_OK)
         goto fail;
 
-    err = esp_wifi_start();
+    err = esp_wifi_start(); esp_wifi_set_max_tx_power(52);
     if (err != ESP_OK)
         goto fail;
 
@@ -573,7 +623,8 @@ fail:
 
 static esp_err_t wifi_manager_start_sta_with_config(wifi_config_t *sta_config,
                                                     const char *ssid,
-                                                    bool credentials_saved)
+                                                    bool credentials_saved,
+                                                    bool keep_ap_active)
 {
     esp_err_t err;
 
@@ -581,10 +632,35 @@ static esp_err_t wifi_manager_start_sta_with_config(wifi_config_t *sta_config,
         return ESP_ERR_INVALID_ARG;
 
     captive_dns_stop();
-    wifi_target_mode = WIFI_TARGET_MODE_STA;
+    wifi_target_mode = keep_ap_active ? WIFI_TARGET_MODE_APSTA_TRANSITION : WIFI_TARGET_MODE_STA;
     wifi_status_mark_sta_connecting(ssid, credentials_saved);
     network_ready_publish_down(NETWORK_READY_LINK_WIFI_AP);
     network_ready_publish_down(NETWORK_READY_LINK_WIFI_STA);
+
+    if (keep_ap_active)
+    {
+        ESP_LOGI(TAG, "Transição: mantendo AP ativo enquanto tenta conectar a STA");
+        err = esp_wifi_set_mode(WIFI_MODE_APSTA);
+        if (err != ESP_OK)
+            goto fail;
+        
+        err = esp_wifi_set_config(WIFI_IF_STA, sta_config);
+        if (err != ESP_OK)
+            goto fail;
+
+        if (!wifi_driver_started)
+        {
+            err = esp_wifi_start(); esp_wifi_set_max_tx_power(52);
+            if (err != ESP_OK)
+                goto fail;
+            wifi_driver_started = true;
+        }
+        else
+        {
+            esp_wifi_connect();
+        }
+        return ESP_OK;
+    }
 
     if (wifi_ignore_disconnect_err(esp_wifi_disconnect()) != ESP_OK)
         ESP_LOGW(TAG, "Falha ao desconectar WiFi antes do modo STA");
@@ -600,7 +676,7 @@ static esp_err_t wifi_manager_start_sta_with_config(wifi_config_t *sta_config,
     if (err != ESP_OK)
         goto fail;
 
-    err = esp_wifi_start();
+    err = esp_wifi_start(); esp_wifi_set_max_tx_power(52);
     if (err != ESP_OK)
         goto fail;
 
@@ -616,6 +692,16 @@ fail:
 /* ============================================================
    PUBLIC API
 ============================================================ */
+
+void wifi_manager_confirm_onboarding(void)
+{
+    if (wifi_target_mode == WIFI_TARGET_MODE_APSTA_TRANSITION)
+    {
+        ESP_LOGI(TAG, "Onboarding confirmado pelo usuário.");
+        wifi_manager_stop_grace_timer();
+        wifi_manager_shutdown_ap_transition();
+    }
+}
 
 esp_err_t wifi_manager_save(const char *ssid, const char *pass)
 {
@@ -636,7 +722,7 @@ esp_err_t wifi_manager_save(const char *ssid, const char *pass)
     }
 
     ESP_LOGI(TAG, "Reconfigurando WiFi para modo STA");
-    return wifi_manager_start_sta_with_config(&sta_config, ssid, true);
+    return wifi_manager_start_sta_with_config(&sta_config, ssid, true, true);
 }
 
 esp_err_t wifi_manager_try_reconnect(void)
@@ -655,7 +741,7 @@ esp_err_t wifi_manager_try_reconnect(void)
             return err;
 
         ESP_LOGI(TAG, "Recovery: tentando reconectar STA em '%s'", ssid);
-        return wifi_manager_start_sta_with_config(&sta_config, ssid, true);
+        return wifi_manager_start_sta_with_config(&sta_config, ssid, true, false);
     }
 
     ESP_LOGW(TAG, "Recovery: sem credenciais, mantendo AP de fallback");
@@ -790,7 +876,7 @@ static void wifi_event_handler(void* arg,
 
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START)
     {
-        if (wifi_target_mode == WIFI_TARGET_MODE_STA)
+        if (wifi_target_mode == WIFI_TARGET_MODE_STA || wifi_target_mode == WIFI_TARGET_MODE_APSTA_TRANSITION)
         {
             ESP_LOGI(TAG, "Conectando WiFi em STA...");
             esp_wifi_connect();
@@ -798,7 +884,7 @@ static void wifi_event_handler(void* arg,
     }
     else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_CONNECTED)
     {
-        if (wifi_target_mode == WIFI_TARGET_MODE_STA)
+        if (wifi_target_mode == WIFI_TARGET_MODE_STA || wifi_target_mode == WIFI_TARGET_MODE_APSTA_TRANSITION)
             ESP_LOGI(TAG, "STA associada ao ponto de acesso");
     }
 
@@ -811,7 +897,7 @@ static void wifi_event_handler(void* arg,
         ESP_LOGW(TAG, "WiFi STA desconectado (reason=%" PRIu8 ")", reason);
         network_ready_publish_down(NETWORK_READY_LINK_WIFI_STA);
 
-        if (wifi_target_mode != WIFI_TARGET_MODE_STA)
+        if (wifi_target_mode != WIFI_TARGET_MODE_STA && wifi_target_mode != WIFI_TARGET_MODE_APSTA_TRANSITION)
             return;
 
         portENTER_CRITICAL(&wifi_status_lock);
@@ -877,11 +963,20 @@ static void wifi_event_handler(void* arg,
             NETWORK_READY_LINK_WIFI_STA,
             event ? event->ip_info.ip.addr : 0U,
             event ? event->ip_info.netmask.addr : 0U);
+        
+        if (wifi_target_mode == WIFI_TARGET_MODE_APSTA_TRANSITION)
+        {
+            wifi_manager_start_grace_timer();
+        }
     }
     else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_LOST_IP)
     {
         ESP_LOGW(TAG, "WiFi STA perdeu IP");
         network_ready_publish_down(NETWORK_READY_LINK_WIFI_STA);
+        if (wifi_target_mode == WIFI_TARGET_MODE_APSTA_TRANSITION)
+        {
+            wifi_manager_stop_grace_timer();
+        }
     }
 }
 
@@ -923,6 +1018,8 @@ void wifi_manager_init(void)
     esp_netif_create_default_wifi_sta();
     wifi_ap_netif = esp_netif_create_default_wifi_ap();
 
+    endap_mdns_init();
+
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
     ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));
@@ -955,13 +1052,13 @@ void wifi_manager_init(void)
 
             ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
             ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &ap_config));
-            ESP_ERROR_CHECK(esp_wifi_start());
+            ESP_ERROR_CHECK(esp_wifi_start()); esp_wifi_set_max_tx_power(52);
             captive_dns_start();
         }
         else
         {
             ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
-            ESP_ERROR_CHECK(esp_wifi_start());
+            ESP_ERROR_CHECK(esp_wifi_start()); esp_wifi_set_max_tx_power(52);
         }
 
         wifi_driver_started = true;
@@ -987,13 +1084,13 @@ void wifi_manager_init(void)
 
             ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
             ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &ap_config));
-            ESP_ERROR_CHECK(esp_wifi_start());
+            ESP_ERROR_CHECK(esp_wifi_start()); esp_wifi_set_max_tx_power(52);
             captive_dns_start();
         }
         else
         {
             ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
-            ESP_ERROR_CHECK(esp_wifi_start());
+            ESP_ERROR_CHECK(esp_wifi_start()); esp_wifi_set_max_tx_power(52);
         }
 
         wifi_driver_started = true;
@@ -1018,7 +1115,7 @@ void wifi_manager_init(void)
     ESP_LOGI(TAG, "NETWORK:\nPrimary transport = WIFI\nNETWORK:\nStarting WIFI runtime");
     
     wifi_driver_started = true;
-    ESP_ERROR_CHECK(esp_wifi_start());
+    ESP_ERROR_CHECK(esp_wifi_start()); esp_wifi_set_max_tx_power(52);
     char ssid[WIFI_SSID_MAX_LEN + 1U] = {0};
     char pass[WIFI_PASS_MAX_LEN + 1U] = {0};
     wifi_config_t sta_config = {0};
@@ -1029,7 +1126,7 @@ void wifi_manager_init(void)
 
         if (wifi_build_sta_config(ssid, pass, &sta_config) == ESP_OK)
         {
-            wifi_manager_start_sta_with_config(&sta_config, ssid, true);
+            wifi_manager_start_sta_with_config(&sta_config, ssid, true, false);
         }
         else
         {

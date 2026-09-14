@@ -1,7 +1,7 @@
 #include "http_server.h"
-#include "dashboard.h"
 #include "auth.h"
 #include "wifi_manager.h"
+#include "endap_mdns.h"
 #include "cluster_manager.h"
 #include "cluster_metrics.h"
 #include "cluster_io.h"
@@ -50,6 +50,8 @@
 #include "io_command.h"
 
 #include "lwip/ip4_addr.h"
+#include "lwip/sockets.h"
+#include "lwip/netdb.h"
 
 #include <inttypes.h>
 #include <stdbool.h>
@@ -62,13 +64,14 @@
 #include "cJSON.h"
 #include <stdarg.h>
 #include "endap_nvs.h"
+#include "freertos/semphr.h"
 
 #define TAG "HTTP"
 #define HTTPD_STACK_SIZE 8192
 #define HTTPD_MAX_URI_HANDLERS 120
 #define AUTOMATION_JSON_BUFFER_SIZE 6144
 #define STATUS_JSON_BUFFER_SIZE 24576
-#define PROFILE_JSON_BUFFER_SIZE 16384
+#define PROFILE_JSON_BUFFER_SIZE 24576
 #define PUBLIC_PROFILE_JSON_BUFFER_SIZE 8192
 #define NODES_JSON_BUFFER_SIZE 8192
 #define NETWORK_PREVIEW_JSON_BUFFER_SIZE 4096
@@ -81,6 +84,18 @@
 #define WIFI_SCAN_JSON_BUFFER_SIZE 4096
 #define HTTP_AUTH_COOKIE_NAME "endap_session"
 #define INSTALLATION_MAP_NAMESPACE "inst_map"
+
+static SemaphoreHandle_t json_api_mutex = NULL;
+static char global_json_api_buffer[24576];
+static void* json_buffer_malloc(size_t size) {
+    if (json_api_mutex) xSemaphoreTake(json_api_mutex, portMAX_DELAY);
+    if (size > sizeof(global_json_api_buffer)) return malloc(size);
+    return global_json_api_buffer;
+}
+static void json_buffer_free(void* ptr) {
+    if (ptr && ptr != global_json_api_buffer) free(ptr);
+    if (json_api_mutex) xSemaphoreGive(json_api_mutex);
+}
 #define INSTALLATION_MAP_KEY "entries"
 #define INSTALLATION_MAP_VERSION 2U
 #define INSTALLATION_MAP_VERSION_V1 1U
@@ -206,6 +221,8 @@ static esp_err_t public_status_handler(httpd_req_t *req);
 static esp_err_t io_map_handler(httpd_req_t *req);
 static bool installation_map_save(void);
 static esp_err_t cluster_status_handler(httpd_req_t *req);
+static esp_err_t nodes_transport_handler(httpd_req_t *req);
+static esp_err_t control_proxy_handler(httpd_req_t *req);
 
 static bool network_transport_wifi_enabled(const device_network_profile_t *network)
 {
@@ -240,17 +257,54 @@ static void http_set_private_json_headers(httpd_req_t *req)
     http_set_common_security_headers(req);
 }
 
+static void http_set_cors_headers(httpd_req_t *req)
+{
+    if (!req)
+        return;
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Headers", "Content-Type, Authorization, X-ENDAP-Session");
+    /* Chrome (PNA / Private Network Access) exige este header na resposta
+       do preflight OPTIONS para permitir requisições de um contexto
+       localhost -> rede privada (192.168.4.x). Sem ele o browser bloqueia
+       TODAS as chamadas HTTP do Studio ao controlador. */
+    httpd_resp_set_hdr(req, "Access-Control-Allow-Private-Network", "true");
+}
+
+static esp_err_t options_error_handler(httpd_req_t *req, httpd_err_code_t error)
+{
+    if (req && req->method == HTTP_OPTIONS)
+    {
+        http_set_cors_headers(req);
+        http_set_common_security_headers(req);
+        httpd_resp_set_status(req, "204 No Content");
+        httpd_resp_send(req, NULL, 0);
+        return ESP_OK;
+    }
+
+    httpd_resp_send_err(req, error, NULL);
+    return ESP_OK;
+}
+
 static void http_set_public_json_headers(httpd_req_t *req)
 {
     http_set_private_json_headers(req);
-    httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
-    httpd_resp_set_hdr(req, "Access-Control-Allow-Methods", "GET, OPTIONS");
-    httpd_resp_set_hdr(req, "Access-Control-Allow-Headers", "Content-Type");
+    http_set_cors_headers(req);
+}
+
+static esp_err_t options_handler(httpd_req_t *req)
+{
+    http_set_cors_headers(req);
+    http_set_common_security_headers(req);
+    httpd_resp_set_status(req, "204 No Content");
+    httpd_resp_send(req, NULL, 0);
+    return ESP_OK;
 }
 
 static void http_set_private_text_headers(httpd_req_t *req)
 {
     http_set_common_security_headers(req);
+    http_set_cors_headers(req);
 }
 
 static bool http_get_header_value(httpd_req_t *req,
@@ -1424,11 +1478,11 @@ static size_t build_installation_map_json(char *buf, size_t buf_size)
 
 static esp_err_t send_installation_map_json(httpd_req_t *req)
 {
-    char *json = (char *)malloc(INSTALLATION_MAP_JSON_BUFFER_SIZE);
+    char *json = (char *)json_buffer_malloc(INSTALLATION_MAP_JSON_BUFFER_SIZE);
     size_t len = 0U;
 
-    if (!json)
-    {
+    if (!json) {
+        json_buffer_free(NULL);
         httpd_resp_set_status(req, "500 Internal Server Error");
         httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"no_memory\"}");
         return ESP_OK;
@@ -1437,14 +1491,14 @@ static esp_err_t send_installation_map_json(httpd_req_t *req)
     len = build_installation_map_json(json, INSTALLATION_MAP_JSON_BUFFER_SIZE);
     if (len == 0U)
     {
-        free(json);
+        json_buffer_free(json);
         httpd_resp_set_status(req, "500 Internal Server Error");
         httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"installation_map_build_failed\"}");
         return ESP_OK;
     }
 
     httpd_resp_send(req, json, len);
-    free(json);
+    json_buffer_free(json);
     return ESP_OK;
 }
 
@@ -1614,11 +1668,11 @@ static size_t build_resources_json(char *buf, size_t buf_size)
 
 static esp_err_t send_resources_json(httpd_req_t *req)
 {
-    char *json = (char *)malloc(INSTALLATION_MAP_JSON_BUFFER_SIZE);
+    char *json = (char *)json_buffer_malloc(INSTALLATION_MAP_JSON_BUFFER_SIZE);
     size_t len = 0U;
 
-    if (!json)
-    {
+    if (!json) {
+        json_buffer_free(NULL);
         httpd_resp_set_status(req, "500 Internal Server Error");
         httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"no_memory\"}");
         return ESP_OK;
@@ -1627,14 +1681,14 @@ static esp_err_t send_resources_json(httpd_req_t *req)
     len = build_resources_json(json, INSTALLATION_MAP_JSON_BUFFER_SIZE);
     if (len == 0U)
     {
-        free(json);
+        json_buffer_free(json);
         httpd_resp_set_status(req, "500 Internal Server Error");
         httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"resources_build_failed\"}");
         return ESP_OK;
     }
 
     httpd_resp_send(req, json, len);
-    free(json);
+    json_buffer_free(json);
     return ESP_OK;
 }
 
@@ -1940,6 +1994,23 @@ static bool append_reserved_gpio_array_preview(char *buf,
 static void installation_local_code(bool input, int local_index, char out_code[INSTALLATION_MAP_LOCAL_CODE_LEN])
 {
     snprintf(out_code, INSTALLATION_MAP_LOCAL_CODE_LEN, "%s%u", input ? "IN" : "OUT", (unsigned)(local_index & 0xFFFF));
+}
+
+static const plc_channel_desc_t *find_plc_channel_desc(device_channel_class_t cls, int index)
+{
+    const node_profile_desc_t *current_tpl = device_profile_get_current();
+    if (!current_tpl || !current_tpl->plc_channels)
+        return NULL;
+
+    for (size_t p = 0; p < current_tpl->plc_channels_len; p++)
+    {
+        if (current_tpl->plc_channels[p].channel_class == cls &&
+            current_tpl->plc_channels[p].channel_index == (uint16_t)index)
+        {
+            return &current_tpl->plc_channels[p];
+        }
+    }
+    return NULL;
 }
 
 static bool append_available_slot_array(char *buf, size_t buf_size, size_t *offset, bool inputs)
@@ -2790,8 +2861,6 @@ static bool kernel_load_phase_from_text(const char *text, uint8_t *phase)
         *phase = PHASE_LOAD_TEST_AUTOMATION;
     else if (strcmp(text, "events") == 0)
         *phase = PHASE_LOAD_TEST_EVENTS;
-    else if (strcmp(text, "diagnostics") == 0)
-        *phase = PHASE_LOAD_TEST_DIAGNOSTICS;
     else
         return false;
 
@@ -3273,6 +3342,9 @@ static size_t build_public_status_json(char *buf, size_t buf_size)
     buf[0] = '\0';
     network_ready_get_snapshot(&net);
 
+    char net_wifi_sta_ip_text[20] = {0};
+    network_status_addr_text(net.wifi_sta_ip_addr, net_wifi_sta_ip_text, sizeof(net_wifi_sta_ip_text));
+
     if (!append_format(buf,
                        buf_size,
                        &offset,
@@ -3436,11 +3508,17 @@ static size_t build_public_status_json(char *buf, size_t buf_size)
                                 has_failsafe ? failsafe_reason_name(failsafe_status.last_reason) : "none"))
             return 0U;
 
-        if (!append_text(buf, buf_size, &offset, "}"))
-            return 0U;
+    if (!append_text(buf, buf_size, &offset, "}"))
+        return 0U;
     }
 
-    if (!append_text(buf, buf_size, &offset, "]}"))
+    if (!append_text(buf, buf_size, &offset, "],\"net_wifi_sta_ip_text\":"))
+        return 0U;
+
+    if (!append_json_string(buf, buf_size, &offset, net_wifi_sta_ip_text[0] ? net_wifi_sta_ip_text : ""))
+        return 0U;
+
+    if (!append_text(buf, buf_size, &offset, "}"))
         return 0U;
 
     return offset;
@@ -3674,14 +3752,14 @@ static size_t build_status_json(char *buf, size_t buf_size)
         "\"uptime_ms\":%" PRIu64 ","
         "\"a_count\":%" PRIu32 ",\"a_saved\":%" PRIu32 ","
         "\"k_jitter_max\":%" PRIu64 ",\"k_exec_max\":%" PRIu64 ",\"k_deadline_miss\":%" PRIu32 ",\"k_deadline_miss_recent\":%" PRIu32 ",\"k_overrun\":%" PRIu32 ",\"k_loop_fault\":%" PRIu32 ","
-        "\"p_io\":%" PRIu32 ",\"p_fieldbus\":%" PRIu32 ",\"p_automation\":%" PRIu32 ",\"p_events\":%" PRIu32 ",\"p_diag\":%" PRIu32 ","
+        "\"p_io\":%" PRIu32 ",\"p_fieldbus\":%" PRIu32 ",\"p_automation\":%" PRIu32 ",\"p_events\":%" PRIu32 ","
         "\"p_io_deadline\":%" PRIu32 ",\"p_io_apply_deadline\":%" PRIu32 ",\"p_fieldbus_deadline\":%" PRIu32 ","
-        "\"p_automation_deadline\":%" PRIu32 ",\"p_events_deadline\":%" PRIu32 ",\"p_diag_deadline\":%" PRIu32 ","
+        "\"p_automation_deadline\":%" PRIu32 ",\"p_events_deadline\":%" PRIu32 ","
         "\"p_io_overruns\":%" PRIu32 ",\"p_io_apply_overruns\":%" PRIu32 ",\"p_fieldbus_overruns\":%" PRIu32 ","
-        "\"p_automation_overruns\":%" PRIu32 ",\"p_events_overruns\":%" PRIu32 ",\"p_diag_overruns\":%" PRIu32 ","
+        "\"p_automation_overruns\":%" PRIu32 ",\"p_events_overruns\":%" PRIu32 ","
         "\"lt_active\":%u,\"lt_phase_count\":%" PRIu32 ",\"lt_total_us\":%" PRIu32 ","
         "\"lt_io_us\":%" PRIu32 ",\"lt_io_apply_us\":%" PRIu32 ",\"lt_fieldbus_us\":%" PRIu32 ","
-        "\"lt_automation_us\":%" PRIu32 ",\"lt_events_us\":%" PRIu32 ",\"lt_diag_us\":%" PRIu32 ","
+        "\"lt_automation_us\":%" PRIu32 ",\"lt_events_us\":%" PRIu32 ","
         "\"b_crc\":%" PRIu32 ",\"b_timeouts\":%" PRIu32 ",\"b_retries\":%" PRIu32 ",\"b_avg_lat\":%" PRIu32 ",\"b_max_lat\":%" PRIu32 ",\"b_selftest\":%" PRIu32 ","
         "\"i10_raw\":%" PRIu32 ",\"i10_stable\":%" PRIu32 ",\"i10_noise\":%" PRIu32 ",\"i10_recent_noise\":%" PRIu32 ","
         "\"i11_raw\":%" PRIu32 ",\"i11_stable\":%" PRIu32 ",\"i11_noise\":%" PRIu32 ",\"i11_recent_noise\":%" PRIu32 ","
@@ -3694,14 +3772,14 @@ static size_t build_status_json(char *buf, size_t buf_size)
         automation_count, automation_saved,
         kernel.max_jitter, kernel.max_exec_time, kernel.deadline_miss, deadline_miss_recent, kernel.overrun_count, loop_fault_active,
         uptime_ms,
-        phase.io_max, phase_fieldbus_max, phase.automation_max, phase.events_max, phase.diagnostics_max,
+        phase.io_max, phase_fieldbus_max, phase.automation_max, phase.events_max,
         phase_mon.io_deadline_us, phase_mon.io_apply_deadline_us, phase_fieldbus_deadline,
-        phase_mon.automation_deadline_us, phase_mon.events_deadline_us, phase_mon.diagnostics_deadline_us,
+        phase_mon.automation_deadline_us, phase_mon.events_deadline_us,
         phase_mon.io_overruns, phase_mon.io_apply_overruns, phase_fieldbus_overruns,
-        phase_mon.automation_overruns, phase_mon.events_overruns, phase_mon.diagnostics_overruns,
+        phase_mon.automation_overruns, phase_mon.events_overruns,
         load_test.active ? 1U : 0U, (uint32_t)load_test.active_phase_count, load_test.total_us,
         load_test.io_us, load_test.io_apply_us, load_test_fieldbus_us,
-        load_test.automation_us, load_test.events_us, load_test.diagnostics_us,
+        load_test.automation_us, load_test.events_us,
         bus.crc_errors, bus.timeouts, bus.retries, bus.avg_latency_us, bus.max_latency_us, bus_selftest,
         i10_raw, i10_stable, i10_noise, i10_recent_noise,
         i11_raw, i11_stable, i11_noise, i11_recent_noise,
@@ -3964,13 +4042,27 @@ static size_t build_status_json(char *buf, size_t buf_size)
         if (!append_json_string(buf, buf_size, &offset, binding->role))
             return 0;
 
+        const plc_channel_desc_t *plc_in = find_plc_channel_desc(DEVICE_CHANNEL_CLASS_DIGITAL_INPUT, i);
+
         if (!append_text(buf, buf_size, &offset, ",\"description\":"))
             return 0;
 
         if (!append_json_string(buf, buf_size, &offset, binding->description))
             return 0;
 
-        if (!append_text(buf, buf_size, &offset, "}"))
+        if (!append_text(buf, buf_size, &offset, ",\"plc_code\":"))
+            return 0;
+
+        if (!append_json_string(buf, buf_size, &offset, plc_in ? plc_in->plc_code : local_code))
+            return 0;
+
+        if (!append_text(buf, buf_size, &offset, ",\"plc_name\":"))
+            return 0;
+
+        if (!append_json_string(buf, buf_size, &offset, plc_in ? plc_in->default_name : binding->name))
+            return 0;
+
+        if (!append_format(buf, buf_size, &offset, ",\"plc_available\":%u}", (plc_in && plc_in->available) ? 1U : 0U))
             return 0;
     }
 
@@ -3981,6 +4073,7 @@ static size_t build_status_json(char *buf, size_t buf_size)
     {
         const io_binding_output_view_t *output = &status_output_snapshot[i];
         const device_output_profile_t *profile = device_profile_find_output(output->id);
+        const plc_channel_desc_t *plc_out = find_plc_channel_desc(DEVICE_CHANNEL_CLASS_DIGITAL_OUTPUT, i);
         failsafe_output_status_t failsafe_status = {0};
         bool has_failsafe;
         char local_code[INSTALLATION_MAP_LOCAL_CODE_LEN];
@@ -4062,6 +4155,21 @@ static size_t build_status_json(char *buf, size_t buf_size)
             return 0;
 
         if (!append_json_string(buf, buf_size, &offset, output->description))
+            return 0;
+
+        if (!append_text(buf, buf_size, &offset, ",\"plc_code\":"))
+            return 0;
+
+        if (!append_json_string(buf, buf_size, &offset, plc_out ? plc_out->plc_code : local_code))
+            return 0;
+
+        if (!append_text(buf, buf_size, &offset, ",\"plc_name\":"))
+            return 0;
+
+        if (!append_json_string(buf, buf_size, &offset, plc_out ? plc_out->default_name : output->name))
+            return 0;
+
+        if (!append_format(buf, buf_size, &offset, ",\"plc_available\":%u", (plc_out && plc_out->available) ? 1U : 0U))
             return 0;
 
         if (!append_format(buf,
@@ -4256,7 +4364,34 @@ static size_t build_automation_json(char *buf, size_t buf_size)
                                 automation_engine_action_result_name(diag ? diag->last_action_result : AUTOMATION_ACTION_IDLE)))
             return 0U;
 
-        if (!append_text(buf, buf_size, &offset, "}"))
+        automation_interlock_t ilk = {0};
+        automation_engine_get_interlock_at(i, &ilk);
+
+        if (!append_format(buf,
+                           buf_size,
+                           &offset,
+                           ",\"interlock\":{\"enabled\":%u,\"logic_op\":%u,\"cond_count\":%u,\"conditions\":[",
+                           ilk.enabled ? 1U : 0U,
+                           ilk.logic_op,
+                           ilk.cond_count))
+            return 0U;
+
+        for (int c = 0; c < ilk.cond_count && c < AUTOMATION_MAX_INTERLOCK_COND; c++)
+        {
+            if (c > 0 && !append_text(buf, buf_size, &offset, ","))
+                return 0U;
+
+            if (!append_format(buf,
+                               buf_size,
+                               &offset,
+                               "{\"channel\":%u,\"op\":%u,\"target_val\":%d}",
+                               ilk.conditions[c].channel,
+                               ilk.conditions[c].op,
+                               ilk.conditions[c].target_val))
+                return 0U;
+        }
+
+        if (!append_text(buf, buf_size, &offset, "]}}"))
             return 0U;
     }
 
@@ -4331,11 +4466,21 @@ static size_t build_profile_json(char *buf, size_t buf_size)
             return offset;
         if (!append_json_string(buf, buf_size, &offset, binding->role))
             return offset;
+        const plc_channel_desc_t *plc_in = find_plc_channel_desc(DEVICE_CHANNEL_CLASS_DIGITAL_INPUT, i);
+
         if (!append_text(buf, buf_size, &offset, ",\"description\":"))
             return offset;
         if (!append_json_string(buf, buf_size, &offset, binding->description))
             return offset;
-        if (!append_text(buf, buf_size, &offset, "}"))
+        if (!append_text(buf, buf_size, &offset, ",\"plc_code\":"))
+            return offset;
+        if (!append_json_string(buf, buf_size, &offset, plc_in ? plc_in->plc_code : local_code))
+            return offset;
+        if (!append_text(buf, buf_size, &offset, ",\"plc_name\":"))
+            return offset;
+        if (!append_json_string(buf, buf_size, &offset, plc_in ? plc_in->default_name : binding->name))
+            return offset;
+        if (!append_format(buf, buf_size, &offset, ",\"plc_available\":%u}", (plc_in && plc_in->available) ? 1U : 0U))
             return offset;
 
         first = false;
@@ -4349,6 +4494,7 @@ static size_t build_profile_json(char *buf, size_t buf_size)
     {
         const io_binding_output_view_t *output = &output_profile_snapshot[i];
         const device_output_profile_t *profile = device_profile_find_output(output->id);
+        const plc_channel_desc_t *plc_out = find_plc_channel_desc(DEVICE_CHANNEL_CLASS_DIGITAL_OUTPUT, i);
         char local_code[INSTALLATION_MAP_LOCAL_CODE_LEN];
 
         if (!output || output->id == 0 || !profile)
@@ -4395,10 +4541,47 @@ static size_t build_profile_json(char *buf, size_t buf_size)
             return offset;
         if (!append_json_string(buf, buf_size, &offset, output->description))
             return offset;
-        if (!append_text(buf, buf_size, &offset, "}"))
+        if (!append_text(buf, buf_size, &offset, ",\"plc_code\":"))
+            return offset;
+        if (!append_json_string(buf, buf_size, &offset, plc_out ? plc_out->plc_code : local_code))
+            return offset;
+        if (!append_text(buf, buf_size, &offset, ",\"plc_name\":"))
+            return offset;
+        if (!append_json_string(buf, buf_size, &offset, plc_out ? plc_out->default_name : output->name))
+            return offset;
+        if (!append_format(buf, buf_size, &offset, ",\"plc_available\":%u}", (plc_out && plc_out->available) ? 1U : 0U))
             return offset;
 
         first = false;
+    }
+
+    const node_profile_desc_t *current_tpl = device_profile_get_current();
+    if (current_tpl && current_tpl->plc_channels && current_tpl->plc_channels_len > 0)
+    {
+        if (!append_text(buf, buf_size, &offset, "],\"plc_channels\":["))
+            return offset;
+        for (size_t p = 0; p < current_tpl->plc_channels_len; p++)
+        {
+            const plc_channel_desc_t *ch = &current_tpl->plc_channels[p];
+            if (p > 0 && !append_text(buf, buf_size, &offset, ","))
+                return offset;
+            if (!append_format(buf, buf_size, &offset, "{\"plc_code\":"))
+                return offset;
+            if (!append_json_string(buf, buf_size, &offset, ch->plc_code))
+                return offset;
+            if (!append_format(buf, buf_size, &offset,
+                ",\"class\":%u,\"channel_index\":%u,\"gpio\":%d,\"available\":%u,\"name\":",
+                (unsigned)ch->channel_class, (unsigned)ch->channel_index, (int)ch->gpio, ch->available ? 1U : 0U))
+                return offset;
+            if (!append_json_string(buf, buf_size, &offset, ch->default_name))
+                return offset;
+            if (!append_text(buf, buf_size, &offset, ",\"role\":"))
+                return offset;
+            if (!append_json_string(buf, buf_size, &offset, ch->role ? ch->role : ""))
+                return offset;
+            if (!append_text(buf, buf_size, &offset, "}"))
+                return offset;
+        }
     }
 
     if (!append_text(buf, buf_size, &offset, "],\"input_gpio_options\":"))
@@ -4417,6 +4600,92 @@ static size_t build_profile_json(char *buf, size_t buf_size)
         return offset;
     if (!append_available_slot_array(buf, buf_size, &offset, false))
         return offset;
+
+    /* Append gpio_inventory */
+    {
+        device_gpio_inventory_item_t inv[DEVICE_GPIO_INVENTORY_MAX];
+        int inv_count = io_binding_export_gpio_inventory(inv, DEVICE_GPIO_INVENTORY_MAX);
+
+        if (!append_text(buf, buf_size, &offset, ",\"gpio_inventory\":["))
+            return offset;
+
+        for (int i = 0; i < inv_count; i++)
+        {
+            if (i > 0 && !append_text(buf, buf_size, &offset, ","))
+                return offset;
+
+            if (!append_format(buf, buf_size, &offset,
+                               "{\"gpio\":%d,\"capabilities\":[", inv[i].gpio))
+                return offset;
+
+            bool has_cap = false;
+            if (inv[i].input_capable)
+            {
+                if (!append_text(buf, buf_size, &offset, "\"input\""))
+                    return offset;
+                has_cap = true;
+            }
+            if (inv[i].output_capable)
+            {
+                if (has_cap && !append_text(buf, buf_size, &offset, ","))
+                    return offset;
+                if (!append_text(buf, buf_size, &offset, "\"output\""))
+                    return offset;
+                has_cap = true;
+            }
+            if (inv[i].analog_capable)
+            {
+                if (has_cap && !append_text(buf, buf_size, &offset, ","))
+                    return offset;
+                if (!append_text(buf, buf_size, &offset, "\"analog\""))
+                    return offset;
+            }
+
+            if (!append_format(buf, buf_size, &offset,
+                               "],\"state\":\"%s\",\"reserved_by\":",
+                               inv[i].state_str ? inv[i].state_str : "AVAILABLE"))
+                return offset;
+
+            if (inv[i].reserved_by)
+            {
+                if (!append_json_string(buf, buf_size, &offset, inv[i].reserved_by))
+                    return offset;
+            }
+            else
+            {
+                if (!append_text(buf, buf_size, &offset, "null"))
+                    return offset;
+            }
+
+            if (inv[i].bound_id > 0)
+            {
+                if (!append_format(buf, buf_size, &offset, ",\"bound_id\":%u", inv[i].bound_id))
+                    return offset;
+            }
+            else
+            {
+                if (!append_text(buf, buf_size, &offset, ",\"bound_id\":null"))
+                    return offset;
+            }
+
+            if (inv[i].plc_channel[0])
+            {
+                if (!append_format(buf, buf_size, &offset, ",\"plc_channel\":\"%s\"", inv[i].plc_channel))
+                    return offset;
+            }
+            else
+            {
+                if (!append_text(buf, buf_size, &offset, ",\"plc_channel\":null"))
+                    return offset;
+            }
+
+            if (!append_text(buf, buf_size, &offset, "}"))
+                return offset;
+        }
+
+        if (!append_text(buf, buf_size, &offset, "]"))
+            return offset;
+    }
 
     if (!append_profile_context_sections(buf, buf_size, &offset, network, input_count, output_count))
         return offset;
@@ -4539,11 +4808,21 @@ static size_t build_public_profile_json(char *buf, size_t buf_size)
             return 0;
         if (!append_json_string(buf, buf_size, &offset, binding->role))
             return 0;
+        const plc_channel_desc_t *plc_in = find_plc_channel_desc(DEVICE_CHANNEL_CLASS_DIGITAL_INPUT, i);
+
         if (!append_text(buf, buf_size, &offset, ",\"description\":"))
             return 0;
         if (!append_json_string(buf, buf_size, &offset, binding->description))
             return 0;
-        if (!append_text(buf, buf_size, &offset, "}"))
+        if (!append_text(buf, buf_size, &offset, ",\"plc_code\":"))
+            return 0;
+        if (!append_json_string(buf, buf_size, &offset, plc_in ? plc_in->plc_code : local_code))
+            return 0;
+        if (!append_text(buf, buf_size, &offset, ",\"plc_name\":"))
+            return 0;
+        if (!append_json_string(buf, buf_size, &offset, plc_in ? plc_in->default_name : binding->name))
+            return 0;
+        if (!append_format(buf, buf_size, &offset, ",\"plc_available\":%u}", (plc_in && plc_in->available) ? 1U : 0U))
             return 0;
 
         first = false;
@@ -4557,6 +4836,7 @@ static size_t build_public_profile_json(char *buf, size_t buf_size)
     {
         const io_binding_output_view_t *output = &output_profile_snapshot[i];
         const device_output_profile_t *profile = device_profile_find_output(output->id);
+        const plc_channel_desc_t *plc_out = find_plc_channel_desc(DEVICE_CHANNEL_CLASS_DIGITAL_OUTPUT, i);
         char local_code[INSTALLATION_MAP_LOCAL_CODE_LEN];
 
         if (!output || output->id == 0 || !profile)
@@ -4603,14 +4883,137 @@ static size_t build_public_profile_json(char *buf, size_t buf_size)
             return 0;
         if (!append_json_string(buf, buf_size, &offset, output->description))
             return 0;
-        if (!append_text(buf, buf_size, &offset, "}"))
+        if (!append_text(buf, buf_size, &offset, ",\"plc_code\":"))
+            return 0;
+        if (!append_json_string(buf, buf_size, &offset, plc_out ? plc_out->plc_code : local_code))
+            return 0;
+        if (!append_text(buf, buf_size, &offset, ",\"plc_name\":"))
+            return 0;
+        if (!append_json_string(buf, buf_size, &offset, plc_out ? plc_out->default_name : output->name))
+            return 0;
+        if (!append_format(buf, buf_size, &offset, ",\"plc_available\":%u}", (plc_out && plc_out->available) ? 1U : 0U))
             return 0;
 
         first = false;
     }
 
+    const node_profile_desc_t *current_tpl = device_profile_get_current();
+    if (current_tpl && current_tpl->plc_channels && current_tpl->plc_channels_len > 0)
+    {
+        if (!append_text(buf, buf_size, &offset, "],\"plc_channels\":["))
+            return 0;
+        for (size_t p = 0; p < current_tpl->plc_channels_len; p++)
+        {
+            const plc_channel_desc_t *ch = &current_tpl->plc_channels[p];
+            if (p > 0 && !append_text(buf, buf_size, &offset, ","))
+                return 0;
+            if (!append_format(buf, buf_size, &offset, "{\"plc_code\":"))
+                return 0;
+            if (!append_json_string(buf, buf_size, &offset, ch->plc_code))
+                return 0;
+            if (!append_format(buf, buf_size, &offset,
+                ",\"class\":%u,\"channel_index\":%u,\"gpio\":%d,\"available\":%u,\"name\":",
+                (unsigned)ch->channel_class, (unsigned)ch->channel_index, (int)ch->gpio, ch->available ? 1U : 0U))
+                return 0;
+            if (!append_json_string(buf, buf_size, &offset, ch->default_name))
+                return 0;
+            if (!append_text(buf, buf_size, &offset, ",\"role\":"))
+                return 0;
+            if (!append_json_string(buf, buf_size, &offset, ch->role ? ch->role : ""))
+                return 0;
+            if (!append_text(buf, buf_size, &offset, "}"))
+                return 0;
+        }
+    }
+
     if (!append_text(buf, buf_size, &offset, "]"))
         return 0;
+
+    /* Append gpio_inventory */
+    {
+        device_gpio_inventory_item_t inv[DEVICE_GPIO_INVENTORY_MAX];
+        int inv_count = io_binding_export_gpio_inventory(inv, DEVICE_GPIO_INVENTORY_MAX);
+
+        if (!append_text(buf, buf_size, &offset, ",\"gpio_inventory\":["))
+            return 0;
+
+        for (int i = 0; i < inv_count; i++)
+        {
+            if (i > 0 && !append_text(buf, buf_size, &offset, ","))
+                return 0;
+
+            if (!append_format(buf, buf_size, &offset,
+                               "{\"gpio\":%d,\"capabilities\":[", inv[i].gpio))
+                return 0;
+
+            bool has_cap = false;
+            if (inv[i].input_capable)
+            {
+                if (!append_text(buf, buf_size, &offset, "\"input\""))
+                    return 0;
+                has_cap = true;
+            }
+            if (inv[i].output_capable)
+            {
+                if (has_cap && !append_text(buf, buf_size, &offset, ","))
+                    return 0;
+                if (!append_text(buf, buf_size, &offset, "\"output\""))
+                    return 0;
+                has_cap = true;
+            }
+            if (inv[i].analog_capable)
+            {
+                if (has_cap && !append_text(buf, buf_size, &offset, ","))
+                    return 0;
+                if (!append_text(buf, buf_size, &offset, "\"analog\""))
+                    return 0;
+            }
+
+            if (!append_format(buf, buf_size, &offset,
+                               "],\"state\":\"%s\",\"reserved_by\":",
+                               inv[i].state_str ? inv[i].state_str : "AVAILABLE"))
+                return 0;
+
+            if (inv[i].reserved_by)
+            {
+                if (!append_json_string(buf, buf_size, &offset, inv[i].reserved_by))
+                    return 0;
+            }
+            else
+            {
+                if (!append_text(buf, buf_size, &offset, "null"))
+                    return 0;
+            }
+
+            if (inv[i].bound_id > 0)
+            {
+                if (!append_format(buf, buf_size, &offset, ",\"bound_id\":%u", inv[i].bound_id))
+                    return 0;
+            }
+            else
+            {
+                if (!append_text(buf, buf_size, &offset, ",\"bound_id\":null"))
+                    return 0;
+            }
+
+            if (inv[i].plc_channel[0])
+            {
+                if (!append_format(buf, buf_size, &offset, ",\"plc_channel\":\"%s\"", inv[i].plc_channel))
+                    return 0;
+            }
+            else
+            {
+                if (!append_text(buf, buf_size, &offset, ",\"plc_channel\":null"))
+                    return 0;
+            }
+
+            if (!append_text(buf, buf_size, &offset, "}"))
+                return 0;
+        }
+
+        if (!append_text(buf, buf_size, &offset, "]"))
+            return 0;
+    }
 
     if (!append_format(buf,
                        buf_size,
@@ -4624,10 +5027,31 @@ static size_t build_public_profile_json(char *buf, size_t buf_size)
     if (!append_profile_context_sections(buf, buf_size, &offset, network, input_count, output_count))
         return 0;
 
+    esp_netif_t *sta_netif = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
+    esp_netif_ip_info_t ip_info = {0};
+    bool is_connected = false;
+    if (sta_netif) {
+        esp_netif_get_ip_info(sta_netif, &ip_info);
+        if (ip_info.ip.addr != 0) is_connected = true;
+    }
+    wifi_mode_t mode = WIFI_MODE_NULL;
+    esp_wifi_get_mode(&mode);
+    const char *mode_str = "NONE";
+    if (mode == WIFI_MODE_STA) mode_str = "STA";
+    else if (mode == WIFI_MODE_AP) mode_str = "AP";
+    else if (mode == WIFI_MODE_APSTA) mode_str = "AP+STA";
+
+    char ip_str[16] = {0}, nm_str[16] = {0}, gw_str[16] = {0};
+    if (is_connected) {
+        esp_ip4addr_ntoa(&ip_info.ip, ip_str, sizeof(ip_str));
+        esp_ip4addr_ntoa(&ip_info.netmask, nm_str, sizeof(nm_str));
+        esp_ip4addr_ntoa(&ip_info.gw, gw_str, sizeof(gw_str));
+    }
+
     if (!append_format(buf,
                        buf_size,
                        &offset,
-                       ",\"input_slot_capacity\":%d,\"output_slot_capacity\":%d,\"active_input_count\":%d,\"active_output_count\":%d,\"network\":{\"wifi_supported\":%u,\"wifi_enabled\":%u,\"ethernet_supported\":%u,\"ethernet_enabled\":%u,\"rs485_supported\":%u,\"rs485_enabled\":%u}",
+                       ",\"input_slot_capacity\":%d,\"output_slot_capacity\":%d,\"active_input_count\":%d,\"active_output_count\":%d,\"network\":{\"wifi_supported\":%u,\"wifi_enabled\":%u,\"ethernet_supported\":%u,\"ethernet_enabled\":%u,\"rs485_supported\":%u,\"rs485_enabled\":%u,\"wifi_connected\":%u,\"wifi_mode\":\"%s\",\"ipv4\":\"%s\",\"netmask\":\"%s\",\"gateway\":\"%s\",\"hostname\":\"%s\"}",
                        device_profile_input_count(),
                        device_profile_output_count(),
                        input_count,
@@ -4637,7 +5061,13 @@ static size_t build_public_profile_json(char *buf, size_t buf_size)
                        (network && network->ethernet_supported) ? 1U : 0U,
                        (network && network->ethernet_enabled) ? 1U : 0U,
                        (network && network->rs485_supported) ? 1U : 0U,
-                       (network && network->rs485_enabled) ? 1U : 0U))
+                       (network && network->rs485_enabled) ? 1U : 0U,
+                       is_connected ? 1U : 0U,
+                       mode_str,
+                       ip_str,
+                       nm_str,
+                       gw_str,
+                       "endap.local"))
         return 0;
 
     if (!append_text(buf, buf_size, &offset, "}"))
@@ -4648,11 +5078,8 @@ static size_t build_public_profile_json(char *buf, size_t buf_size)
 
 static esp_err_t public_profile_handler(httpd_req_t *req)
 {
-    char *json_buf = malloc(PUBLIC_PROFILE_JSON_BUFFER_SIZE);
-    if (!json_buf) {
-        httpd_resp_send_500(req);
-        return ESP_OK;
-    }
+    char *json_buf = json_buffer_malloc(PUBLIC_PROFILE_JSON_BUFFER_SIZE);
+    if (!json_buf) { json_buffer_free(NULL); httpd_resp_send_500(req); return ESP_OK; }
     size_t len = build_public_profile_json(json_buf, PUBLIC_PROFILE_JSON_BUFFER_SIZE);
 
     http_set_public_json_headers(req);
@@ -4662,7 +5089,7 @@ static esp_err_t public_profile_handler(httpd_req_t *req)
     else
         httpd_resp_send(req, json_buf, len);
 
-    free(json_buf);
+    json_buffer_free(json_buf);
 
     return ESP_OK;
 }
@@ -4670,6 +5097,19 @@ static esp_err_t public_profile_handler(httpd_req_t *req)
 /* ============================================================
    WIFI SAVE
 ============================================================ */
+
+static esp_err_t wifi_confirm_handler(httpd_req_t *req)
+{
+    if (!http_auth_require_cap(req, AUTH_CAP_TRANSPORT_WRITE))
+        return ESP_OK;
+
+    http_set_private_json_headers(req);
+
+    wifi_manager_confirm_onboarding();
+
+    httpd_resp_sendstr(req, "{\"ok\":true}");
+    return ESP_OK;
+}
 
 static esp_err_t wifi_save_handler(httpd_req_t *req)
 {
@@ -4847,22 +5287,19 @@ static esp_err_t wifi_scan_handler(httpd_req_t *req)
     if (!http_auth_require_cap(req, AUTH_CAP_TRANSPORT_WRITE))
         return ESP_OK;
 
-    char *json_buf = malloc(WIFI_SCAN_JSON_BUFFER_SIZE);
-    if (!json_buf) {
-        httpd_resp_send_500(req);
-        return ESP_OK;
-    }
+    char *json_buf = json_buffer_malloc(WIFI_SCAN_JSON_BUFFER_SIZE);
+    if (!json_buf) { json_buffer_free(NULL); httpd_resp_send_500(req); return ESP_OK; }
 
     size_t len = build_wifi_scan_json(json_buf, WIFI_SCAN_JSON_BUFFER_SIZE);
 
-    http_set_private_json_headers(req);
+    http_set_public_json_headers(req);
 
     if (len == 0U)
         httpd_resp_send_500(req);
     else
         httpd_resp_send(req, json_buf, len);
 
-    free(json_buf);
+    json_buffer_free(json_buf);
 
     return ESP_OK;
 }
@@ -5087,10 +5524,8 @@ void http_ws_broadcast_state(void)
     memcpy(clients, ws_clients, sizeof(int) * (size_t)client_count);
     portEXIT_CRITICAL(&ws_lock);
 
-    char *json_buf = malloc(STATUS_JSON_BUFFER_SIZE);
-    if (!json_buf) {
-        return;
-    }
+    char *json_buf = json_buffer_malloc(STATUS_JSON_BUFFER_SIZE);
+    if (!json_buf) { json_buffer_free(NULL); return; }
 
     size_t msg_len = build_status_json(json_buf, STATUS_JSON_BUFFER_SIZE);
 
@@ -5111,7 +5546,7 @@ void http_ws_broadcast_state(void)
     memcpy(ws_clients, alive_clients, sizeof(int) * (size_t)alive_count);
     portEXIT_CRITICAL(&ws_lock);
 
-    free(json_buf);
+    json_buffer_free(json_buf);
 }
 
 void http_server_notify_state_change(void)
@@ -5360,11 +5795,8 @@ static esp_err_t status_handler(httpd_req_t *req)
     if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
         return ESP_OK;
 
-    char *json_buf = malloc(STATUS_JSON_BUFFER_SIZE);
-    if (!json_buf) {
-        httpd_resp_send_500(req);
-        return ESP_OK;
-    }
+    char *json_buf = json_buffer_malloc(STATUS_JSON_BUFFER_SIZE);
+    if (!json_buf) { json_buffer_free(NULL); httpd_resp_send_500(req); return ESP_OK; }
 
     http_set_private_json_headers(req);
     len = build_status_json(json_buf, STATUS_JSON_BUFFER_SIZE);
@@ -5374,7 +5806,7 @@ static esp_err_t status_handler(httpd_req_t *req)
     else
         httpd_resp_send(req, json_buf, len);
 
-    free(json_buf);
+    json_buffer_free(json_buf);
 
     return ESP_OK;
 }
@@ -5414,11 +5846,8 @@ static esp_err_t public_status_handler(httpd_req_t *req)
 {
     size_t len;
 
-    char *json_buf = malloc(STATUS_JSON_BUFFER_SIZE);
-    if (!json_buf) {
-        httpd_resp_send_500(req);
-        return ESP_OK;
-    }
+    char *json_buf = json_buffer_malloc(STATUS_JSON_BUFFER_SIZE);
+    if (!json_buf) { json_buffer_free(NULL); httpd_resp_send_500(req); return ESP_OK; }
 
     http_set_public_json_headers(req);
     len = build_public_status_json(json_buf, STATUS_JSON_BUFFER_SIZE);
@@ -5428,7 +5857,7 @@ static esp_err_t public_status_handler(httpd_req_t *req)
     else
         httpd_resp_send(req, json_buf, len);
 
-    free(json_buf);
+    json_buffer_free(json_buf);
 
     return ESP_OK;
 }
@@ -5566,9 +5995,8 @@ static esp_err_t failsafe_handler(httpd_req_t *req)
         return ESP_OK;
 
     http_set_private_json_headers(req);
-    json = (char *)malloc(INSTALLATION_MAP_JSON_BUFFER_SIZE);
-    if (!json)
-        return failsafe_json_error(req, "500 Internal Server Error", "no_memory");
+    json = (char *)json_buffer_malloc(INSTALLATION_MAP_JSON_BUFFER_SIZE);
+    if (!json) { json_buffer_free(NULL); return failsafe_json_error(req, "500 Internal Server Error", "no_memory"); }
 
     len = build_failsafe_json(json, INSTALLATION_MAP_JSON_BUFFER_SIZE);
 
@@ -5577,7 +6005,7 @@ static esp_err_t failsafe_handler(httpd_req_t *req)
     else
         httpd_resp_send(req, json, len);
 
-    free(json);
+    json_buffer_free(json);
     return ESP_OK;
 }
 
@@ -5770,7 +6198,7 @@ static esp_err_t wifi_status_handler(httpd_req_t *req)
     if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
         return ESP_OK;
 
-    http_set_private_json_headers(req);
+    http_set_public_json_headers(req);
 
     if (len == 0U)
         httpd_resp_send(req, "{}", 2);
@@ -5785,11 +6213,8 @@ static esp_err_t profile_handler(httpd_req_t *req)
     if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
         return ESP_OK;
 
-    char *json_buf = malloc(PROFILE_JSON_BUFFER_SIZE);
-    if (!json_buf) {
-        httpd_resp_send_500(req);
-        return ESP_OK;
-    }
+    char *json_buf = json_buffer_malloc(PROFILE_JSON_BUFFER_SIZE);
+    if (!json_buf) { json_buffer_free(NULL); httpd_resp_send_500(req); return ESP_OK; }
 
     size_t len = build_profile_json(json_buf, PROFILE_JSON_BUFFER_SIZE);
 
@@ -5800,7 +6225,7 @@ static esp_err_t profile_handler(httpd_req_t *req)
     else
         httpd_resp_send(req, json_buf, len);
 
-    free(json_buf);
+    json_buffer_free(json_buf);
 
     return ESP_OK;
 }
@@ -5810,7 +6235,7 @@ static esp_err_t io_map_handler(httpd_req_t *req)
     if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
         return ESP_OK;
 
-    http_set_private_json_headers(req);
+    http_set_public_json_headers(req);
 
     io_binding_input_view_t *inputs = malloc(sizeof(io_binding_input_view_t) * IO_BINDING_MAX_INPUTS);
     io_binding_output_view_t *outputs = malloc(sizeof(io_binding_output_view_t) * IO_BINDING_MAX_OUTPUTS);
@@ -5848,36 +6273,55 @@ static esp_err_t io_map_handler(httpd_req_t *req)
         const char *type_str = (inputs[i].channel_class == DEVICE_CHANNEL_CLASS_ANALOG_INPUT) ? "analog_input" : "digital_input";
         const char *prof_str = (inputs[i].backend == DEVICE_CHANNEL_BACKEND_MCP23X17) ? "mcp23x17" : "gpio";
 
+        int byte_idx = i / 8;
+        int bit_idx = i % 8;
+
         if (i > 0)
             offset += (size_t)snprintf(buf + offset, buf_size - offset, ",");
         offset += (size_t)snprintf(buf + offset, buf_size - offset,
-            "{\"channel_id\":%u,\"name\":\"IN%d\",\"type\":\"%s\",\"gpio\":%d,\"profile\":\"%s\",\"state\":%" PRId32 ",\"implemented\":true}",
-            (unsigned int)inputs[i].id, i + 1, type_str, inputs[i].gpio, prof_str, val);
-    }
-
-    for (int i = 0; i < 2; i++)
-    {
-        int32_t val = 0;
-        (void)state_get_int(12 + i, &val);
-
-        offset += (size_t)snprintf(buf + offset, buf_size - offset,
-            ",{\"channel_id\":%u,\"name\":\"AIN%d\",\"type\":\"analog_input\",\"gpio\":%d,\"profile\":\"adc\",\"value\":%" PRId32 ",\"implemented\":true}",
-            (unsigned int)(12 + i), i + 1, 34 + i, val);
+            "{\"channel_id\":%u,\"name\":\"I%d.%d\",\"type\":\"%s\",\"gpio\":%d,\"profile\":\"%s\",\"state\":%" PRId32 ",\"implemented\":true}",
+            (unsigned int)inputs[i].id, byte_idx, bit_idx, type_str, inputs[i].gpio, prof_str, val);
     }
 
     offset += (size_t)snprintf(buf + offset, buf_size - offset, "],\"outputs\":[");
 
     for (int i = 0; i < output_count; i++)
     {
-        int32_t val = 0;
-        (void)state_get_int(outputs[i].id, &val);
+        int byte_idx = i / 8;
+        int bit_idx = i % 8;
+        int32_t desired_val = 0;
+        (void)state_get_int(outputs[i].id, &desired_val);
+        int32_t reported_val = desired_val;
+        (void)io_driver_get_output_physical_level(outputs[i].id, &reported_val);
         bool fs_active = failsafe_is_active(outputs[i].id);
 
         if (i > 0)
             offset += (size_t)snprintf(buf + offset, buf_size - offset, ",");
         offset += (size_t)snprintf(buf + offset, buf_size - offset,
-            "{\"channel_id\":%u,\"name\":\"OUT%d\",\"type\":\"digital_output\",\"gpio\":%d,\"profile\":\"relay\",\"desired\":%" PRId32 ",\"reported\":%" PRId32 ",\"failsafe\":%s,\"driver_enabled\":true,\"physical_present\":true,\"control_path\":\"V2\",\"last_transition\":\"state_set_int -> pending_mask -> gpio_set_level\"}",
-            (unsigned int)outputs[i].id, 101 + i, outputs[i].gpio, val, val, fs_active ? "true" : "false");
+            "{\"channel_id\":%u,\"name\":\"Q%d.%d\",\"type\":\"digital_output\",\"gpio\":%d,\"profile\":\"relay\",\"desired\":%" PRId32 ",\"reported\":%" PRId32 ",\"failsafe\":%s,\"driver_enabled\":true,\"physical_present\":true,\"control_path\":\"V2\",\"last_transition\":\"state_set_int -> pending_mask -> gpio_set_level\"}",
+            (unsigned int)outputs[i].id, byte_idx, bit_idx, outputs[i].gpio, desired_val, reported_val, fs_active ? "true" : "false");
+    }
+
+
+    offset += (size_t)snprintf(buf + offset, buf_size - offset, "],\"internals\":[");
+
+    bool first_m = true;
+    for (int i = 0; i < 32; i++)
+    {
+        uint16_t mem_id = 26 + i;
+        int32_t mem_val = 0;
+        (void)state_get_int(mem_id, &mem_val);
+
+        int byte_idx = i / 8;
+        int bit_idx = i % 8;
+
+        if (!first_m)
+            offset += (size_t)snprintf(buf + offset, buf_size - offset, ",");
+        first_m = false;
+
+        offset += (size_t)snprintf(buf + offset, buf_size - offset,
+            "{\"channel_id\":%u,\"name\":\"M%d.%d\",\"type\":\"memory\",\"state\":%" PRId32 "}",
+            (unsigned int)mem_id, byte_idx, bit_idx, mem_val);
     }
 
     offset += (size_t)snprintf(buf + offset, buf_size - offset, "]}");
@@ -6378,6 +6822,18 @@ static esp_err_t sensors_config_post_handler(httpd_req_t *req)
     }
 
     if (device_profile_set_sensors(&profile)) {
+        if (!profile.aht10_enabled) {
+            pve_clear_variable(&pve_variables[2]);
+            pve_clear_variable(&pve_variables[3]);
+        }
+        if (!profile.dht11_enabled) {
+            pve_clear_variable(&pve_variables[5]);
+            pve_clear_variable(&pve_variables[6]);
+        }
+        if (!profile.ds18b20_enabled) {
+            pve_clear_variable(&pve_variables[4]);
+        }
+        http_server_notify_state_change();
         httpd_resp_sendstr(req, "{\"ok\":true}");
     } else {
         httpd_resp_set_status(req, "500 Internal Server Error");
@@ -6499,11 +6955,8 @@ static esp_err_t network_preview_handler(httpd_req_t *req)
     if (!rs485_found)
         rs485_enabled = network->rs485_enabled ? 1 : 0;
 
-    char *json_buf = malloc(NETWORK_PREVIEW_JSON_BUFFER_SIZE);
-    if (!json_buf) {
-        httpd_resp_send_500(req);
-        return ESP_OK;
-    }
+    char *json_buf = json_buffer_malloc(NETWORK_PREVIEW_JSON_BUFFER_SIZE);
+    if (!json_buf) { json_buffer_free(NULL); httpd_resp_send_500(req); return ESP_OK; }
 
     len = build_network_preview_json(json_buf,
                                      NETWORK_PREVIEW_JSON_BUFFER_SIZE,
@@ -6516,7 +6969,7 @@ static esp_err_t network_preview_handler(httpd_req_t *req)
     else
         httpd_resp_send(req, json_buf, len);
 
-    free(json_buf);
+    json_buffer_free(json_buf);
 
     return ESP_OK;
 }
@@ -6529,14 +6982,24 @@ static esp_err_t hardware_gpios_handler(httpd_req_t *req)
     http_set_private_json_headers(req);
 
     const device_network_profile_t *net = device_profile_network();
-    bool rs485_active = net && net->rs485_enabled;
-    bool eth_active = net && net->ethernet_enabled;
+    const device_sensor_profile_t *sensors = device_profile_get_sensors();
+
+    /* Checagem de periféricos efetivamente ativos no runtime */
+    bool rs485_runtime_active = (net && net->rs485_enabled && net->rs485_supported && device_profile_should_start_rs485_on_boot());
+    bool eth_runtime_active = (net && net->ethernet_enabled && net->ethernet_supported &&
+                               net->ethernet_mode == DEVICE_PROFILE_ETH_SPI_W5500 &&
+                               device_profile_should_start_ethernet_on_boot() &&
+                               ethernet_manager_is_ready());
+    bool aht10_runtime_active = (sensors && sensors->aht10_enabled);
+    bool ds18b20_runtime_active = (sensors && sensors->ds18b20_enabled && (int)sensors->ds18b20_gpio >= 0);
+    bool dht11_runtime_active = (sensors && sensors->dht11_enabled && (int)sensors->dht11_gpio >= 0);
+
     const device_network_w5500_profile_t *w5500 = NULL;
-    if (eth_active && net->ethernet_supported && net->ethernet_mode == DEVICE_PROFILE_ETH_SPI_W5500 && device_profile_w5500_is_configured()) {
+    if (net && net->ethernet_mode == DEVICE_PROFILE_ETH_SPI_W5500 && device_profile_w5500_is_configured()) {
         w5500 = device_profile_w5500();
     }
 
-    size_t buf_size = 4096;
+    size_t buf_size = 8192;
     char *buf = malloc(buf_size);
     if (!buf) {
         httpd_resp_send_500(req);
@@ -6563,6 +7026,7 @@ static esp_err_t hardware_gpios_handler(httpd_req_t *req)
         bool recommended = true;
         const char *used_by = "null";
         const char *reason = "";
+        const char *conditional_res = "null";
 
         if (gpio == 34 || gpio == 35 || gpio == 36 || gpio == 39) {
             is_output = false;
@@ -6571,38 +7035,60 @@ static esp_err_t hardware_gpios_handler(httpd_req_t *req)
             is_adc = true;
         }
 
+        /* 1. Reservas Estruturais (Inalteráveis) */
         if (gpio == 1 || gpio == 3) {
             available = false;
             recommended = false;
             used_by = "\"SYSTEM\"";
             reason = "UART Console";
-        } else if (rs485_active && (gpio == 25 || gpio == 26 || gpio == 27)) {
-            available = false;
-            recommended = false;
-            used_by = "\"RS485\"";
-            reason = "Reservado pelo RS485";
-        } else if (w5500 && (gpio == w5500->mosi_gpio || gpio == w5500->miso_gpio ||
-                             gpio == w5500->sclk_gpio || gpio == w5500->cs_gpio ||
-                             gpio == w5500->int_gpio || gpio == w5500->reset_gpio)) {
-            available = false;
-            recommended = false;
-            used_by = "\"ETHERNET\"";
-            reason = "Reservado pelo Ethernet W5500";
-        } else if (gpio == 16 || gpio == 17) {
-            available = false;
-            recommended = false;
-            used_by = "\"AHT10\"";
-            reason = "Reservado pelo AHT10";
-        } else if (gpio == 33) {
-            available = false;
-            recommended = false;
-            used_by = "\"DS18B20\"";
-            reason = "Reservado pelo DS18B20";
         } else if (gpio == 0 || gpio == 2 || gpio == 12 || gpio == 15) {
             available = false;
             recommended = false;
             used_by = "\"BOOT\"";
             reason = "Bootstrap ESP32";
+        }
+        /* 2. Periféricos Efetivamente Ativos no Runtime */
+        else if (eth_runtime_active && w5500 && (gpio == w5500->mosi_gpio || gpio == w5500->miso_gpio ||
+                                                 gpio == w5500->sclk_gpio || gpio == w5500->cs_gpio ||
+                                                 gpio == w5500->int_gpio || gpio == w5500->reset_gpio)) {
+            available = false;
+            recommended = false;
+            used_by = "\"ETHERNET\"";
+            reason = "Ocupado pelo Ethernet W5500 (ativo)";
+        } else if (rs485_runtime_active && (gpio == 25 || gpio == 26 || gpio == 27 || gpio == 14)) {
+            available = false;
+            recommended = false;
+            used_by = "\"RS485\"";
+            reason = "Ocupado pelo RS485 Fieldbus (ativo)";
+        } else if (aht10_runtime_active && sensors && (gpio == sensors->aht10_sda_gpio || gpio == sensors->aht10_scl_gpio)) {
+            available = false;
+            recommended = false;
+            used_by = "\"AHT10\"";
+            reason = "Ocupado pelo barramento I2C (AHT10 ativo)";
+        } else if (ds18b20_runtime_active && sensors && gpio == sensors->ds18b20_gpio) {
+            available = false;
+            recommended = false;
+            used_by = "\"DS18B20\"";
+            reason = "Ocupado pelo sensor 1-Wire DS18B20 (ativo)";
+        } else if (dht11_runtime_active && sensors && gpio == sensors->dht11_gpio) {
+            available = false;
+            recommended = false;
+            used_by = "\"DHT11\"";
+            reason = "Ocupado pelo sensor DHT11 (ativo)";
+        }
+        /* 3. Reservas Condicionais (Configurados em profile, mas inativos no runtime) */
+        else {
+            if (w5500 && (gpio == w5500->mosi_gpio || gpio == w5500->miso_gpio ||
+                          gpio == w5500->sclk_gpio || gpio == w5500->cs_gpio ||
+                          gpio == w5500->int_gpio || gpio == w5500->reset_gpio)) {
+                conditional_res = "\"W5500\"";
+            } else if (gpio == 25 || gpio == 26 || gpio == 27 || gpio == 14) {
+                conditional_res = "\"RS485\"";
+            } else if (gpio == 21 || gpio == 22) {
+                conditional_res = "\"I2C\"";
+            } else if (gpio == 33) {
+                conditional_res = "\"DS18B20\"";
+            }
         }
 
         if (!first) {
@@ -6611,7 +7097,7 @@ static esp_err_t hardware_gpios_handler(httpd_req_t *req)
         first = false;
 
         offset += snprintf(buf + offset, buf_size - offset,
-            "{\"gpio\":%d,\"is_input\":%s,\"is_output\":%s,\"is_adc\":%s,\"available\":%s,\"recommended\":%s,\"used_by\":%s,\"reason\":\"%s\"}",
+            "{\"gpio\":%d,\"is_input\":%s,\"is_output\":%s,\"is_adc\":%s,\"available\":%s,\"recommended\":%s,\"used_by\":%s,\"reason\":\"%s\",\"conditional_reservation\":%s}",
             gpio,
             is_input ? "true" : "false",
             is_output ? "true" : "false",
@@ -6619,7 +7105,8 @@ static esp_err_t hardware_gpios_handler(httpd_req_t *req)
             available ? "true" : "false",
             recommended ? "true" : "false",
             used_by,
-            reason);
+            reason,
+            conditional_res);
     }
 
     offset += snprintf(buf + offset, buf_size - offset, "]}");
@@ -6809,19 +7296,16 @@ static esp_err_t cluster_status_handler(httpd_req_t *req)
         transport_name = "none";
     }
 
-    char *json_buf = malloc(2048);
-    if (!json_buf) {
-        httpd_resp_send_500(req);
-        return ESP_OK;
-    }
+    char *json_buf = json_buffer_malloc(2048);
+    if (!json_buf) { json_buffer_free(NULL); httpd_resp_send_500(req); return ESP_OK; }
 
     size_t offset = 0;
     append_format(json_buf, 2048, &offset,
-        "{\"node_id\":%\" PRIu32 \",\"transport\":",
+        "{\"node_id\":%" PRIu32 ",\"transport\":",
         metrics.self_node);
     append_json_string(json_buf, 2048, &offset, transport_name);
     append_format(json_buf, 2048, &offset,
-        ",\"online\":%\" PRIu32 \",\"offline\":%\" PRIu32 \",\"suspect\":%\" PRIu32 \",\"peers\":[",
+        ",\"online\":%" PRIu32 ",\"offline\":%" PRIu32 ",\"suspect\":%" PRIu32 ",\"peers\":[",
         metrics.online, metrics.offline, metrics.suspect);
 
     // Export individual peers
@@ -6859,12 +7343,12 @@ static esp_err_t cluster_status_handler(httpd_req_t *req)
         uint32_t last_seen_ms = peers[i].last_seen_ms;
         const char *peer_transport = peers[i].last_seen_ms ? transport_name : "none"; // Fallback to active runtime transport if seen
         append_format(json_buf, 2048, &offset,
-            "{\"node_id\":%\" PRIu32 \",\"ip\":",
+            "{\"node_id\":%" PRIu32 ",\"ip\":",
             peers[i].node_id);
         append_json_string(json_buf, 2048, &offset, ip_text);
         append_format(json_buf, 2048, &offset, ",\"state\":");
         append_json_string(json_buf, 2048, &offset, state_str);
-        append_format(json_buf, 2048, &offset, ",\"last_seen_ms\":%\" PRIu32 \",\"transport\":", last_seen_ms);
+        append_format(json_buf, 2048, &offset, ",\"last_seen_ms\":%" PRIu32 ",\"transport\":", last_seen_ms);
         append_json_string(json_buf, 2048, &offset, peer_transport);
         append_text(json_buf, 2048, &offset, ",\"version\":\"1.0.0\"}");
         peer_count++;
@@ -6874,7 +7358,7 @@ static esp_err_t cluster_status_handler(httpd_req_t *req)
 
     http_set_private_json_headers(req);
     httpd_resp_send(req, json_buf, offset);
-    free(json_buf);
+    json_buffer_free(json_buf);
 
     return ESP_OK;
 }
@@ -6884,22 +7368,19 @@ static esp_err_t nodes_handler(httpd_req_t *req)
     if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
         return ESP_OK;
 
-    char *json_buf = malloc(NODES_JSON_BUFFER_SIZE);
-    if (!json_buf) {
-        httpd_resp_send_500(req);
-        return ESP_OK;
-    }
+    char *json_buf = json_buffer_malloc(NODES_JSON_BUFFER_SIZE);
+    if (!json_buf) { json_buffer_free(NULL); httpd_resp_send_500(req); return ESP_OK; }
 
     size_t len = build_nodes_json(json_buf, NODES_JSON_BUFFER_SIZE);
 
-    http_set_private_json_headers(req);
+    http_set_public_json_headers(req);
 
     if (len == 0U)
         httpd_resp_send(req, "{\"nodes\":[]}", HTTPD_RESP_USE_STRLEN);
     else
         httpd_resp_send(req, json_buf, len);
 
-    free(json_buf);
+    json_buffer_free(json_buf);
 
     return ESP_OK;
 }
@@ -7514,7 +7995,7 @@ static esp_err_t onboarding_status_handler(httpd_req_t *req)
     if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
         return ESP_OK;
 
-    http_set_private_json_headers(req);
+    http_set_public_json_headers(req);
 
     endap_onboarding_config_t cfg;
     endap_onboarding_get_config(&cfg);
@@ -7537,7 +8018,7 @@ static esp_err_t onboarding_claim_handler(httpd_req_t *req)
     if (!http_auth_require_cap(req, AUTH_CAP_NODE_ADMISSION))
         return ESP_OK;
 
-    http_set_private_json_headers(req);
+    http_set_public_json_headers(req);
 
     char body[HTTP_BODY_BUFFER_SIZE] = {0};
     if (!http_read_request_body(req, body, sizeof(body)))
@@ -7610,7 +8091,7 @@ static esp_err_t onboarding_reset_handler(httpd_req_t *req)
     if (!http_auth_require_cap(req, AUTH_CAP_NODE_ADMISSION))
         return ESP_OK;
 
-    http_set_private_json_headers(req);
+    http_set_public_json_headers(req);
 
     esp_err_t err = endap_onboarding_reset();
     if (err != ESP_OK)
@@ -7646,6 +8127,113 @@ static esp_err_t system_factory_reset_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+static uint8_t map_transport_str(const char *str)
+{
+    if (!str) return DEVICE_PROFILE_TRANSPORT_NONE;
+    if (strcmp(str, "wifi-udp") == 0) return DEVICE_PROFILE_TRANSPORT_WIFI;
+    if (strcmp(str, "ethernet-udp") == 0) return DEVICE_PROFILE_TRANSPORT_ETHERNET;
+    if (strcmp(str, "rs485") == 0) return DEVICE_PROFILE_TRANSPORT_RS485;
+    if (strcmp(str, "wifi-now") == 0) return DEVICE_PROFILE_TRANSPORT_ESPNOW;
+    if (strcmp(str, "wifi-mesh") == 0) return DEVICE_PROFILE_TRANSPORT_MESH;
+    return DEVICE_PROFILE_TRANSPORT_NONE;
+}
+
+static esp_err_t nodes_transport_handler(httpd_req_t *req)
+{
+    if (!http_auth_require_cap(req, AUTH_CAP_TRANSPORT_WRITE))
+        return ESP_OK;
+
+    size_t len = httpd_req_get_hdr_value_len(req, "Content-Length");
+    if (len == 0 || len > 2048) {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"error\":\"Missing body\"}");
+        return ESP_OK;
+    }
+    char *buf = malloc(len + 1);
+    if (!buf) return ESP_FAIL;
+    int r = httpd_req_recv(req, buf, len);
+    if (r <= 0) { free(buf); return ESP_FAIL; }
+    buf[r] = '\0';
+
+    cJSON *root = cJSON_Parse(buf);
+    free(buf);
+    if (!root) {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"error\":\"Invalid JSON\"}");
+        return ESP_OK;
+    }
+
+    uint32_t node_id = 0;
+    if (sscanf(req->uri, "/api/nodes/%" SCNu32 "/transport", &node_id) != 1) {
+        cJSON_Delete(root);
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"error\":\"Invalid node_id\"}");
+        return ESP_OK;
+    }
+
+    if (!node_registry_is_known(node_id)) {
+        cJSON_Delete(root);
+        httpd_resp_set_status(req, "404 Not Found");
+        httpd_resp_sendstr(req, "{\"error\":\"Node not found\"}");
+        return ESP_OK;
+    }
+
+    node_registry_state_t st = node_registry_get_state(node_id);
+    if (st != NODE_REGISTRY_STATE_ACTIVE) {
+        cJSON_Delete(root);
+        httpd_resp_set_status(req, "409 Conflict");
+        httpd_resp_sendstr(req, "{\"error\":\"Node not active\"}");
+        return ESP_OK;
+    }
+
+    cJSON *primary = cJSON_GetObjectItem(root, "primary");
+    cJSON *fallback = cJSON_GetObjectItem(root, "fallback");
+    cJSON *wifi_mode = cJSON_GetObjectItem(root, "wifi_mode");
+    cJSON *wifi_en = cJSON_GetObjectItem(root, "wifi_enabled");
+    cJSON *eth_en = cJSON_GetObjectItem(root, "ethernet_enabled");
+    cJSON *rs485_en = cJSON_GetObjectItem(root, "rs485_enabled");
+
+    if (!primary || !cJSON_IsString(primary)) {
+        cJSON_Delete(root);
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"error\":\"Missing primary\"}");
+        return ESP_OK;
+    }
+
+    uint8_t p = map_transport_str(primary->valuestring);
+    uint8_t f = (fallback && cJSON_IsString(fallback))
+        ? map_transport_str(fallback->valuestring)
+        : DEVICE_PROFILE_TRANSPORT_NONE;
+
+    uint8_t wm = DEVICE_PROFILE_WIFI_MODE_INFRA;
+    if (wifi_mode && cJSON_IsString(wifi_mode)) {
+        if (strcmp(wifi_mode->valuestring, "now") == 0)
+            wm = DEVICE_PROFILE_WIFI_MODE_NOW;
+        else if (strcmp(wifi_mode->valuestring, "mesh") == 0)
+            wm = DEVICE_PROFILE_WIFI_MODE_MESH;
+    }
+
+    uint8_t flags = 0;
+    if (wifi_en && cJSON_IsTrue(wifi_en)) flags |= 0x01;
+    if (eth_en && cJSON_IsTrue(eth_en)) flags |= 0x02;
+    if (rs485_en && cJSON_IsTrue(rs485_en)) flags |= 0x04;
+
+    bool ok = cluster_transport_send_remote_transport_set(
+        node_id, p, f, wm, flags, node_identity_get(), 5000U);
+
+    cJSON_Delete(root);
+
+    if (ok) {
+        httpd_resp_set_type(req, "application/json");
+        httpd_resp_sendstr(req, "{\"ok\":true}");
+    } else {
+        httpd_resp_set_status(req, "408 Request Timeout");
+        httpd_resp_set_type(req, "application/json");
+        httpd_resp_sendstr(req, "{\"error\":\"Timeout or failed\"}");
+    }
+    return ESP_OK;
+}
+
 static esp_err_t node_adopt_handler(httpd_req_t *req)
 {
     uint32_t id = 0U;
@@ -7655,11 +8243,19 @@ static esp_err_t node_adopt_handler(httpd_req_t *req)
         return ESP_OK;
 
     http_set_private_text_headers(req);
+    http_set_cors_headers(req);
 
     if (!query_get_u32(req, "id", &id))
     {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_sendstr(req, "BAD_REQUEST");
+        return ESP_OK;
+    }
+
+    if (node_registry_get_state(id) < NODE_REGISTRY_STATE_ACTIVE)
+    {
+        httpd_resp_set_status(req, "409 Conflict");
+        httpd_resp_sendstr(req, "MUST_USE_REMOTE_CLAIM");
         return ESP_OK;
     }
 
@@ -7827,6 +8423,226 @@ static esp_err_t nodes_clone_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+static esp_err_t control_proxy_handler(httpd_req_t *req)
+{
+    uint32_t target_node_id = 0U;
+    uint32_t self_id = node_identity_get();
+    node_registry_entry_t entries_snap[NODE_REGISTRY_MAX_NODES];
+    uint32_t target_ip = 0U;
+    bool target_is_online = false;
+    int count = 0;
+
+    if (!http_auth_require_cap(req, AUTH_CAP_AUTOMATION_WRITE))
+        return ESP_OK;
+
+    http_set_private_text_headers(req);
+
+    if (!query_get_u32(req, "target_node_id", &target_node_id) || target_node_id == 0U)
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"INVALID_TARGET_NODE_ID\"}");
+        return ESP_OK;
+    }
+
+    if (target_node_id == self_id)
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"LOCAL_NODE_NO_PROXY\"}");
+        return ESP_OK;
+    }
+
+    count = node_registry_export(entries_snap, NODE_REGISTRY_MAX_NODES);
+    for (int i = 0; i < count; i++)
+    {
+        if (entries_snap[i].node_id == target_node_id)
+        {
+            target_ip = entries_snap[i].last_ip_addr;
+            target_is_online = (entries_snap[i].cluster_state == CLUSTER_NODE_ONLINE &&
+                                entries_snap[i].registry_state == NODE_REGISTRY_STATE_ACTIVE);
+            break;
+        }
+    }
+
+    if (target_ip == 0U || !target_is_online)
+    {
+        httpd_resp_set_status(req, "503 Service Unavailable");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"TARGET_OFFLINE\"}");
+        return ESP_OK;
+    }
+
+    /* Extract proxy path from URI query: e.g. /api/control/proxy?target_node_id=123&path=%2Fapi%2F... or /api/control/proxy?target_node_id=123&path=/api/... */
+    const char *qmark = strchr(req->uri, '?');
+    const char *path_param = qmark ? strstr(qmark, "path=") : NULL;
+    if (!path_param)
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"MISSING_PROXY_PATH\"}");
+        return ESP_OK;
+    }
+
+    path_param += 5; /* Skip "path=" */
+    char forward_path[256];
+    if (path_param[0] == '%' && path_param[1] == '2' && (path_param[2] == 'F' || path_param[2] == 'f'))
+    {
+        /* URL-encoded path: decode into forward_path */
+        size_t out_idx = 0;
+        for (size_t in_idx = 0; path_param[in_idx] != '\0' && out_idx < sizeof(forward_path) - 1; in_idx++)
+        {
+            if (path_param[in_idx] == '%' && path_param[in_idx + 1] != '\0' && path_param[in_idx + 2] != '\0')
+            {
+                char hex[3] = { path_param[in_idx + 1], path_param[in_idx + 2], '\0' };
+                forward_path[out_idx++] = (char)strtol(hex, NULL, 16);
+                in_idx += 2;
+            }
+            else
+            {
+                forward_path[out_idx++] = path_param[in_idx];
+            }
+        }
+        forward_path[out_idx] = '\0';
+    }
+    else
+    {
+        strncpy(forward_path, path_param, sizeof(forward_path) - 1);
+        forward_path[sizeof(forward_path) - 1] = '\0';
+    }
+
+    int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (sock < 0)
+    {
+        httpd_resp_set_status(req, "500 Internal Server Error");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"SOCKET_FAILED\"}");
+        return ESP_OK;
+    }
+
+    struct timeval tv = { .tv_sec = 3, .tv_usec = 0 };
+    setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+    setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
+
+    struct sockaddr_in dest_addr;
+    memset(&dest_addr, 0, sizeof(dest_addr));
+    dest_addr.sin_family = AF_INET;
+    dest_addr.sin_port = htons(80);
+    dest_addr.sin_addr.s_addr = target_ip;
+
+    if (connect(sock, (struct sockaddr *)&dest_addr, sizeof(dest_addr)) != 0)
+    {
+        close(sock);
+        httpd_resp_set_status(req, "503 Service Unavailable");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"TARGET_UNREACHABLE\"}");
+        return ESP_OK;
+    }
+
+    /* Build HTTP request to remote node */
+    char req_buf[512];
+    int req_len = snprintf(req_buf, sizeof(req_buf),
+        "GET %s HTTP/1.1\r\n"
+        "Host: %d.%d.%d.%d\r\n"
+        "User-Agent: ENDAP-Gateway-ControlPlane\r\n"
+        "Connection: close\r\n\r\n",
+        forward_path,
+        (int)(target_ip & 0xFF),
+        (int)((target_ip >> 8) & 0xFF),
+        (int)((target_ip >> 16) & 0xFF),
+        (int)((target_ip >> 24) & 0xFF));
+
+    if (send(sock, req_buf, req_len, 0) < 0)
+    {
+        close(sock);
+        httpd_resp_set_status(req, "500 Internal Server Error");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"PROXY_SEND_FAILED\"}");
+        return ESP_OK;
+    }
+
+    /* Read response from remote node and stream to client */
+    char chunk[512];
+    int chunk_len = 0;
+    bool headers_parsed = false;
+    char header_buf[1024];
+    int header_len = 0;
+
+    while ((chunk_len = recv(sock, chunk, sizeof(chunk), 0)) > 0)
+    {
+        if (!headers_parsed)
+        {
+            int to_copy = chunk_len;
+            if (header_len + to_copy > (int)sizeof(header_buf) - 1)
+                to_copy = (int)sizeof(header_buf) - 1 - header_len;
+
+            memcpy(header_buf + header_len, chunk, (size_t)to_copy);
+            header_len += to_copy;
+            header_buf[header_len] = '\0';
+
+            char *hdr_end = strstr(header_buf, "\r\n\r\n");
+            if (hdr_end)
+            {
+                headers_parsed = true;
+                int http_status = 200;
+                if (sscanf(header_buf, "HTTP/1.%*d %d", &http_status) != 1)
+                {
+                    http_status = 200;
+                }
+
+                if (http_status == 409)
+                    httpd_resp_set_status(req, "409 Conflict");
+                else if (http_status == 404)
+                    httpd_resp_set_status(req, "404 Not Found");
+                else if (http_status == 503)
+                    httpd_resp_set_status(req, "503 Service Unavailable");
+                else if (http_status >= 400)
+                {
+                    char status_hdr[32];
+                    snprintf(status_hdr, sizeof(status_hdr), "%d Error", http_status);
+                    httpd_resp_set_status(req, status_hdr);
+                }
+                else
+                {
+                    httpd_resp_set_status(req, "200 OK");
+                }
+
+                /* Calculate offset where body starts in this chunk */
+                int hdr_bytes_in_buf = (int)(hdr_end + 4 - header_buf);
+                char *chunk_hdr_end = strstr(chunk, "\r\n\r\n");
+                if (chunk_hdr_end)
+                {
+                    char *body_start = chunk_hdr_end + 4;
+                    int body_bytes = chunk_len - (int)(body_start - chunk);
+                    if (body_bytes > 0)
+                    {
+                        httpd_resp_send_chunk(req, body_start, (size_t)body_bytes);
+                    }
+                }
+                else
+                {
+                    /* Header was split across chunks */
+                    int body_bytes = header_len - hdr_bytes_in_buf;
+                    if (body_bytes > 0)
+                    {
+                        httpd_resp_send_chunk(req, hdr_end + 4, (size_t)body_bytes);
+                    }
+                }
+            }
+        }
+        else
+        {
+            httpd_resp_send_chunk(req, chunk, (size_t)chunk_len);
+        }
+    }
+
+    close(sock);
+
+    if (!headers_parsed)
+    {
+        httpd_resp_set_status(req, "504 Gateway Timeout");
+        httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"REMOTE_NO_RESPONSE\"}");
+        return ESP_OK;
+    }
+
+    /* Finalize chunked response */
+    httpd_resp_send_chunk(req, NULL, 0);
+    return ESP_OK;
+}
+
 static esp_err_t node_configure_handler(httpd_req_t *req)
 {
     uint32_t id = 0U;
@@ -7838,6 +8654,7 @@ static esp_err_t node_configure_handler(httpd_req_t *req)
         return ESP_OK;
 
     http_set_private_text_headers(req);
+    http_set_cors_headers(req);
 
     if (!query_get_u32(req, "id", &id) ||
         !query_get_str(req, "profile", profile, sizeof(profile)) ||
@@ -7845,6 +8662,13 @@ static esp_err_t node_configure_handler(httpd_req_t *req)
     {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_sendstr(req, "BAD_REQUEST");
+        return ESP_OK;
+    }
+
+    if (node_registry_get_state(id) < NODE_REGISTRY_STATE_ACTIVE)
+    {
+        httpd_resp_set_status(req, "409 Conflict");
+        httpd_resp_sendstr(req, "MUST_USE_REMOTE_CLAIM");
         return ESP_OK;
     }
 
@@ -7881,6 +8705,13 @@ static esp_err_t node_activate_handler(httpd_req_t *req)
     {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_sendstr(req, "BAD_REQUEST");
+        return ESP_OK;
+    }
+
+    if (node_registry_get_state(id) < NODE_REGISTRY_STATE_ACTIVE)
+    {
+        httpd_resp_set_status(req, "409 Conflict");
+        httpd_resp_sendstr(req, "MUST_USE_REMOTE_CLAIM");
         return ESP_OK;
     }
 
@@ -7984,11 +8815,8 @@ static esp_err_t automation_list_handler(httpd_req_t *req)
     if (!http_auth_require_cap(req, AUTH_CAP_DASHBOARD_READ))
         return ESP_OK;
 
-    char *json_buf = malloc(AUTOMATION_JSON_BUFFER_SIZE);
-    if (!json_buf) {
-        httpd_resp_send_500(req);
-        return ESP_OK;
-    }
+    char *json_buf = json_buffer_malloc(AUTOMATION_JSON_BUFFER_SIZE);
+    if (!json_buf) { json_buffer_free(NULL); httpd_resp_send_500(req); return ESP_OK; }
 
     size_t len = build_automation_json(json_buf, AUTOMATION_JSON_BUFFER_SIZE);
 
@@ -7999,7 +8827,7 @@ static esp_err_t automation_list_handler(httpd_req_t *req)
     else
         httpd_resp_send(req, json_buf, len);
 
-    free(json_buf);
+    json_buffer_free(json_buf);
 
     return ESP_OK;
 }
@@ -8007,12 +8835,32 @@ static esp_err_t automation_list_handler(httpd_req_t *req)
 
 static esp_err_t automation_ladder_handler(httpd_req_t *req)
 {
+    if (req->method == HTTP_GET) {
+        http_set_public_json_headers(req);
+        uint8_t program_buf[2048];
+        size_t len = ladder_engine_get_program(program_buf, sizeof(program_buf));
+        if (len == 0) {
+            httpd_resp_set_status(req, "404 Not Found");
+            httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"no_program_loaded\"}");
+            return ESP_OK;
+        }
+        httpd_resp_set_type(req, "application/octet-stream");
+        httpd_resp_send(req, (const char *)program_buf, len);
+        return ESP_OK;
+    }
+
     if (!http_auth_require_cap(req, AUTH_CAP_AUTOMATION_WRITE))
         return ESP_OK;
 
-    http_set_private_json_headers(req);
+    http_set_public_json_headers(req);
 
-    if (req->content_len == 0 || req->content_len > 2048) {
+    if (req->content_len == 0) {
+        ladder_engine_clear();
+        httpd_resp_sendstr(req, "{\"ok\":true,\"status\":\"ladder_cleared\"}");
+        return ESP_OK;
+    }
+
+    if (req->content_len > 2048) {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_sendstr(req, "{\"ok\":false,\"error\":\"invalid_payload_size\"}");
         return ESP_OK;
@@ -8066,9 +8914,85 @@ static esp_err_t automation_add_handler(httpd_req_t *req)
 
     http_set_private_text_headers(req);
 
-    if (!query_get_int(req, "input", 0, UINT16_MAX, &input) ||
-        !query_get_int(req, "threshold", INT_MIN, INT_MAX, &threshold) ||
-        !query_get_int(req, "output", 0, UINT16_MAX, &output))
+    int input_gpio = -1;
+    bool has_input_gpio = false;
+    int output_gpio = -1;
+    bool has_output_gpio = false;
+
+    query_get_optional_int(req, "input_gpio", 0, 39, &input_gpio, &has_input_gpio);
+    query_get_optional_int(req, "output_gpio", 0, 39, &output_gpio, &has_output_gpio);
+
+    if (has_input_gpio)
+    {
+        io_binding_input_view_t in_views[IO_BINDING_MAX_INPUTS];
+        int in_count = io_binding_export_inputs(in_views, IO_BINDING_MAX_INPUTS);
+        bool found_in = false;
+        for (int i = 0; i < in_count; i++)
+        {
+            if (in_views[i].gpio == input_gpio)
+            {
+                input = in_views[i].id;
+                found_in = true;
+                break;
+            }
+        }
+        if (!found_in)
+        {
+            io_binding_output_view_t out_views[IO_BINDING_MAX_OUTPUTS];
+            int out_count = io_binding_export_outputs(out_views, IO_BINDING_MAX_OUTPUTS);
+            for (int i = 0; i < out_count; i++)
+            {
+                if (out_views[i].gpio == input_gpio)
+                {
+                    input = out_views[i].id;
+                    found_in = true;
+                    break;
+                }
+            }
+        }
+        if (!found_in)
+        {
+            httpd_resp_set_status(req, "400 Bad Request");
+            httpd_resp_sendstr(req, "INPUT_GPIO_NOT_BOUND");
+            return ESP_OK;
+        }
+    }
+    else if (!query_get_int(req, "input", 0, UINT16_MAX, &input))
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "BAD_REQUEST");
+        return ESP_OK;
+    }
+
+    if (!query_get_int(req, "threshold", INT_MIN, INT_MAX, &threshold))
+    {
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_sendstr(req, "BAD_REQUEST");
+        return ESP_OK;
+    }
+
+    if (has_output_gpio)
+    {
+        io_binding_output_view_t out_views[IO_BINDING_MAX_OUTPUTS];
+        int out_count = io_binding_export_outputs(out_views, IO_BINDING_MAX_OUTPUTS);
+        bool found_out = false;
+        for (int i = 0; i < out_count; i++)
+        {
+            if (out_views[i].gpio == output_gpio)
+            {
+                output = out_views[i].id;
+                found_out = true;
+                break;
+            }
+        }
+        if (!found_out)
+        {
+            httpd_resp_set_status(req, "400 Bad Request");
+            httpd_resp_sendstr(req, "OUTPUT_GPIO_NOT_BOUND");
+            return ESP_OK;
+        }
+    }
+    else if (!query_get_int(req, "output", 0, UINT16_MAX, &output))
     {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_sendstr(req, "BAD_REQUEST");
@@ -8145,12 +9069,62 @@ static esp_err_t automation_add_handler(httpd_req_t *req)
         return ESP_OK;
     }
 
+    int interlock_en = 0;
+    query_get_optional_int(req, "interlock_en", 0, 1, &interlock_en, NULL);
+    if (interlock_en)
+    {
+        automation_interlock_t ilk = {0};
+        ilk.enabled = 1;
+        int logic_op = 0;
+        query_get_optional_int(req, "interlock_logic", 0, 1, &logic_op, NULL);
+        ilk.logic_op = (uint8_t)logic_op;
+
+        int cond1_chan = -1, cond1_val = 0;
+        char cond1_op_text[8] = {0};
+        query_get_optional_int(req, "interlock_cond1_channel", 0, UINT16_MAX, &cond1_chan, NULL);
+        query_get_optional_str(req, "interlock_cond1_op", cond1_op_text, sizeof(cond1_op_text), NULL);
+        query_get_optional_int(req, "interlock_cond1_val", -128, 127, &cond1_val, NULL);
+
+        if (cond1_chan >= 0)
+        {
+            uint8_t op1 = AUTOMATION_OP_EQ;
+            if (cond1_op_text[0] != '\0')
+                automation_engine_operator_from_code(cond1_op_text, &op1);
+            ilk.conditions[ilk.cond_count].channel = (uint16_t)cond1_chan;
+            ilk.conditions[ilk.cond_count].op = op1;
+            ilk.conditions[ilk.cond_count].target_val = (int8_t)cond1_val;
+            ilk.cond_count++;
+        }
+
+        int cond2_chan = -1, cond2_val = 0;
+        char cond2_op_text[8] = {0};
+        query_get_optional_int(req, "interlock_cond2_channel", 0, UINT16_MAX, &cond2_chan, NULL);
+        query_get_optional_str(req, "interlock_cond2_op", cond2_op_text, sizeof(cond2_op_text), NULL);
+        query_get_optional_int(req, "interlock_cond2_val", -128, 127, &cond2_val, NULL);
+
+        if (cond2_chan >= 0)
+        {
+            uint8_t op2 = AUTOMATION_OP_EQ;
+            if (cond2_op_text[0] != '\0')
+                automation_engine_operator_from_code(cond2_op_text, &op2);
+            ilk.conditions[ilk.cond_count].channel = (uint16_t)cond2_chan;
+            ilk.conditions[ilk.cond_count].op = op2;
+            ilk.conditions[ilk.cond_count].target_val = (int8_t)cond2_val;
+            ilk.cond_count++;
+        }
+
+        int count = automation_engine_get_node_count();
+        if (count > 0)
+            automation_engine_set_interlock_at(count - 1, &ilk);
+    }
+
     snprintf(audit_detail,
              sizeof(audit_detail),
-             "input=%d output=%d mode=%s",
+             "input=%d output=%d mode=%s interlock=%d",
              input,
              output,
-             mode_text[0] ? mode_text : automation_engine_mode_to_code(mode));
+             mode_text[0] ? mode_text : automation_engine_mode_to_code(mode),
+             interlock_en);
     auth_audit_log("automation_added", audit_detail);
     http_server_notify_state_change();
     httpd_resp_sendstr(req, (result == AUTOMATION_RESULT_DUPLICATE) ? "DUPLICATE" : "OK");
@@ -8194,6 +9168,7 @@ static esp_err_t automation_clear_handler(httpd_req_t *req)
     http_set_private_text_headers(req);
 
     automation_engine_clear();
+    ladder_engine_clear();
     auth_audit_log("automation_cleared", "all-rules-cleared");
     http_server_notify_state_change();
     httpd_resp_sendstr(req, "CLEARED");
@@ -8208,6 +9183,9 @@ extern void core_mem_audit(const char *phase);
 
 void http_server_start(void)
 {
+    if (json_api_mutex == NULL) {
+        json_api_mutex = xSemaphoreCreateMutex();
+    }
     core_mem_audit("HTTP_PRE_BUFFERS");
 
     // Buffer allocations removed to save permanent heap space
@@ -8252,6 +9230,13 @@ void http_server_start(void)
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/", .method = HTTP_GET, .handler = redirect_to_dash });
 
+        /* Preflight PNA/CORS: responde OPTIONS em qualquer rota com 204 +
+           headers de cors, incluindo Access-Control-Allow-Private-Network.
+           Cobre todas as chamadas do Studio (não é preciso registrar
+           OPTIONS por URI). */
+        httpd_register_err_handler(server, HTTPD_404_NOT_FOUND, options_error_handler);
+        httpd_register_err_handler(server, HTTPD_405_METHOD_NOT_ALLOWED, options_error_handler);
+
         /* AUTH */
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/auth/login", .method = HTTP_POST, .handler = auth_login_handler });
@@ -8286,6 +9271,8 @@ void http_server_start(void)
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/set", .method = HTTP_GET, .handler = set_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/set", .method = HTTP_OPTIONS, .handler = options_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/resource/actuate", .method = HTTP_POST, .handler = resource_actuate_handler });
@@ -8296,6 +9283,8 @@ void http_server_start(void)
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/public/status", .method = HTTP_GET, .handler = public_status_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/public/status", .method = HTTP_OPTIONS, .handler = options_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/failsafe", .method = HTTP_GET, .handler = failsafe_handler });
@@ -8335,6 +9324,8 @@ void http_server_start(void)
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/io/map", .method = HTTP_GET, .handler = io_map_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/io/map", .method = HTTP_OPTIONS, .handler = options_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/pve", .method = HTTP_GET, .handler = pve_handler });
@@ -8379,30 +9370,42 @@ void http_server_start(void)
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/nodes", .method = HTTP_GET, .handler = nodes_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/nodes", .method = HTTP_OPTIONS, .handler = options_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/cluster/status", .method = HTTP_GET, .handler = cluster_status_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/onboarding/status", .method = HTTP_GET, .handler = onboarding_status_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/onboarding/status", .method = HTTP_OPTIONS, .handler = options_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/network/metrics", .method = HTTP_GET, .handler = network_metrics_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/onboarding/claim", .method = HTTP_POST, .handler = onboarding_claim_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/onboarding/claim", .method = HTTP_OPTIONS, .handler = options_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/onboarding/reset", .method = HTTP_POST, .handler = onboarding_reset_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/onboarding/reset", .method = HTTP_OPTIONS, .handler = options_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/system/factory-reset", .method = HTTP_POST, .handler = system_factory_reset_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/nodes/adopt", .method = HTTP_GET, .handler = node_adopt_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/nodes/adopt", .method = HTTP_OPTIONS, .handler = options_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/nodes/configure", .method = HTTP_GET, .handler = node_configure_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/nodes/configure", .method = HTTP_OPTIONS, .handler = options_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/nodes/template/apply", .method = HTTP_POST, .handler = nodes_template_apply_handler });
@@ -8418,6 +9421,12 @@ void http_server_start(void)
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/nodes/revoke", .method = HTTP_GET, .handler = node_revoke_handler });
+
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/nodes/*/transport", .method = HTTP_POST, .handler = nodes_transport_handler });
+
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/control/proxy", .method = HTTP_GET, .handler = control_proxy_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/input/learn", .method = HTTP_GET, .handler = input_learn_handler });
@@ -8452,7 +9461,11 @@ void http_server_start(void)
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/automation/add", .method = HTTP_GET, .handler = automation_add_handler });
         httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/automation/ladder", .method = HTTP_GET, .handler = automation_ladder_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/automation/ladder", .method = HTTP_POST, .handler = automation_ladder_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/automation/ladder", .method = HTTP_OPTIONS, .handler = options_handler });
 
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
@@ -8478,6 +9491,8 @@ void http_server_start(void)
         /* WIFI */
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/wifi", .method = HTTP_GET, .handler = wifi_save_handler });
+        httpd_register_uri_handler(server, &(httpd_uri_t){
+            .uri = "/api/onboarding/wifi/confirm", .method = HTTP_POST, .handler = wifi_confirm_handler });
 
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/api/wifi/status", .method = HTTP_GET, .handler = wifi_status_handler });
@@ -8511,11 +9526,14 @@ void http_server_start(void)
         httpd_register_uri_handler(server, &(httpd_uri_t){
             .uri = "/favicon.ico", .method = HTTP_GET, .handler = no_content_handler });
 
-        /* DASHBOARD */
-        dashboard_register(server);
+        /* DASHBOARD - REMOVED (ENDAP STUDIO DELEGATED) */
+        // dashboard_register(server);
 
         /* CATCH-ALL PARA CAPTIVE PORTAL NO iOS/ANDROID */
         httpd_register_err_handler(server, HTTPD_404_NOT_FOUND, redirect_to_dash_err);
+
+        /* Inicializar mDNS para anunciar o serviço HTTP independentemente da interface ativa (Ethernet ou Wi-Fi) */
+        endap_mdns_init();
 
         ESP_LOGI(TAG, "HTTP SERVER FINAL (CAPTIVE + DASH)");
         core_mem_audit("HTTP_POST_SERVER_START");

@@ -273,6 +273,15 @@ void pve_update(
 
 }
 
+void pve_clear_variable(pve_variable_t *var) {
+    if (!var) {
+        return;
+    }
+    var->runtime.raw_value = 0;
+    var->runtime.scaled_value = 0;
+    var->runtime.alarm_state = PVE_ALARM_STATE_OK;
+}
+
 static const pve_binding_t pve_bindings[] = {
     { .state_id = 12, .pve_id = 0 },
     { .state_id = 13, .pve_id = 1 },

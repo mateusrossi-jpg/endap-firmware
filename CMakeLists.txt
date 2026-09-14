@@ -33,6 +33,7 @@ set(EXTRA_COMPONENT_DIRS
      
     components/data/io_image
     components/data/state
+    components/data/system_diag
 
     components/comm/parser
     components/comm/protocol
@@ -53,12 +54,12 @@ set(EXTRA_COMPONENT_DIRS
     components/observability/phase_load_test
     components/observability/phase_monitor
     
-    components/dashboard
     components/security/auth
     components/onboarding
     components/runtime/network_v1
 )
 
+set(EXCLUDE_COMPONENTS v3)
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
 project(ENDAP)

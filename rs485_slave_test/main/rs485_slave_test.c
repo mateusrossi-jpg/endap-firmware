@@ -22,6 +22,7 @@
 #define RS485_SLAVE_TX_PIN         25
 #define RS485_SLAVE_RX_PIN         26
 #define RS485_SLAVE_DE_PIN         27
+#define RS485_SLAVE_RE_PIN         14
 #define RS485_SLAVE_BAUDRATE       115200
 
 #define RS485_FRAME_TYPE_POLL      1
@@ -221,16 +222,18 @@ void app_main(void)
         .tx_pin = RS485_SLAVE_TX_PIN,
         .rx_pin = RS485_SLAVE_RX_PIN,
         .de_pin = RS485_SLAVE_DE_PIN,
+        .re_pin = RS485_SLAVE_RE_PIN,
         .baudrate = RS485_SLAVE_BAUDRATE
     });
 
     ESP_LOGI(TAG,
-        "Slave online node=%u uart=%d tx=%d rx=%d de=%d baud=%d",
+        "Slave online node=%u uart=%d tx=%d rx=%d de=%d re=%d baud=%d",
         RS485_SLAVE_NODE_ID,
         RS485_SLAVE_UART,
         RS485_SLAVE_TX_PIN,
         RS485_SLAVE_RX_PIN,
         RS485_SLAVE_DE_PIN,
+        RS485_SLAVE_RE_PIN,
         RS485_SLAVE_BAUDRATE);
 
     while (1)

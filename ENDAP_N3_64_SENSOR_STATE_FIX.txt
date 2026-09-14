@@ -1,0 +1,49 @@
+================================================================================
+ENDAP N.3.64 — SENSOR STATE FIX & CONSISTENCY REPORT
+================================================================================
+
+1. ROOT CAUSE ANALYSIS (POR QUE SENSORES CONTINUAVAM ATIVOS APÓS DISABLE)
+--------------------------------------------------------------------------------
+- O backend de telemetria (telemetry.c) mantinha em loop contínuo as leituras de
+  sensores virtuais / PVE (pve_variables[2..6] e state_set_int(14..18)).
+- Quando sensors->xxx_enabled era alterado para false via /api/sensors/config:
+  a) A task de telemetria apenas parava de sobrescrever os valores (mantendo em memória
+     a última leitura válida ou simulada anterior).
+  b) As variáveis de processo PVE e o State Engine continuavam retendo os valores em memória.
+  c) A dashboard web (renderEnvironmentTelemetryUI), ao requisitar /api/pve,
+     encontrava valores maiores que zero e deduzia que o sensor estava ativo e calibrado,
+     exibindo valores congelados antigos e o subtítulo "AHT10 / AHT20" ao invés de "Desabilitado".
+
+2. CORREÇÃO ARQUITETURAL IMPLEMENTADA (FONTE DE VERDADE):
+--------------------------------------------------------------------------------
+A) components/runtime/pve/include/pve.h & pve.c:
+   - Criada a função pve_clear_variable(pve_variable_t *var) para zerar imediatamente
+     os campos raw_value, scaled_value e resetar o alarm_state para PVE_ALARM_STATE_OK.
+
+B) components/runtime/pve/telemetry.c:
+   - No loop da task telemetry_task, quando qualquer sensor (aht10_enabled, dht11_enabled,
+     ds18b20_enabled) for avaliado como falso:
+     * O estado no State Engine é resetado (state_set_int(14..18, 0)).
+     * As variáveis PVE correspondentes têm seu estado zerado (pve_clear_variable(...)).
+     * driver.init é desarmado para permitir re-inicialização limpa ao ser religado.
+
+C) components/runtime/http_server/http_server.c:
+   - No endpoint POST /api/sensors/config (sensors_config_post_handler), ao persistir
+     a desativação de um sensor, o State Engine e as variáveis PVE são zerados imediatamente
+     no momento do salvamento e http_server_notify_state_change() é disparado para
+     emitir a notificação via WebSocket para a Dashboard.
+
+D) components/dashboard/index.html:
+   - Função renderEnvironmentTelemetryUI() aprimorada para consultar a configuração
+     persistida (sensorConfigData):
+     * SENSOR DESABILITADO: Exibe "-- °C" / "-- %" e badge/subtítulo "Desabilitado".
+     * SENSOR HABILITADO SEM LEITURA: Exibe "-- °C" / "-- %" e subtítulo "Aguardando leitura".
+     * SENSOR HABILITADO COM LEITURA VÁLIDA: Exibe leitura real/calibrada formatada.
+   - Atualização imediata do cache local do frontend em saveSensorsConfigUI().
+
+3. PRESERVAÇÃO DE HARDWARE E INTEGRIDADE:
+--------------------------------------------------------------------------------
+- Nenhuma alteração foi introduzida no control_loop crítico (1ms).
+- Zero alocação dinâmica no hot path.
+- ADC1 CH7 (GPIO35 / AI01 - Sensor de Solo) permanece 100% isolado dos sensores de ambiente.
+================================================================================

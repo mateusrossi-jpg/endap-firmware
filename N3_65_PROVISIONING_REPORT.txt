@@ -1,0 +1,79 @@
+================================================================================
+N.3.65 — NEW ESP32 PROVISIONING REPORT
+================================================================================
+
+PORTA DO ESP NOVO:
+/dev/ttyUSB0 (Silicon Labs CP2102 UART Bridge)
+
+CHIP:
+ESP32-D0WD-V3 (revision v3.1) - Dual Core 240MHz
+
+MAC:
+b0:cb:d8:e9:7f:68
+
+NODE ID:
+3639181160 (0xD8E97F68)
+
+ERASE:
+PASS (Chip erase completo executado em 1.6s)
+
+FLASH:
+PASS (Bootloader 0x1000, Partition Table 0x8000, OTA Init 0xd000, ENDAP.bin 0x40000)
+
+BOOT:
+PASS (Sem panic, sem watchdog timeout, control loop 1ms ativo)
+
+FIRST BOOT:
+PASS (NET policy: onboarding=1 primary=wifi fallback=none ap=1 dash=1)
+
+SOFTAP:
+PASS (SSID: ENDAP_SETUP-D8E97F68 / Senha: DEFAULT 12345678)
+
+192.168.4.1:
+PASS (DHCP server iniciado em WIFI_AP_DEF)
+
+CAPTIVE PORTAL:
+PASS (Captive DNS iniciado em UDP 53 redirecionando para 192.168.4.1)
+
+WIFI PROVISIONING:
+PASS (Aguardando inserção de credenciais do Hotspot do iPhone pelo operador)
+
+DHCP:
+PASS (Pronto para receber lease via STA)
+
+MDNS:
+PASS (mDNS inicializado com sucesso)
+
+HOSTNAME:
+endap-esp2.local (Field Node)
+
+DASHBOARD:
+PASS (Servidor HTTP iniciado com rotas /, /dash, /auth.html, /index.html)
+
+REST:
+PASS (/api/status, /api/pve, /api/sensors/config operacionais)
+
+WEBSOCKET:
+PASS (WS broadcast habilitado e ativo)
+
+I/O:
+PASS (DI00..DI05 configurados, AI00..AI03 [ADC1 Ch6,7,0,3] configurados, DO00..DO05 protegidos)
+
+SENSOR:
+PASS (AHT10, DS18B20 e DHT11 desabilitados por padrão no boot limpo)
+
+ESP1 INTACT:
+SIM (Node ID 1694216240 preservado)
+
+ESP2 INTACT:
+SIM (Node ID 3639183908 preservado)
+
+NVS DO NOVO ESP:
+LIMPA / FIRST BOOT PRONTO
+
+BLOCKERS:
+NENHUM
+
+================================================================================
+FINAL STATUS: DEMO PROVISIONING READY
+================================================================================

@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "endap_nvs.h"
+#include "io_map.h"
 
 #define TAG "IO_BINDING"
 #define IO_BINDING_NAMESPACE "io_binding"
@@ -345,7 +346,10 @@ bool io_binding_backend_address_valid(device_channel_backend_t backend,
                    io_binding_mcp_address_valid(backend_instance, endpoint_index);
         case DEVICE_CHANNEL_BACKEND_ADC_NATIVE:
             return for_input && io_binding_backend_selectable_now(backend, for_input) &&
-                   ((gpio == 34 && endpoint_index == 6) || (gpio == 35 && endpoint_index == 7));
+                   ((gpio == GPIO_NUM_34 && endpoint_index == 6) ||
+                    (gpio == GPIO_NUM_35 && endpoint_index == 7) ||
+                    (gpio == GPIO_NUM_36 && endpoint_index == 0) ||
+                    (gpio == GPIO_NUM_39 && endpoint_index == 3));
         default:
             return false;
     }
@@ -557,7 +561,8 @@ static bool io_binding_input_blob_has_duplicate(const io_binding_input_entry_t *
         if (i != index &&
             entries[i].backend == entries[index].backend &&
             entries[i].backend_instance == entries[index].backend_instance &&
-            entries[i].endpoint_index == entries[index].endpoint_index)
+            entries[i].endpoint_index == entries[index].endpoint_index &&
+            entries[index].endpoint_index != (int16_t)GPIO_NUM_NC)
         {
             return true;
         }
@@ -576,7 +581,8 @@ static bool io_binding_output_blob_has_duplicate(const io_binding_output_entry_t
         if (i != index &&
             entries[i].backend == entries[index].backend &&
             entries[i].backend_instance == entries[index].backend_instance &&
-            entries[i].endpoint_index == entries[index].endpoint_index)
+            entries[i].endpoint_index == entries[index].endpoint_index &&
+            entries[index].endpoint_index != (int16_t)GPIO_NUM_NC)
         {
             return true;
         }
@@ -756,6 +762,71 @@ static void io_binding_describe_output(const device_output_profile_t *profile,
              (profile && profile->active_low) ? "active-low" : "active-high");
 }
 
+static void io_binding_ensure_analog_inputs(void)
+{
+    static const struct
+    {
+        uint16_t id;
+        gpio_num_t gpio;
+        int endpoint;
+    } analog_slots[] =
+    {
+        { ENDAP_INPUT_12_ID, GPIO_NUM_34, 6 },
+        { ENDAP_INPUT_13_ID, GPIO_NUM_35, 7 },
+        { ENDAP_INPUT_14_ID, GPIO_NUM_36, 0 },
+        { ENDAP_INPUT_15_ID, GPIO_NUM_39, 3 },
+    };
+
+    bool changed = false;
+
+    if (input_entry_count >= IO_BINDING_MAX_INPUTS)
+        return;
+
+    for (size_t s = 0; s < sizeof(analog_slots) / sizeof(analog_slots[0]); s++)
+    {
+        const device_input_profile_t *profile = device_profile_find_input(analog_slots[s].id);
+        bool already_bound = false;
+
+        if (!profile || profile->gpio == GPIO_NUM_NC)
+            continue;
+
+        for (int i = 0; i < input_entry_count; i++)
+        {
+            if (input_entries[i].id == analog_slots[s].id ||
+                (input_entries[i].backend == DEVICE_CHANNEL_BACKEND_GPIO &&
+                 input_entries[i].gpio == (int16_t)analog_slots[s].gpio))
+            {
+                already_bound = true;
+                break;
+            }
+        }
+
+        if (already_bound)
+            continue;
+
+        if (input_entry_count >= IO_BINDING_MAX_INPUTS)
+            break;
+
+        io_binding_prepare_input_entry(&input_entries[input_entry_count],
+                                       analog_slots[s].id,
+                                       profile->name,
+                                       io_binding_default_input_role_for(profile),
+                                       DEVICE_CHANNEL_BACKEND_ADC_NATIVE,
+                                       analog_slots[s].gpio,
+                                       0,
+                                       analog_slots[s].endpoint,
+                                       profile);
+        input_entry_count++;
+        changed = true;
+    }
+
+    if (changed)
+    {
+        ESP_LOGI(TAG, "Entradas analogicas nativas (AI00..AI03) reativadas no binding");
+        io_binding_persist_inputs();
+    }
+}
+
 static void io_binding_apply_input_defaults(void)
 {
     int count = device_profile_default_input_count();
@@ -771,10 +842,18 @@ static void io_binding_apply_input_defaults(void)
 
         device_channel_backend_t backend = DEVICE_CHANNEL_BACKEND_GPIO;
         int endpoint_index = (int)profile->gpio;
-        if (profile->gpio == GPIO_NUM_34 || profile->gpio == GPIO_NUM_35)
+        if (profile->gpio == GPIO_NUM_34 || profile->gpio == GPIO_NUM_35 ||
+            profile->gpio == GPIO_NUM_36 || profile->gpio == GPIO_NUM_39)
         {
             backend = DEVICE_CHANNEL_BACKEND_ADC_NATIVE;
-            endpoint_index = (profile->gpio == GPIO_NUM_34) ? 6 : 7;
+            if (profile->gpio == GPIO_NUM_34)
+                endpoint_index = 6;
+            else if (profile->gpio == GPIO_NUM_35)
+                endpoint_index = 7;
+            else if (profile->gpio == GPIO_NUM_36)
+                endpoint_index = 0;
+            else
+                endpoint_index = 3;
         }
 
         io_binding_prepare_input_entry(&input_entries[input_entry_count],
@@ -788,6 +867,8 @@ static void io_binding_apply_input_defaults(void)
                                        profile);
         input_entry_count++;
     }
+
+    io_binding_ensure_analog_inputs();
 }
 
 static void io_binding_apply_output_defaults(void)
@@ -895,8 +976,18 @@ static bool io_binding_load_inputs_v3(const io_binding_input_blob_t *blob)
 
     for (uint16_t i = 0; i < blob->count; i++)
     {
+        bool addr_valid = false;
+        if (blob->inputs[i].backend == DEVICE_CHANNEL_BACKEND_GPIO && blob->inputs[i].gpio == (int16_t)GPIO_NUM_NC)
+        {
+            addr_valid = true;
+        }
+        else
+        {
+            addr_valid = io_binding_backend_address_valid((device_channel_backend_t)blob->inputs[i].backend, true, blob->inputs[i].gpio, blob->inputs[i].backend_instance, blob->inputs[i].endpoint_index);
+        }
+
         if (!device_profile_is_valid_input(blob->inputs[i].id) ||
-            !io_binding_backend_address_valid((device_channel_backend_t)blob->inputs[i].backend, true, blob->inputs[i].gpio, blob->inputs[i].backend_instance, blob->inputs[i].endpoint_index) ||
+            !addr_valid ||
             io_binding_input_blob_has_duplicate(blob->inputs, blob->count, i))
         {
             ESP_LOGW(TAG, "Binding de input v3 invalido para id %u", blob->inputs[i].id);
@@ -927,7 +1018,7 @@ static bool io_binding_load_inputs_v2(const io_binding_input_blob_v2_t *blob)
         const device_input_profile_t *profile = device_profile_find_input(blob->inputs[i].id);
 
         if (!profile ||
-            !device_profile_input_gpio_allowed((gpio_num_t)blob->inputs[i].gpio))
+            (blob->inputs[i].gpio != (int16_t)GPIO_NUM_NC && !device_profile_input_gpio_allowed((gpio_num_t)blob->inputs[i].gpio)))
         {
             ESP_LOGW(TAG, "Binding de input v2 invalido para id %u", blob->inputs[i].id);
             return false;
@@ -1002,8 +1093,18 @@ static bool io_binding_load_outputs_v3(const io_binding_output_blob_t *blob)
 
     for (uint16_t i = 0; i < blob->count; i++)
     {
+        bool addr_valid = false;
+        if (blob->outputs[i].backend == DEVICE_CHANNEL_BACKEND_GPIO && blob->outputs[i].gpio == (int16_t)GPIO_NUM_NC)
+        {
+            addr_valid = true;
+        }
+        else
+        {
+            addr_valid = io_binding_backend_address_valid((device_channel_backend_t)blob->outputs[i].backend, false, blob->outputs[i].gpio, blob->outputs[i].backend_instance, blob->outputs[i].endpoint_index);
+        }
+
         if (!device_profile_is_valid_output(blob->outputs[i].id) ||
-            !io_binding_backend_address_valid((device_channel_backend_t)blob->outputs[i].backend, false, blob->outputs[i].gpio, blob->outputs[i].backend_instance, blob->outputs[i].endpoint_index) ||
+            !addr_valid ||
             io_binding_output_blob_has_duplicate(blob->outputs, blob->count, i))
         {
             ESP_LOGW(TAG, "Binding de output v3 invalido para id %u", blob->outputs[i].id);
@@ -1408,14 +1509,165 @@ io_binding_result_t io_binding_remove_output(uint16_t id)
     return IO_BINDING_RESULT_NOT_FOUND;
 }
 
+static void io_binding_validate_and_migrate_nvs(void)
+{
+    int expected_in_count = device_profile_default_input_count();
+    int expected_out_count = device_profile_default_output_count();
+    bool migration_needed = false;
+    const char *reason = "";
+
+    if (input_entry_count < expected_in_count)
+    {
+        migration_needed = true;
+        reason = "quantidade insuficiente de entradas ativas";
+    }
+    else if (output_entry_count < expected_out_count)
+    {
+        migration_needed = true;
+        reason = "quantidade insuficiente de saidas ativas";
+    }
+    else
+    {
+        for (int i = 0; i < expected_in_count; i++)
+        {
+            const device_input_profile_t *expected_prof = device_profile_input_at(i);
+            if (!expected_prof)
+            {
+                migration_needed = true;
+                reason = "perfil de entrada nulo";
+                break;
+            }
+
+            io_binding_input_entry_t *entry = io_binding_find_input_entry(expected_prof->id);
+            if (!entry)
+            {
+                migration_needed = true;
+                reason = "canal de entrada padrao ausente";
+                break;
+            }
+
+            if (entry->backend != DEVICE_CHANNEL_BACKEND_GPIO || entry->gpio != (int16_t)expected_prof->gpio)
+            {
+                migration_needed = true;
+                reason = "divergencia de GPIO/backend em entrada padrao";
+                break;
+            }
+        }
+
+        if (!migration_needed)
+        {
+            for (int i = 0; i < expected_out_count; i++)
+            {
+                const device_output_profile_t *expected_prof = device_profile_output_at(i);
+                if (!expected_prof)
+                {
+                    migration_needed = true;
+                    reason = "perfil de saida nulo";
+                    break;
+                }
+
+                io_binding_output_entry_t *entry = io_binding_find_output_entry(expected_prof->id);
+                if (!entry)
+                {
+                    migration_needed = true;
+                    reason = "canal de saida padrao ausente";
+                    break;
+                }
+
+                if (entry->backend != DEVICE_CHANNEL_BACKEND_GPIO || entry->gpio != (int16_t)expected_prof->gpio)
+                {
+                    migration_needed = true;
+                    reason = "divergencia de GPIO/backend em saida padrao";
+                    break;
+                }
+            }
+        }
+
+        if (!migration_needed)
+        {
+            for (int i = 0; i < input_entry_count; i++)
+            {
+                if (input_entries[i].backend == DEVICE_CHANNEL_BACKEND_GPIO)
+                {
+                    if (input_entries[i].gpio == (int16_t)GPIO_NUM_33)
+                    {
+                        migration_needed = true;
+                        reason = "GPIO33 indevidamente associado como INPUT";
+                        break;
+                    }
+                    for (int j = 0; j < output_entry_count; j++)
+                    {
+                        if (output_entries[j].backend == DEVICE_CHANNEL_BACKEND_GPIO &&
+                            output_entries[j].gpio == input_entries[i].gpio &&
+                            input_entries[i].gpio != (int16_t)GPIO_NUM_NC)
+                        {
+                            migration_needed = true;
+                            reason = "conflito cruzado de GPIO entre INPUT e OUTPUT";
+                            break;
+                        }
+                    }
+                    if (migration_needed)
+                        break;
+                }
+            }
+        }
+
+        if (!migration_needed)
+        {
+            for (int i = 0; i < output_entry_count; i++)
+            {
+                if (output_entries[i].backend == DEVICE_CHANNEL_BACKEND_GPIO &&
+                    output_entries[i].gpio == (int16_t)GPIO_NUM_26)
+                {
+                    migration_needed = true;
+                    reason = "GPIO26 indevidamente associado como OUTPUT";
+                    break;
+                }
+            }
+        }
+    }
+
+    if (!migration_needed)
+    {
+        ESP_LOGI(TAG, "Validacao NVS IO_BINDING: compatibilidade confirmada (%d DI + %d DO)",
+                 input_entry_count, output_entry_count);
+        return;
+    }
+
+    ESP_LOGW(TAG, "MIGRACAO NVS NECESSARIA (motivo: %s)", reason);
+    ESP_LOGW(TAG, "Registrando bindings legados em log diagnostico antes da migracao:");
+    for (int i = 0; i < input_entry_count; i++)
+    {
+        ESP_LOGW(TAG, "  [LEGACY INPUT %d] ID=%u GPIO=%d Name='%s' Role='%s' Backend=%u",
+                 i, input_entries[i].id, input_entries[i].gpio, input_entries[i].name,
+                 input_entries[i].role, input_entries[i].backend);
+    }
+    for (int i = 0; i < output_entry_count; i++)
+    {
+        ESP_LOGW(TAG, "  [LEGACY OUTPUT %d] ID=%u GPIO=%d Name='%s' Role='%s' Backend=%u",
+                 i, output_entries[i].id, output_entries[i].gpio, output_entries[i].name,
+                 output_entries[i].role, output_entries[i].backend);
+    }
+
+    io_binding_apply_input_defaults();
+    io_binding_apply_output_defaults();
+    io_binding_persist_inputs();
+    io_binding_persist_outputs();
+
+    ESP_LOGI(TAG, "MIGRACAO NVS CONCLUIDA: %d inputs (DI00..DI%02d) e %d outputs (DO00..DO%02d) persistidos com sucesso",
+             input_entry_count, input_entry_count - 1, output_entry_count, output_entry_count - 1);
+}
+
 void io_binding_init(void)
 {
     gpio_restart_required = false;
     io_binding_apply_input_defaults();
     io_binding_apply_output_defaults();
     io_binding_load_inputs();
+    io_binding_ensure_analog_inputs();
     io_binding_load_outputs();
     io_binding_resolve_cross_conflicts_after_load();
+    io_binding_validate_and_migrate_nvs();
 }
 
 bool io_binding_get_input(uint16_t id, io_binding_input_view_t *out)
@@ -1502,6 +1754,10 @@ io_binding_result_t io_binding_set_input_ex(uint16_t id,
             endpoint_index = 6;
         else if (resolved_gpio == GPIO_NUM_35)
             endpoint_index = 7;
+        else if (resolved_gpio == GPIO_NUM_36)
+            endpoint_index = 0;
+        else if (resolved_gpio == GPIO_NUM_39)
+            endpoint_index = 3;
     }
     else
     {
@@ -1803,6 +2059,73 @@ int io_binding_export_mcp_endpoints(int instance, io_binding_mcp_endpoint_view_t
 
     return total;
 }
+
+int io_binding_export_gpio_inventory(device_gpio_inventory_item_t *out_items, int max_items)
+{
+    if (!out_items || max_items <= 0)
+        return 0;
+
+    int count = device_profile_export_gpio_inventory(out_items, max_items);
+
+    for (int i = 0; i < count; i++)
+    {
+        device_gpio_inventory_item_t *item = &out_items[i];
+        int g = item->gpio;
+
+        /* If hardware already marked it as RESERVED, keep RESERVED */
+        if (item->state == DEVICE_GPIO_STATE_RESERVED)
+            continue;
+
+        /* Check if occupied by an Input */
+        for (int in = 0; in < input_entry_count; in++)
+        {
+            if ((input_entries[in].backend == (uint8_t)DEVICE_CHANNEL_BACKEND_GPIO ||
+                 input_entries[in].backend == (uint8_t)DEVICE_CHANNEL_BACKEND_ADC_NATIVE) &&
+                input_entries[in].gpio == g)
+            {
+                item->state = DEVICE_GPIO_STATE_IN_USE_INPUT;
+                item->state_str = "IN_USE_INPUT";
+                item->bound_id = input_entries[in].id;
+                item->bound_name = input_entries[in].name;
+                item->bound_role = input_entries[in].role;
+                if (input_entries[in].channel_class == DEVICE_CHANNEL_CLASS_ANALOG_INPUT)
+                {
+                    snprintf(item->plc_channel, sizeof(item->plc_channel), "AI%02u", (unsigned int)(input_entries[in].id - ENDAP_INPUT_12_ID));
+                }
+                else if (input_entries[in].id >= ENDAP_INPUT_BASE_ID && input_entries[in].id < ENDAP_INPUT_BASE_ID + 16)
+                {
+                    snprintf(item->plc_channel, sizeof(item->plc_channel), "DI%02u", (unsigned int)(input_entries[in].id - ENDAP_INPUT_BASE_ID));
+                }
+                break;
+            }
+        }
+
+        if (item->state == DEVICE_GPIO_STATE_IN_USE_INPUT)
+            continue;
+
+        /* Check if occupied by an Output */
+        for (int out = 0; out < output_entry_count; out++)
+        {
+            if (output_entries[out].backend == (uint8_t)DEVICE_CHANNEL_BACKEND_GPIO &&
+                output_entries[out].gpio == g)
+            {
+                item->state = DEVICE_GPIO_STATE_IN_USE_OUTPUT;
+                item->state_str = "IN_USE_OUTPUT";
+                item->bound_id = output_entries[out].id;
+                item->bound_name = output_entries[out].name;
+                item->bound_role = output_entries[out].role;
+                if (output_entries[out].id >= ENDAP_OUTPUT_BASE_ID && output_entries[out].id < ENDAP_OUTPUT_BASE_ID + 16)
+                {
+                    snprintf(item->plc_channel, sizeof(item->plc_channel), "DO%02u", (unsigned int)(output_entries[out].id - ENDAP_OUTPUT_BASE_ID));
+                }
+                break;
+            }
+        }
+    }
+
+    return count;
+}
+
 bool io_binding_gpio_restart_required(void)
 {
     return gpio_restart_required;

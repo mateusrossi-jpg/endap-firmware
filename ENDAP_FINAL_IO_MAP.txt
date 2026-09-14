@@ -1,0 +1,40 @@
+================================================================================
+ENDAP v15.4+ — FINAL I/O MATRIX & HARDWARE MAPPING
+================================================================================
+
+1. CANAIS USADOS NA DEMONSTRAÇÃO OFICIAL
+--------------------------------------------------------------------------------
+Node | Canal | GPIO | Tipo | Alias                  | Polaridade  | Safe Value | Função
+--------------------------------------------------------------------------------
+ESP1 | DI00  | 18   | DI   | Botão de Teste         | Active-Low  | N/A        | Entrada digital com pull-up interno
+ESP1 | DI01  | 19   | DI   | Sensor de Teste        | Active-Low  | N/A        | Entrada digital secundária
+ESP1 | DO00  | 2    | DO   | Indicador / LED Teste  | Active-Low  | OFF (0)    | Saída do atuador / LED da placa
+ESP1 | DO01  | 4    | DO   | Atuador de Teste       | Active-Low  | OFF (0)    | Saída para relé óptico 1
+ESP2 | DI00  | 18   | DI   | Sensor Remoto Campo    | Active-Low  | N/A        | Sensor do nó de campo
+ESP2 | DO00  | 4    | DO   | Ventilação Viveiro     | Active-Low  | OFF (0)    | Relé de campo
+
+--------------------------------------------------------------------------------
+2. CANAIS ANALÓGICOS & SENSORES DISPONÍVEIS
+--------------------------------------------------------------------------------
+Node | Canal | GPIO | Tipo | Alias                  | Escala Padrão      | Função
+--------------------------------------------------------------------------------
+ESP1 | AI00  | 34   | AI   | Sensor Analógico 1     | 0 a 10.0 bar       | ADC1 CH6 (Input Only)
+ESP1 | AI01  | 35   | AI   | Sensor Analógico 2     | 0 a 100.0 %        | ADC1 CH7 (Input Only)
+ESP1 | SENS1 | 21/22| I2C  | AHT10 (Temp & Umid)    | °C / %             | Barramento I2C compartilhado
+ESP1 | SENS2 | 23   | 1-W  | DS18B20 (Temp)         | -55 a +125 °C      | Barramento OneWire
+
+--------------------------------------------------------------------------------
+3. BARRAMENTOS PROTEGIDOS & RESERVADOS (NÃO UTILIZAR COMO I/O GERAL)
+--------------------------------------------------------------------------------
+GPIO      | Periférico              | Estado       | Motivo de Bloqueio
+--------------------------------------------------------------------------------
+GPIO 25   | RS485 TX                | RESERVADO    | Enlace serial fieldbus industrial
+GPIO 26   | RS485 RX                | RESERVADO    | Enlace serial fieldbus industrial
+GPIO 27   | RS485 DE/RE (Direction) | RESERVADO    | Controle de direção half-duplex
+GPIO 13   | W5500 MOSI              | CONDICIONAL  | Barramento Ethernet SPI
+GPIO 12   | W5500 MISO              | CONDICIONAL  | Barramento Ethernet SPI
+GPIO 14   | W5500 SCLK              | CONDICIONAL  | Barramento Ethernet SPI
+GPIO 15   | W5500 CS                | CONDICIONAL  | Chip select Ethernet SPI
+GPIO 6-11 | SPI Flash Interna       | BLOQUEADO    | Memória de programa do ESP32 (Crash se tocado)
+GPIO 1, 3 | UART0 TX/RX Console     | BLOQUEADO    | Console serial de depuração
+================================================================================

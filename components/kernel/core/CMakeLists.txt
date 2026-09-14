@@ -1,5 +1,5 @@
 idf_component_register(
-    SRCS "core_boot.c" "system_diag.c"
+    SRCS "core_boot.c"
     INCLUDE_DIRS "include"
     REQUIRES
         rs485
@@ -16,6 +16,7 @@ idf_component_register(
         automation ladder
         failsafe
         cluster
+        system_diag
         device_profile
         esp_event
         esp_netif
@@ -29,7 +30,6 @@ idf_component_register(
         input_learning
         io_binding
         pve
-        dashboard
         snapshot
         network_v1
     PRIV_REQUIRES esp_driver_uart app_update kernel_trace

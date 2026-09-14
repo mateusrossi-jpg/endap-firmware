@@ -138,12 +138,17 @@ static bool fieldbus_should_run_rs485_master(void)
         return false;
 
     /*
-     * Regra v1:
-     * - nó com transporte IP habilitado (Ethernet ou Wi‑Fi) pode atuar como gateway/mestre do barramento
-     * - nó RS485-only permanece passivo/respondedor
+     * Regra oficial ENDAP:
+     * - Nó com perfil Gateway atua como Mestre do barramento RS485
+     * - Nós de Campo (Field / Relay / Sensor) atuam como respondedores passivos (Slave)
      */
-    return device_profile_transport_enabled(DEVICE_PROFILE_TRANSPORT_ETHERNET) ||
-           device_profile_transport_enabled(DEVICE_PROFILE_TRANSPORT_WIFI);
+    const node_profile_desc_t *curr_prof = device_profile_get_current();
+    if (curr_prof && curr_prof->type == NODE_PROFILE_GATEWAY)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 /* ============================================================

@@ -5,6 +5,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifndef CONFIG_ENDAP_RS485_ENABLED
+#define CONFIG_ENDAP_RS485_ENABLED 0
+#endif
+
 typedef struct
 {
     uint16_t id;
@@ -225,6 +229,37 @@ device_profile_network_config_result_t device_profile_set_transport_policy(bool 
 
 bool device_profile_gpio_is_input_only(gpio_num_t gpio);
 
+typedef enum
+{
+    DEVICE_GPIO_STATE_AVAILABLE = 0,
+    DEVICE_GPIO_STATE_IN_USE_INPUT = 1,
+    DEVICE_GPIO_STATE_IN_USE_OUTPUT = 2,
+    DEVICE_GPIO_STATE_RESERVED = 3,
+    DEVICE_GPIO_STATE_DISABLED_BY_PROFILE = 4,
+} device_gpio_resource_state_t;
+
+typedef struct
+{
+    int gpio;
+    bool input_capable;
+    bool output_capable;
+    bool analog_capable;
+    device_gpio_resource_state_t state;
+    const char *state_str;
+    const char *reserved_by;
+    uint16_t bound_id;
+    const char *bound_name;
+    const char *bound_role;
+    char plc_channel[8];
+} device_gpio_inventory_item_t;
+
+#define DEVICE_GPIO_INVENTORY_MAX 32
+
+int device_profile_gpio_inventory_count(void);
+const device_gpio_inventory_item_t *device_profile_gpio_inventory_at(int index);
+int device_profile_export_gpio_inventory(device_gpio_inventory_item_t *out_items, int max_items);
+const char *device_profile_gpio_reserved_by(gpio_num_t gpio);
+
 int device_profile_copy_local_io_ids(uint16_t *out_ids, int max_ids);
 
 int device_profile_default_input_count(void);
@@ -245,6 +280,20 @@ typedef enum
 #define NODE_PROFILE_MAX (NODE_PROFILE_CUSTOM + 1)
 
 /**
+ * @brief Descritor de canal PLC pré-definido por perfil/template.
+ */
+typedef struct
+{
+    const char *plc_code;                  /*!< Código canônico PLC ("DI00", "DI01", "DO00", "DO01", "AI00", "AO00") */
+    device_channel_class_t channel_class;  /*!< DIGITAL_INPUT, DIGITAL_OUTPUT, ANALOG_INPUT, ANALOG_OUTPUT */
+    uint16_t channel_index;                /*!< Índice sequencial 0, 1, ... */
+    gpio_num_t gpio;                       /*!< GPIO físico correspondente ou GPIO_NUM_NC se indisponível */
+    const char *default_name;              /*!< Nome padrão operacional do equipamento */
+    bool available;                        /*!< true se canal físico ativo/disponível, false se desabilitado (ex: AO00) */
+    const char *role;                      /*!< Papel funcional */
+} plc_channel_desc_t;
+
+/**
  * @brief Descritor imutável de perfil de nó.
  */
 typedef struct
@@ -256,10 +305,27 @@ typedef struct
     const device_network_profile_t *network;         /*!< Configuração padrão de rede para este perfil */
     const device_channel_inventory_group_t *chan_groups; /*!< Grupos de inventário de canais */
     size_t chan_groups_len;                          /*!< Quantidade de grupos de canais */
+    const plc_channel_desc_t *plc_channels;          /*!< Canais PLC pré-definidos do perfil */
+    size_t plc_channels_len;                         /*!< Quantidade de canais PLC pré-definidos */
 } node_profile_desc_t;
 
 int device_profile_default_automation_count(void);
 const device_default_automation_t *device_profile_default_automation_at(int index);
+
+/**
+ * @brief Obtém a contagem de canais PLC pré-definidos para o perfil.
+ */
+int device_profile_plc_channel_count(node_profile_t type);
+
+/**
+ * @brief Obtém o canal PLC pré-definido pelo índice.
+ */
+const plc_channel_desc_t *device_profile_plc_channel_at(node_profile_t type, int index);
+
+/**
+ * @brief Busca o canal PLC pelo código canônico ("DI00", "DO00", "AI00", etc.).
+ */
+const plc_channel_desc_t *device_profile_get_plc_channel(node_profile_t type, const char *plc_code);
 
 /**
  * @brief Verifica se um determinado tipo de perfil é válido.

@@ -227,14 +227,14 @@ static void telemetry_task(void *arg)
                 aht_hum_val = (int32_t)(sim_aht_hum * 10.0);
             }
 
-            state_set_int(14, aht_temp_val);
-            state_set_int(15, aht_hum_val);
             pve_update(&pve_variables[2], aht_temp_val);
             pve_update(&pve_variables[3], aht_hum_val);
         }
         else
         {
             aht10_inited = false;
+            pve_clear_variable(&pve_variables[2]);
+            pve_clear_variable(&pve_variables[3]);
         }
 
         if (sensors && sensors->dht11_enabled)
@@ -271,14 +271,14 @@ static void telemetry_task(void *arg)
                 dht_hum_val = (int32_t)(sim_dht_hum * 10.0);
             }
 
-            state_set_int(17, dht_temp_val);
-            state_set_int(18, dht_hum_val);
             pve_update(&pve_variables[5], dht_temp_val);
             pve_update(&pve_variables[6], dht_hum_val);
         }
         else
         {
             dht11_inited = false;
+            pve_clear_variable(&pve_variables[5]);
+            pve_clear_variable(&pve_variables[6]);
         }
 
         if (sensors && sensors->ds18b20_enabled)
@@ -301,12 +301,12 @@ static void telemetry_task(void *arg)
 
                 ds_temp_val = (int32_t)(sim_ds_temp * 10.0);
             }
-            state_set_int(16, ds_temp_val);
             pve_update(&pve_variables[4], ds_temp_val);
         }
         else
         {
             ds18b20_inited = false;
+            pve_clear_variable(&pve_variables[4]);
         }
 
         vTaskDelay(pdMS_TO_TICKS(1000));

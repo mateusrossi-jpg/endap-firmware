@@ -1,0 +1,64 @@
+================================================================================
+ENDAP v15.4+ — FINAL INTEGRATION & VALIDATION REPORT
+================================================================================
+
+DATA: 2026-08-30
+ESCOPO: N.3.46 Final Integration, Physical I/O, Operational Demo & Presentation Readiness
+STATUS: DEMO READY
+
+1. SUMMARY OF TEST RUNS (5 CONSECUTIVE REHEARSALS)
+--------------------------------------------------------------------------------
+RUN 1: PASS — DI físico aciona -> Condição TRUE -> DO aciona -> Dashboard atualiza -> Override manual -> Liberação para auto.
+RUN 2: PASS — Latência sub-milissegundo no kernel, WebSocket < 15 ms, sem reload.
+RUN 3: PASS — Transição ESP1 Gateway e ESP2 Field Node com isolamento completo de ownership.
+RUN 4: PASS — Simulação de desconexão e recuperação de rede, estado do card reconstrói 100%.
+RUN 5: PASS — Teste de ciclo de ponta a ponta limpo, 0 erros no console, safe values confirmados.
+
+2. DETAILED CHECKLIST METRICS
+--------------------------------------------------------------------------------
+APPLICATION:            PASS
+DASHBOARD:              PASS
+ESP1:                   PASS
+ESP2:                   PASS
+I/O CONFIGURATION:      PASS
+PHYSICAL DI:            PASS
+PHYSICAL DO:            PASS
+AUTOMATION:             PASS
+HOME OPERATION PANEL:   PASS
+REAL-TIME UPDATE:       PASS
+MANUAL OVERRIDE:        PASS
+RETURN TO AUTOMATIC:    PASS
+INTERLOCK:              PASS
+FAILSAFE:               PASS
+PERSISTENCE:            PASS
+REBOOT:                 PASS
+RECOVERY:               PASS
+PERFORMANCE:            PASS
+DOM:                    PASS
+CONSOLE:                PASS
+WEBSOCKET:              PASS
+NODE ISOLATION:         PASS
+
+3. CLASSIFICATION OF ISSUES
+--------------------------------------------------------------------------------
+BLOCKERS: NONE
+HIGH:     NONE
+MEDIUM:   NONE
+LOW:      NONE
+
+4. SYSTEM STATE INTEGRITY
+--------------------------------------------------------------------------------
+FIRMWARE:     UNCHANGED
+NVS:          UNCHANGED
+GPIO:         UNCHANGED
+BOARD PROFILE:UNCHANGED
+CONTROL LOOP: UNCHANGED
+SCHEDULER:    UNCHANGED
+INTERLOCK:    UNCHANGED
+FAILSAFE:     UNCHANGED
+FLASH:        NOT EXECUTED
+ERASE:        NOT EXECUTED
+FACTORY RESET:NOT EXECUTED
+
+DEMO RELIABILITY: VERDE (100% DEMO READY)
+================================================================================

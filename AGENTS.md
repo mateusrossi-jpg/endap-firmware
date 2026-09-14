@@ -70,7 +70,7 @@ Componentes críticos já consolidados:
 - observabilidade de determinismo
 
 Pipeline principal:
-`IO → Fieldbus → Automation → Events → Diagnostics`
+`IO → Fieldbus → Automation → Events`
 
 ### Regras obrigatórias do kernel
 

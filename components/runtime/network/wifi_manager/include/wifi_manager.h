@@ -42,6 +42,7 @@ typedef struct
 } wifi_manager_status_t;
 
 void wifi_manager_init(void);
+void wifi_manager_confirm_onboarding(void);
 esp_err_t wifi_manager_save(const char *ssid, const char *pass);
 esp_err_t wifi_manager_try_reconnect(void);
 esp_err_t wifi_manager_force_recovery_ap(void);

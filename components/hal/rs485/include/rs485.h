@@ -8,9 +8,10 @@ typedef struct
     int tx_pin;
     int rx_pin;
     int de_pin;
+    int re_pin;
     int baudrate;
 
-    /* false = DE externo; true = auto-direction (TTL485-V2.0) */
+    /* false = DE/RE externo; true = auto-direction (TTL485-V2.0) */
     bool auto_direction;
 
     /* Guardas opcionais; se 0, o HAL aplica defaults conforme o modo. */

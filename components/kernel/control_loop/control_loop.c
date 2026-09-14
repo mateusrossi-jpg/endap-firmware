@@ -75,7 +75,6 @@ static uint32_t phase_io_apply_max = 0;
 static uint32_t phase_fieldbus_max = 0;
 static uint32_t phase_automation_max = 0;
 static uint32_t phase_events_max = 0;
-static uint32_t phase_diag_max = 0;
 
 static uint32_t *phase_max_table[] =
 {
@@ -83,8 +82,7 @@ static uint32_t *phase_max_table[] =
     &phase_io_apply_max,
     &phase_fieldbus_max,
     &phase_automation_max,
-    &phase_events_max,
-    &phase_diag_max
+    &phase_events_max
 };
 
 /* ============================================================
@@ -96,11 +94,10 @@ typedef void (*phase_fn_t)(void);
 static const phase_fn_t phase_table[] =
 {
     scheduler_run_io,
-    scheduler_run_io_apply,
     scheduler_run_fieldbus,
     scheduler_run_automation,
-    scheduler_run_events,
-    scheduler_run_diagnostics
+    scheduler_run_io_apply,
+    scheduler_run_events
 };
 
 #define PHASE_COUNT (sizeof(phase_table) / sizeof(phase_fn_t))
@@ -298,8 +295,7 @@ static void IRAM_ATTR control_loop_run(void *arg)
                 io_phase_max,
                 phase_fieldbus_max,
                 phase_automation_max,
-                phase_events_max,
-                phase_diag_max
+                phase_events_max
             );
 
             jitter_sum = 0;
@@ -313,7 +309,6 @@ static void IRAM_ATTR control_loop_run(void *arg)
             phase_fieldbus_max = 0;
             phase_automation_max = 0;
             phase_events_max = 0;
-            phase_diag_max = 0;
         }
 
         watchdog_feed(WD_CONTROL_LOOP);

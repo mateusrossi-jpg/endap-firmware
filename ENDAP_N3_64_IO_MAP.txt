@@ -1,0 +1,42 @@
+================================================================================
+ENDAP N.3.64 — PHYSICAL I/O MAP & HARDWARE SAFETY AUDIT
+================================================================================
+
+Target Hardware: ESP32-WROOM-32 (Node Identity: Clean Profile / Multi-Node Ready)
+
+CANAL | GPIO   | TIPO        | DISPONÍVEL | RESERVADO | FUNÇÃO / PINAGEM RECOMENDADA
+------+--------+-------------+------------+-----------+-----------------------------------------
+AI00  | GPIO34 | Input Only  | SIM        | NÃO       | ADC1 CH6 (0..3.3V - Leitura Analógica)
+AI01  | GPIO35 | Input Only  | SIM        | NÃO       | ADC1 CH7 (Sensor de Umidade do Solo)
+AI02  | GPIO36 | Input Only  | SIM        | NÃO       | ADC1 CH0 (VP / Entrada Analógica)
+AI03  | GPIO39 | Input Only  | SIM        | NÃO       | ADC1 CH3 (VN / Entrada Analógica)
+------+--------+-------------+------------+-----------+-----------------------------------------
+DI00  | GPIO16 | Input/Output| SIM        | NÃO       | Entrada Digital 00 (Opto/Chave)
+DI01  | GPIO17 | Input/Output| SIM        | NÃO       | Entrada Digital 01 (Opto/Chave)
+DI02  | GPIO21 | Input/Output| SIM        | NÃO       | Entrada Digital 02 / SDA Compartilhado
+DI03  | GPIO_NC| N/A         | NÃO        | SIM       | Entrada Desativada (Reservado Output DO00 / GPIO22)
+DI04  | GPIO27 | Input/Output| SIM        | NÃO       | Entrada Digital 04 (Opto/Chave)
+DI05  | GPIO26 | Input/Output| SIM        | NÃO       | Entrada Digital 05 (Opto/Chave)
+------+--------+-------------+------------+-----------+-----------------------------------------
+DO00  | GPIO22 | Input/Output| SIM        | NÃO       | Saída Digital / Relé 00 (Migrado de GPIO2 p/ evitar strapping boot)
+DO01  | GPIO4  | Input/Output| SIM        | NÃO       | Saída Digital / Relé 01
+DO02  | GPIO5  | Input/Output| SIM        | NÃO       | Saída Digital / Relé 02
+DO03  | GPIO14 | Input/Output| SIM        | NÃO       | Saída Digital / Relé 03
+DO04  | GPIO25 | Input/Output| SIM        | NÃO       | Saída Digital / Relé 04 (DAC1 / Digital)
+DO05  | GPIO33 | Input/Output| SIM        | NÃO       | Saída Digital / Relé 05
+------+--------+-------------+------------+-----------+-----------------------------------------
+BAR   | GPIO21 | I2C SDA     | CONDICIONAL| NÃO       | AHT10 / AHT20 SDA (quando ativado)
+BAR   | GPIO22 | I2C SCL     | CONDICIONAL| NÃO       | AHT10 / AHT20 SCL (quando ativado)
+------+--------+-------------+------------+-----------+-----------------------------------------
+RES   | GPIO1  | UART0 TXD   | NÃO        | SIM       | Console Serial / Logs do Sistema
+RES   | GPIO3  | UART0 RXD   | NÃO        | SIM       | Console Serial / Flasher
+RES   | GPIO6  | SPI Flash   | NÃO        | SIM       | Memória Flash Integrada (CLK)
+RES   | GPIO7  | SPI Flash   | NÃO        | SIM       | Memória Flash Integrada (SD0)
+RES   | GPIO8  | SPI Flash   | NÃO        | SIM       | Memória Flash Integrada (SD1)
+RES   | GPIO9  | SPI Flash   | NÃO        | SIM       | Memória Flash Integrada (SD2)
+RES   | GPIO10 | SPI Flash   | NÃO        | SIM       | Memória Flash Integrada (SD3)
+RES   | GPIO11 | SPI Flash   | NÃO        | SIM       | Memória Flash Integrada (CMD)
+RES   | GPIO0  | Strapping   | NÃO        | SIM       | Boot mode strap pin
+RES   | GPIO12 | Strapping   | NÃO        | SIM       | MTDI (VPP flash voltage strap)
+RES   | GPIO15 | Strapping   | NÃO        | SIM       | MTDO (Boot debug silent strap)
+================================================================================

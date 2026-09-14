@@ -1,0 +1,38 @@
+================================================================================
+ENDAP v15.4+ — FINAL DEMO PRE-FLIGHT CHECKLIST
+================================================================================
+
+[ ] 1. HARDWARE & ALIMENTAÇÃO
+    [ ] ESP1 (Gateway) conectado e alimentado via 5V estável.
+    [ ] ESP2 (Field Node) conectado e alimentado via 5V estável.
+    [ ] GND comum conectado entre barramentos e sensores se aplicável.
+    [ ] Nenhuma carga indutiva de potência desprotegida na bancada.
+    [ ] LED / Indicador óptico de teste conectado em GPIO 2 (com resistor limitador).
+    [ ] Botão táctil de teste conectado em GPIO 18 (com pull-up ativo).
+
+[ ] 2. CONECTIVIDADE & REDE LOCAL
+    [ ] Wi-Fi / AP local "ENDAP-AP" ativo ou rede Ethernet funcional.
+    [ ] Computador / Tablet conectado à mesma sub-rede (ex: 192.168.4.x).
+    [ ] Ping estável para o Gateway (< 5 ms em Wi-Fi, < 1 ms em Ethernet).
+    [ ] Cluster entre ESP1 e ESP2 ativo (estado ONLINE no header da Dashboard).
+
+[ ] 3. DASHBOARD & NAVEGADOR
+    [ ] Navegador Chromium/Firefox aberto na URL: http://192.168.4.1/dash.
+    [ ] Sessão local validada (sem erros de autenticação).
+    [ ] Indicador "Ao vivo" com dot verde no canto superior direito.
+    [ ] WebSocket conectado (nenhum alerta de desconexão intermitente).
+    [ ] Aba "Operação" selecionada como tela inicial padrão.
+
+[ ] 4. I/O & AUTOMAÇÃO
+    [ ] Matriz de I/O verificada: GPIOs protegidos (RS485 e SPI flash intocados).
+    [ ] DI00 configurado como GPIO 18 (Active-Low com Pull-Up).
+    [ ] DO00 configurado como GPIO 2 (Active-Low ou Active-High conforme hardware).
+    [ ] Safe Value de todas as saídas configurado para OFF (0).
+    [ ] Regra de automação salva no NVS (DI00 -> DO00 modo FOLLOW).
+    [ ] Card "Automações em Execução" renderizado na aba "Operação".
+
+[ ] 5. PLANO B & CONTINGÊNCIA
+    [ ] Em caso de falha de sensor: Chave táctil manual disponível em GPIO 18.
+    [ ] Em caso de lentidão Wi-Fi: Cabo Ethernet SPI W5500 pronto para conexão direta.
+    [ ] Em caso de reboot do notebook: URL salva nos favoritos do navegador.
+================================================================================

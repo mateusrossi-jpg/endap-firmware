@@ -10,6 +10,7 @@
 #include "event_bus.h"
 #include "io_command.h"
 #include "state.h"
+#include "ladder_engine.h"
 
 /* ============================================================
    CONFIG (🔥 CONTROLE HARD REAL-TIME)
@@ -62,6 +63,7 @@ void IRAM_ATTR scheduler_run_fieldbus(void)
 void IRAM_ATTR scheduler_run_automation(void)
 {
     automation_engine_tick_1ms();
+    ladder_engine_run();
     control_kernel_task();
 }
 
@@ -72,13 +74,4 @@ void IRAM_ATTR scheduler_run_automation(void)
 void IRAM_ATTR scheduler_run_events(void)
 {
     event_bus_dispatch_budgeted(EVENT_BUS_BUDGET);
-}
-
-/* ============================================================
-   DIAGNOSTICS (🔥 FORA DO CRÍTICO)
-============================================================ */
-
-void IRAM_ATTR scheduler_run_diagnostics(void)
-{
-    /* diagnostics processados por task auxiliar em core 0 */
 }

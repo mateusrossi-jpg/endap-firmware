@@ -171,4 +171,6 @@ int io_binding_mcp_instance_count(void);
 int io_binding_export_mcp_instances(io_binding_mcp_instance_view_t *out, int max_instances);
 int io_binding_export_mcp_endpoints(int instance, io_binding_mcp_endpoint_view_t *out, int max_endpoints);
 
+int io_binding_export_gpio_inventory(device_gpio_inventory_item_t *out_items, int max_items);
+
 bool io_binding_gpio_restart_required(void);

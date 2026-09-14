@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define RS485_MAX_NODES 16
+#define RS485_MAX_NODES 64
 #define RS485_MAX_RETRY 3
 
 /* INIT */

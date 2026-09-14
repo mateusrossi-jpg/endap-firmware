@@ -9,14 +9,12 @@ typedef struct
     uint32_t fieldbus_deadline_us;
     uint32_t automation_deadline_us;
     uint32_t events_deadline_us;
-    uint32_t diagnostics_deadline_us;
 
     uint32_t io_overruns;
     uint32_t io_apply_overruns;
     uint32_t fieldbus_overruns;
     uint32_t automation_overruns;
     uint32_t events_overruns;
-    uint32_t diagnostics_overruns;
 } phase_monitor_snapshot_t;
 
 void phase_monitor_check(

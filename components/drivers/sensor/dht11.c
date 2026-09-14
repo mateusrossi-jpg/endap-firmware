@@ -14,7 +14,7 @@ void dht11_set_gpio(gpio_num_t gpio)
     dht_gpio = gpio;
 }
 
-#define DHT11_TIMEOUT 10000
+#define DHT11_TIMEOUT 150
 
 static esp_err_t dht11_init(void)
 {
@@ -59,12 +59,14 @@ static esp_err_t dht11_read(float *temp, float *humi)
     for (int i = 0; i < 40; i++) {
         timeout = DHT11_TIMEOUT;
         while(gpio_get_level(dht_gpio) == 0 && timeout--) esp_rom_delay_us(1); // Wait for high (bit start)
+        if (timeout == 0) { portEXIT_CRITICAL(&dht_mux); return ESP_ERR_TIMEOUT; }
         
         esp_rom_delay_us(40); // Wait 40us to check level
         if (gpio_get_level(dht_gpio)) {
             data[i/8] |= (1 << (7 - (i%8)));
             timeout = DHT11_TIMEOUT;
             while(gpio_get_level(dht_gpio) == 1 && timeout--) esp_rom_delay_us(1); // Wait for low (bit end)
+            if (timeout == 0) { portEXIT_CRITICAL(&dht_mux); return ESP_ERR_TIMEOUT; }
         }
     }
     

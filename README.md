@@ -78,7 +78,7 @@ Control loop:
 - `1 ms` deterministic cycle driven by GPTimer
 
 Scheduler phases:
-- `IO -> Fieldbus -> Automation -> Events -> Diagnostics`
+- `IO -> Fieldbus -> Automation -> Events`
 
 Core observability:
 - determinism probe

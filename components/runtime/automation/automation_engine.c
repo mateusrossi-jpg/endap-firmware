@@ -34,7 +34,8 @@
 #define AUTOMATION_NAMESPACE "automation"
 #define AUTOMATION_KEY_RULES  "rules"
 #define AUTOMATION_MAGIC      0x4155544FU
-#define AUTOMATION_VERSION    3U
+#define AUTOMATION_VERSION    4U
+#define AUTOMATION_VERSION_V3 3U
 #define AUTOMATION_VERSION_V2 2U
 #define AUTOMATION_VERSION_V1 1U
 
@@ -44,8 +45,18 @@ typedef struct
     uint16_t version;
     uint16_t count;
     automation_node_t nodes[AUTOMATION_ENGINE_MAX_NODES];
+    automation_interlock_t interlocks[AUTOMATION_ENGINE_MAX_NODES];
     uint32_t crc;
 } automation_blob_t;
+
+typedef struct
+{
+    uint32_t magic;
+    uint16_t version;
+    uint16_t count;
+    automation_node_t nodes[AUTOMATION_ENGINE_MAX_NODES];
+    uint32_t crc;
+} automation_blob_v3_t;
 
 typedef struct
 {
@@ -88,6 +99,7 @@ typedef struct
 ============================================================ */
 
 static automation_node_t nodes[AUTOMATION_ENGINE_MAX_NODES];
+static automation_interlock_t interlocks[AUTOMATION_ENGINE_MAX_NODES];
 static int node_count = 0;
 static bool persisted_config = false;
 static uint32_t automation_tick_ms = 0;
@@ -362,6 +374,42 @@ static bool automation_eval_rule(const automation_node_t *node, int32_t value)
         case AUTOMATION_OP_LT: return value < node->threshold;
         default: return false;
     }
+}
+
+static bool automation_eval_condition(const automation_condition_t *cond)
+{
+    int32_t val = 0;
+    if (!state_get_int(cond->channel, &val))
+        return false;
+
+    switch (cond->op)
+    {
+        case AUTOMATION_OP_EQ: return val == (int32_t)cond->target_val;
+        case AUTOMATION_OP_NE: return val != (int32_t)cond->target_val;
+        case AUTOMATION_OP_GT: return val > (int32_t)cond->target_val;
+        case AUTOMATION_OP_GE: return val >= (int32_t)cond->target_val;
+        case AUTOMATION_OP_LE: return val <= (int32_t)cond->target_val;
+        case AUTOMATION_OP_LT: return val < (int32_t)cond->target_val;
+        default: return val == (int32_t)cond->target_val;
+    }
+}
+
+static bool automation_eval_interlock(const automation_interlock_t *interlock)
+{
+    if (!interlock || !interlock->enabled || interlock->cond_count == 0)
+        return true; /* Sem interlock ativo -> permissão concedida (regra legada / padrão) */
+
+    if (interlock->cond_count == 1)
+        return automation_eval_condition(&interlock->conditions[0]);
+
+    bool c0 = automation_eval_condition(&interlock->conditions[0]);
+    bool c1 = automation_eval_condition(&interlock->conditions[1]);
+
+    if (interlock->logic_op == 1) /* OR */
+        return c0 || c1;
+
+    /* Default: 0 = AND */
+    return c0 && c1;
 }
 
 static uint32_t automation_deadline_after(uint16_t duration_ms)
@@ -656,7 +704,10 @@ static void automation_persist(void)
     blob.count = (uint16_t)node_count;
 
     if (node_count > 0)
+    {
         memcpy(blob.nodes, nodes, sizeof(nodes[0]) * (size_t)node_count);
+        memcpy(blob.interlocks, interlocks, sizeof(interlocks[0]) * (size_t)node_count);
+    }
 
     blob.crc = automation_crc32((const uint8_t *)&blob, sizeof(blob) - sizeof(blob.crc));
 
@@ -670,7 +721,7 @@ static void automation_persist(void)
         endap_nvs_commit(nvs) == ESP_OK)
     {
         persisted_config = true;
-        ESP_LOGI(TAG, "Automacao persistida (%d regra(s))", node_count);
+        ESP_LOGI(TAG, "Automacao persistida (%d regra(s) com interlock)", node_count);
     }
     else
     {
@@ -738,12 +789,72 @@ static void automation_load(void)
         }
 
         if (blob.count > 0)
+        {
             memcpy(nodes, blob.nodes, sizeof(nodes[0]) * blob.count);
+            memcpy(interlocks, blob.interlocks, sizeof(interlocks[0]) * blob.count);
+        }
 
         node_count = blob.count;
         persisted_config = true;
 
-        ESP_LOGI(TAG, "Automacao restaurada do NVS (%d regra(s))", node_count);
+        ESP_LOGI(TAG, "Automacao restaurada do NVS (%d regra(s) com interlock)", node_count);
+        return;
+    }
+
+    if (len == sizeof(automation_blob_v3_t))
+    {
+        automation_blob_v3_t blob = {0};
+        size_t read_len = sizeof(blob);
+        uint32_t crc;
+
+        if (nvs_get_blob(nvs, AUTOMATION_KEY_RULES, &blob, &read_len) != ESP_OK)
+        {
+            nvs_close(nvs);
+            return;
+        }
+
+        nvs_close(nvs);
+
+        crc = automation_crc32((const uint8_t *)&blob, sizeof(blob) - sizeof(blob.crc));
+
+        if (blob.magic != AUTOMATION_MAGIC ||
+            blob.version != AUTOMATION_VERSION_V3 ||
+            blob.count > AUTOMATION_ENGINE_MAX_NODES ||
+            blob.crc != crc)
+        {
+            ESP_LOGW(TAG, "Blob v3 de automacao invalido");
+            return;
+        }
+
+        for (uint16_t i = 0; i < blob.count; i++)
+        {
+            if (!automation_rule_is_valid(&blob.nodes[i]))
+            {
+                ESP_LOGW(TAG, "Regra v3 de automacao invalida no NVS");
+                return;
+            }
+
+            for (uint16_t j = 0; j < i; j++)
+            {
+                if (automation_rule_conflicts(&blob.nodes[j], &blob.nodes[i]))
+                {
+                    ESP_LOGW(TAG, "Conflito v3 de automacao no NVS");
+                    return;
+                }
+            }
+        }
+
+        if (blob.count > 0)
+        {
+            memcpy(nodes, blob.nodes, sizeof(nodes[0]) * blob.count);
+            memset(interlocks, 0, sizeof(interlocks[0]) * blob.count);
+        }
+
+        node_count = blob.count;
+        persisted_config = true;
+
+        ESP_LOGI(TAG, "Automacao v3 migrada do NVS (%d regra(s))", node_count);
+        automation_persist();
         return;
     }
 
@@ -801,6 +912,7 @@ static void automation_load(void)
             }
 
             nodes[i] = migrated;
+            memset(&interlocks[i], 0, sizeof(interlocks[0]));
         }
 
         node_count = blob.count;
@@ -865,6 +977,7 @@ static void automation_load(void)
             }
 
             nodes[i] = migrated;
+            memset(&interlocks[i], 0, sizeof(interlocks[0]));
         }
 
         node_count = blob.count;
@@ -892,10 +1005,12 @@ static void automation_event_handler(const endap_event_t *ev)
 
     trigger_ms = automation_now_ms();
 
+    /* 1. Avaliação de Trigger para regras onde n->input == ev->source */
     for(int i = 0; i < node_count; i++)
     {
         automation_node_t *n = &nodes[i];
         automation_runtime_t *rt = &runtime_nodes[i];
+        automation_interlock_t *ilk = &interlocks[i];
         bool condition_now;
         bool rising_edge;
 
@@ -907,6 +1022,22 @@ static void automation_event_handler(const endap_event_t *ev)
         rising_edge = condition_now && !rt->condition;
         rt->condition = condition_now ? 1U : 0U;
         automation_diag_mark_eval(i, condition_now, trigger_ms);
+
+        /* Se for acionar a saída (condição verdadeira ou subida), checar permissão de Interlock */
+        if (condition_now || rising_edge)
+        {
+            if (!automation_eval_interlock(ilk))
+            {
+                /* Permissão negada por interlock -> bloqueia comando e registra diagnóstico */
+                automation_diag_mark_action(i,
+                                            n->on_true,
+                                            AUTOMATION_ACTION_BLOCKED_FAILSAFE,
+                                            cluster_io_is_local(n->output),
+                                            cluster_io_get_owner(n->output),
+                                            cluster_io_get_original_owner(n->output));
+                continue;
+            }
+        }
 
         switch (n->mode)
         {
@@ -976,6 +1107,47 @@ static void automation_event_handler(const endap_event_t *ev)
                 break;
         }
     }
+
+    /* 2. GUARDA CONTÍNUA DE INTERTRAVAMENTO:
+       Se o canal modificado (ev->source) fizer parte de um interlock ativo
+       de uma regra cuja saída está atualmente LIGADA, e a permissão caiu,
+       desligar a saída imediatamente (estado seguro). */
+    for(int i = 0; i < node_count; i++)
+    {
+        automation_node_t *n = &nodes[i];
+        automation_interlock_t *ilk = &interlocks[i];
+
+        if (!ilk->enabled || ilk->cond_count == 0)
+            continue;
+
+        bool is_interlock_channel = false;
+        for (int c = 0; c < ilk->cond_count; c++)
+        {
+            if (ilk->conditions[c].channel == ev->source)
+            {
+                is_interlock_channel = true;
+                break;
+            }
+        }
+
+        if (is_interlock_channel)
+        {
+            int32_t out_val = 0;
+            if (state_get_int(n->output, &out_val) && out_val != 0)
+            {
+                /* A saída está ligada; verificar se a permissão foi perdida */
+                if (!automation_eval_interlock(ilk))
+                {
+                    automation_runtime_t *rt = &runtime_nodes[i];
+                    rt->timer_active = 0;
+                    rt->pulse_active = 0;
+                    rt->latched_true = 0;
+
+                    automation_dispatch_output(n->output, n->on_false, i);
+                }
+            }
+        }
+    }
 }
 
 /* ============================================================
@@ -1029,12 +1201,47 @@ automation_result_t automation_engine_add_rule(
         return AUTOMATION_RESULT_FULL;
 
     nodes[node_count] = candidate;
+    memset(&interlocks[node_count], 0, sizeof(interlocks[0]));
     memset(&runtime_nodes[node_count], 0, sizeof(runtime_nodes[0]));
     memset(&rule_diags[node_count], 0, sizeof(rule_diags[0]));
     node_count++;
     automation_persist();
 
+    int32_t current_val = 0;
+    if (state_get_int(input, &current_val))
+    {
+        endap_event_t ev = {
+            .type = EVENT_STATE_CHANGE,
+            .source = (uint16_t)input,
+            .data = current_val
+        };
+        automation_event_handler(&ev);
+    }
+
     return AUTOMATION_RESULT_OK;
+}
+
+bool automation_engine_set_interlock_at(int index, const automation_interlock_t *interlock)
+{
+    if (index < 0 || index >= node_count)
+        return false;
+
+    if (interlock != NULL)
+        interlocks[index] = *interlock;
+    else
+        memset(&interlocks[index], 0, sizeof(interlocks[0]));
+
+    automation_persist();
+    return true;
+}
+
+bool automation_engine_get_interlock_at(int index, automation_interlock_t *out_interlock)
+{
+    if (index < 0 || index >= node_count || out_interlock == NULL)
+        return false;
+
+    *out_interlock = interlocks[index];
+    return true;
 }
 
 bool automation_engine_add_node(
@@ -1099,6 +1306,7 @@ bool automation_engine_remove_node_at(int index)
     for (int i = index; i < (node_count - 1); i++)
     {
         nodes[i] = nodes[i + 1];
+        interlocks[i] = interlocks[i + 1];
         runtime_nodes[i] = runtime_nodes[i + 1];
         rule_diags[i] = rule_diags[i + 1];
     }
@@ -1106,6 +1314,7 @@ bool automation_engine_remove_node_at(int index)
     if (node_count > 0)
     {
         memset(&nodes[node_count - 1], 0, sizeof(nodes[0]));
+        memset(&interlocks[node_count - 1], 0, sizeof(interlocks[0]));
         memset(&runtime_nodes[node_count - 1], 0, sizeof(runtime_nodes[0]));
         memset(&rule_diags[node_count - 1], 0, sizeof(rule_diags[0]));
     }
@@ -1119,6 +1328,7 @@ bool automation_engine_remove_node_at(int index)
 void automation_engine_clear(void)
 {
     memset(nodes, 0, sizeof(nodes));
+    memset(interlocks, 0, sizeof(interlocks));
     memset(runtime_nodes, 0, sizeof(runtime_nodes));
     memset(rule_diags, 0, sizeof(rule_diags));
     node_count = 0;

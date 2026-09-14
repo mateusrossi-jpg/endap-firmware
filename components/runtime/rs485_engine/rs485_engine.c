@@ -35,6 +35,8 @@ static uint16_t self_test_wire_len = 0;
 static uint64_t self_test_ready_us = 0;
 static uint8_t local_node_id = 0;
 static rs485_engine_external_frame_cb_t external_frame_cb = NULL;
+static bool ack_pending = false;
+static rs485_frame_t pending_ack_frame = {0};
 
 static uint16_t rs485_crc16(const uint8_t *data, uint16_t len)
 {
@@ -216,18 +218,6 @@ static bool rs485_engine_should_reply_to_poll(const rs485_frame_t *frame)
     return frame->node == rs485_engine_local_node_id();
 }
 
-static void rs485_engine_reply_ack(const rs485_frame_t *poll)
-{
-    rs485_frame_t ack = {
-        .node = poll->node,
-        .msg_id = poll->msg_id,
-        .type = RS485_FRAME_TYPE_ACK,
-        .len = 0U
-    };
-
-    rs485_engine_send(&ack);
-}
-
 static void rs485_engine_feed_parser_bounded(const uint8_t *bytes, uint16_t len)
 {
     uint16_t budget = len;
@@ -249,6 +239,8 @@ void rs485_engine_init(void)
     parser_init();
     node_identity_init();
     local_node_id = rs485_engine_compute_local_node_id();
+    ack_pending = false;
+    memset(&pending_ack_frame, 0, sizeof(pending_ack_frame));
     self_test_pending = false;
     self_test_wire_len = 0U;
     self_test_ready_us = 0U;
@@ -278,6 +270,7 @@ void rs485_engine_enable(void)
 void rs485_engine_disable(void)
 {
     engine_enabled = 0U;
+    ack_pending = false;
     metrics.enabled = false;
     metrics.self_test_active = false;
 }
@@ -341,6 +334,12 @@ void IRAM_ATTR rs485_engine_tick_1ms(void)
     if (!engine_enabled)
         return;
 
+    if (ack_pending)
+    {
+        ack_pending = false;
+        rs485_engine_send(&pending_ack_frame);
+    }
+
     uint64_t now = (uint64_t)esp_timer_get_time();
 
     for (int i = 0; i < RS485_ENGINE_MAX_NODES; i++)
@@ -376,14 +375,12 @@ rs485_engine_rx_result_t rs485_engine_receive(rs485_frame_t *frame)
         }
     }
 
-    uint16_t bytes_processed = 0U;
+    uint8_t rx_chunk[RS485_ENGINE_RX_BYTES_PER_CALL];
+    int chunk_len = rs485_read_bytes(rx_chunk, sizeof(rx_chunk));
 
-    while (rs485_available() && bytes_processed < RS485_ENGINE_RX_BYTES_PER_CALL)
+    for (int i = 0; i < chunk_len; i++)
     {
-        uint8_t byte = rs485_read_byte();
-        bytes_processed++;
-
-        if (parser_process_byte(byte))
+        if (parser_process_byte(rx_chunk[i]))
             break;
     }
 
@@ -423,7 +420,11 @@ rs485_engine_rx_result_t rs485_engine_receive(rs485_frame_t *frame)
     {
         if (rs485_engine_should_reply_to_poll(frame))
         {
-            rs485_engine_reply_ack(frame);
+            pending_ack_frame.node = frame->node;
+            pending_ack_frame.msg_id = frame->msg_id;
+            pending_ack_frame.type = RS485_FRAME_TYPE_ACK;
+            pending_ack_frame.len = 0U;
+            ack_pending = true;
             return RS485_ENGINE_RX_NONE;
         }
 

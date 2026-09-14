@@ -1,0 +1,102 @@
+================================================================================
+ENDAP v15.4+ — FINAL OPERATIONAL DEMO & PRESENTATION SCRIPT
+Edge-Native Distributed Automation Platform
+================================================================================
+
+DURAÇÃO TOTAL ESTIMADA: 7 a 9 minutos
+ALVO: Apresentação de TCC / Demonstração Técnica de Produto
+REQUISITOS: ESP1 (Gateway Coordenador) + ESP2 (Field Node) conectados à rede local
+DISPOSITIVOS FÍSICOS DE TESTE:
+  - Entrada: Botão / Chave táctil em GPIO 18 (DI00)
+  - Saída: LED indicador / Relé óptico em GPIO 2 (DO00)
+
+--------------------------------------------------------------------------------
+BLOCO 1 — ABERTURA E VISÃO GERAL DA ARQUITETURA (1 min 30 s)
+--------------------------------------------------------------------------------
+AÇÃO NA DASHBOARD:
+1. Abrir o navegador em http://192.168.4.1/dash (ou IP local do Gateway).
+2. Estar posicionado na aba "Operação".
+3. Apontar para o cabeçalho: Node ID, IP ativo, Uptime e Enlace (Ethernet/Wi-Fi).
+
+FALA DO APRESENTADOR:
+"Esta é a interface operacional do ENDAP — Edge-Native Distributed Automation Platform.
+Aqui temos uma arquitetura distribuída operando local-first com execução determinística em tempo real.
+No cabeçalho, podemos observar a topologia ativa: o ESP1 atuando como Gateway Coordenador e o ESP2 como Nó de Campo.
+A plataforma unifica em uma visão única os sensores em tempo real, as automações ativas e os atuadores da planta."
+
+--------------------------------------------------------------------------------
+BLOCO 2 — APRESENTAÇÃO DO PAINEL DE AUTOMAÇÕES EM EXECUÇÃO (1 min 30 s)
+--------------------------------------------------------------------------------
+AÇÃO NA DASHBOARD:
+1. Na aba "Operação", rolar até o card central "Automações em Execução".
+2. Mostrar a regra configurada:
+   - Nome: "Controle de Indicador via Botão de Teste"
+   - Node: "ESP1 · Gateway Coordenador"
+   - Condição: "SE DI00 · Botão de Teste >= 1 (FOLLOW)"
+   - Badge de Modo: [ MODO: AUTOMÁTICO ] (azul)
+   - Badge de Condição: [ ○ FALSA ] (cinza)
+   - Status da Saída: [ ○ DESLIGADA ] (cinza)
+
+FALA DO APRESENTADOR:
+"Aqui no painel 'Automações em Execução', visualizamos as regras lógicas carregadas no motor determinístico.
+Observem que esta regra está operando continuamente em MODO AUTOMÁTICO dentro do loop de 1 milissegundo do firmware.
+Neste momento de repouso, o botão de teste está solto, logo a condição está FALSA e o atuador físico permanece DESLIGADO."
+
+--------------------------------------------------------------------------------
+BLOCO 3 — PROVOCAÇÃO DA CONDIÇÃO FÍSICA E RESPOSTA DETERMINÍSTICA (1 min 30 s)
+--------------------------------------------------------------------------------
+AÇÃO FÍSICA / DASHBOARD:
+1. Pressionar fisicamente o Botão de Teste conectado em GPIO 18 (DI00).
+2. Manter pressionado e apontar para a Dashboard e para o LED físico (GPIO 2).
+3. Observar a transição instantânea:
+   - LED físico acende.
+   - Badge de condição muda para [ ● VERDADEIRA ] (verde).
+   - Badge da saída muda para [ ● LIGADA ] (verde).
+   - Última ação reporta: "applied-local".
+4. Soltar o botão físico.
+5. Observar o LED desligar e a Dashboard voltar para [ ○ FALSA ] e [ ○ DESLIGADA ].
+
+FALA DO APRESENTADOR:
+"Atenção a este ponto fundamental: eu NÃO cliquei em nenhum botão virtual da tela para 'executar a regra'.
+Eu alterei a variável física do processo ao acionar o sensor.
+O kernel do ENDAP avaliou a condição no ciclo de controle, comutou a saída física com latência sub-milissegundo e atualizou a Dashboard em tempo real via WebSocket sem qualquer necessidade de recarregar a página."
+
+--------------------------------------------------------------------------------
+BLOCO 4 — INTERVENÇÃO MANUAL E FORÇAMENTO OPERACIONAL (1 min 30 s)
+--------------------------------------------------------------------------------
+AÇÃO NA DASHBOARD:
+1. No card da automação, clicar no botão [ ⚙ CONTROLE MANUAL ].
+2. O modal 'manual_output_modal' se abre exibindo o estado da saída e da regra.
+3. Clicar em [ Forçar Ligar ].
+4. Observar:
+   - O LED físico acende imediatamente por comando forçado do operador.
+   - O badge transiciona para [ MODO: MANUAL / FORÇADO ] (amarelo).
+   - O card registra que a saída foi forçada manualmente, preservando as travas de segurança (failsafe e interlock).
+
+FALA DO APRESENTADOR:
+"Mesmo com o sistema em malha automática, o operador possui capacidade de intervenção pontual.
+Ao abrir o Controle Manual e forçar o acionamento, o canal assume o estado FORÇADO.
+O sistema notifica a operação com destaque visual em amarelo, indicando que a malha está sob comando manual explícito."
+
+--------------------------------------------------------------------------------
+BLOCO 5 — LIBERAÇÃO E DEVOLUÇÃO AO CONTROLE AUTOMÁTICO (1 min 00 s)
+--------------------------------------------------------------------------------
+AÇÃO NA DASHBOARD:
+1. Abrir novamente [ ⚙ CONTROLE MANUAL ].
+2. Clicar em [ Liberar para Automático ].
+3. Observar:
+   - O modo retorna imediatamente para [ MODO: AUTOMÁTICO ] (azul).
+   - Como o botão físico está solto (condição falsa), a saída desliga automaticamente.
+   - Pressionar o botão físico mais uma vez para provar que a automação está 100% ativa.
+
+FALA DO APRESENTADOR:
+"Ao selecionar 'Liberar para Automático', a saída é instantaneamente devolvida à governança do Automation Engine.
+A lógica retoma o controle de forma transparente, garantindo confiabilidade total e continuidade operacional."
+
+--------------------------------------------------------------------------------
+BLOCO 6 — ENCERRAMENTO (30 s)
+--------------------------------------------------------------------------------
+FALA DO APRESENTADOR:
+"Comprovamos assim o ciclo completo do ENDAP: aquisição em tempo real, execução determinística local, supervisão rica em Dashboard local-first e capacidade de override seguro.
+Muito obrigado."
+================================================================================

@@ -286,11 +286,9 @@ static void core_start_cluster_transport_explicit(const char *reason,
 
     if (cluster_started)
     {
-        cluster_transport_set_active_type(transport_type);
         ESP_LOGI(TAG,
-                 "%s -> cluster transporte atualizado para %s",
-                 reason ? reason : "cluster",
-                 cluster_transport_active_name());
+                 "%s -> cluster ja iniciado, delegando reavaliacao ao cluster_transport",
+                 reason ? reason : "cluster");
         return;
     }
 
@@ -530,9 +528,10 @@ static void core_init_infrastructure(void)
             .tx_pin             = 25,
             .rx_pin             = 26,
             .de_pin             = 27,
-            .baudrate           = 9600,
+            .re_pin             = 14,
+            .baudrate           = 115200,
             .auto_direction     = false,
-            .tx_guard_us        = 3000,
+            .tx_guard_us        = 200,
             .rx_recovery_us     = 2000,
             .tx_done_timeout_ms = 20,
         });
@@ -625,6 +624,7 @@ static void core_init_services(void)
     telemetry_init();
     io_driver_init();
     (void)pve_run_self_tests();
+    (void)ladder_engine_run_self_test();
     network_ready_init();
     network_ready_register_callback(on_network_ready, NULL);
     node_registry_init();
@@ -657,7 +657,8 @@ static void core_init_services(void)
         ethernet_manager_init();
         core_mem_audit("POST_ETHERNET_INIT");
     }
-    else if (device_profile_should_start_rs485_on_boot())
+    
+    if (device_profile_should_start_rs485_on_boot())
     {
         core_try_rs485_cluster_bootstrap();
     }

@@ -23,6 +23,8 @@
 #define INPUT_DIAG_PERIOD_US   (5ULL * 1000ULL * 1000ULL)
 #define IO_DRIVER_MAX_OUTPUTS  16
 #define IO_DRIVER_MAX_INPUTS   16
+#define ADC_DEADBAND_COUNTS    64
+#define ADC_SETTLE_SAMPLES     3
 
 static uint8_t last_index = 0;
 static uint64_t last_diag_report_us = 0;
@@ -66,6 +68,7 @@ typedef struct
     device_channel_backend_t backend;
     int endpoint_index;
     int32_t last_adc_raw;
+    uint8_t adc_settle_count;
 } input_channel_t;
 
 static input_channel_t input_table[IO_DRIVER_MAX_INPUTS];
@@ -145,6 +148,7 @@ static void io_driver_load_profile(void)
             .backend = binding->backend,
             .endpoint_index = binding->endpoint_index,
             .last_adc_raw = 0,
+            .adc_settle_count = 0,
         };
         input_count++;
     }
@@ -333,12 +337,8 @@ void io_driver_init(void)
             {
                 .pin_bit_mask = (1ULL << input_table[i].gpio),
                 .mode = GPIO_MODE_INPUT,
-                .pull_up_en = device_profile_gpio_is_input_only(input_table[i].gpio)
-                    ? GPIO_PULLUP_DISABLE
-                    : (input_table[i].active_low ? GPIO_PULLUP_ENABLE : GPIO_PULLUP_DISABLE),
-                .pull_down_en = device_profile_gpio_is_input_only(input_table[i].gpio)
-                    ? GPIO_PULLDOWN_DISABLE
-                    : (input_table[i].active_low ? GPIO_PULLDOWN_DISABLE : GPIO_PULLDOWN_ENABLE),
+                .pull_up_en = input_table[i].active_low ? GPIO_PULLUP_ENABLE : GPIO_PULLUP_DISABLE,
+                .pull_down_en = input_table[i].active_low ? GPIO_PULLDOWN_DISABLE : GPIO_PULLDOWN_ENABLE,
                 .intr_type = GPIO_INTR_DISABLE
             };
 
@@ -438,11 +438,22 @@ void IRAM_ATTR io_driver_scan_inputs(void)
                 {
                     int32_t diff = raw_val - ch->last_adc_raw;
                     if (diff < 0) diff = -diff;
-                    if (diff >= 8 || ch->last_adc_raw == 0)
+
+                    if (diff >= ADC_DEADBAND_COUNTS)
                     {
-                        ch->last_adc_raw = raw_val;
-                        state_set_int(ch->id, raw_val);
+                        ch->adc_settle_count++;
+                        if (ch->adc_settle_count >= ADC_SETTLE_SAMPLES)
+                        {
+                            ch->last_adc_raw = raw_val;
+                            ch->adc_settle_count = 0;
+                            state_set_int(ch->id, raw_val);
+                        }
                     }
+                    else
+                    {
+                        ch->adc_settle_count = 0;
+                    }
+
                     io_image_set_input(ch->id, raw_val);
 
                     if (ch->gpio == GPIO_NUM_34) {
@@ -458,29 +469,30 @@ void IRAM_ATTR io_driver_scan_inputs(void)
         int level = gpio_get_level(ch->gpio);
         uint8_t logical = ch->active_low ? (level == 0) : (level != 0);
 
-        io_image_set_input(ch->id, logical);
-
         if (logical != ch->last_sample)
         {
             ch->last_sample = logical;
             ch->stable_count = 1;
             ch->raw_edges++;
-            continue;
         }
-
-        if (ch->stable_count < ch->debounce_samples)
+        else if (ch->stable_count < ch->debounce_samples)
         {
             ch->stable_count++;
-
-            if (ch->stable_count < ch->debounce_samples)
-                continue;
         }
 
-        if (ch->stable_value != logical)
+        /*
+         * Publica somente o valor estabilizado (debounced) na imagem e no
+         * estado. Escrever o valor cru a cada scan faz a linha do ladder
+         * "piscar" e a saida comutar com ruido de contato do comando real.
+         */
+        if (ch->stable_count >= ch->debounce_samples && ch->stable_value != logical)
         {
             ch->stable_value = logical;
             ch->stable_edges++;
+
+            io_image_set_input(ch->id, logical);
             state_set_int(ch->id, logical);
+            http_server_notify_state_change();
         }
     }
 }
@@ -600,11 +612,8 @@ void IRAM_ATTR io_driver_update(void)
     if (mask == 0)
         return;
 
-    /* 🔥 round-robin: evita pico concentrado */
-    for (size_t j = 0; j < output_count; j++)
+    for (size_t i = 0; i < output_count; i++)
     {
-        size_t i = (last_index + j) % output_count;
-
         if (mask & (1U << i))
         {
             if (!cluster_io_is_local(output_table[i].id))
@@ -612,14 +621,6 @@ void IRAM_ATTR io_driver_update(void)
                 uint32_t target_level = io_driver_output_gpio_level(&output_table[i], false);
                 if (output_table[i].gpio != GPIO_NUM_NC && (int)output_table[i].gpio >= 0)
                 {
-                    ESP_LOGW("MANUAL_IO",
-                             "Applying output=%u state=%u",
-                             (uint32_t)output_table[i].id,
-                             0U);
-                    ESP_LOGW("MANUAL_IO",
-                             "GPIO=%u -> level=%u",
-                             (uint32_t)output_table[i].gpio,
-                             (uint32_t)target_level);
                     gpio_set_level(output_table[i].gpio, target_level);
                 }
             }
@@ -632,25 +633,39 @@ void IRAM_ATTR io_driver_update(void)
                     uint32_t target_level = io_driver_output_gpio_level(&output_table[i], value != 0);
                     if (output_table[i].gpio != GPIO_NUM_NC && (int)output_table[i].gpio >= 0)
                     {
-                        ESP_LOGW("MANUAL_IO",
-                                 "Applying output=%u state=%u",
-                                 (uint32_t)output_table[i].id,
-                                 (uint32_t)(value != 0));
-                        ESP_LOGW("MANUAL_IO",
-                                 "GPIO=%u -> level=%u",
-                                 (uint32_t)output_table[i].gpio,
-                                 (uint32_t)target_level);
                         gpio_set_level(output_table[i].gpio, target_level);
                     }
                 }
             }
 
-            /* 🔥 remove só este bit */
             pending_mask &= ~(1U << i);
-
-            last_index = (uint8_t)(i + 1U);
-
-            return; // 🔥 SÓ 1 POR CICLO
         }
     }
 }
+
+bool io_driver_get_output_physical_level(uint16_t id, int32_t *out_physical_val)
+{
+    if (!out_physical_val)
+        return false;
+
+    for (size_t i = 0; i < output_count; i++)
+    {
+        if (output_table[i].id == id)
+        {
+            if (output_table[i].gpio == GPIO_NUM_NC || (int)output_table[i].gpio < 0)
+            {
+                int32_t val = 0;
+                (void)state_get_int(id, &val);
+                *out_physical_val = val;
+                return true;
+            }
+
+            int level = gpio_get_level(output_table[i].gpio);
+            *out_physical_val = output_table[i].active_low ? (level == 0 ? 1 : 0) : (level != 0 ? 1 : 0);
+            return true;
+        }
+    }
+
+    return false;
+}
+

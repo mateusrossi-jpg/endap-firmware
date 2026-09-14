@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef struct
 {
@@ -19,3 +20,5 @@ void io_driver_scan_inputs(void);
 void io_driver_update(void);
 void io_driver_process(void);
 int io_driver_get_input_diag(io_driver_input_diag_t *out, int max_inputs);
+bool io_driver_get_output_physical_level(uint16_t id, int32_t *out_physical_val);
+

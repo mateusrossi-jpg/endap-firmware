@@ -14,7 +14,4 @@ void scheduler_run_automation(void);
 /* Events */
 void scheduler_run_events(void);
 
-/* Diagnostics */
-void scheduler_run_diagnostics(void);
-
 #endif

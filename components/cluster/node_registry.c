@@ -93,6 +93,8 @@ static uint8_t node_registry_transport_from_cluster(uint8_t transport)
             return NODE_REGISTRY_TRANSPORT_ETHERNET_UDP;
         case CLUSTER_TRANSPORT_RS485:
             return NODE_REGISTRY_TRANSPORT_RS485_CLUSTER;
+        case CLUSTER_TRANSPORT_WIFI_NOW:
+            return NODE_REGISTRY_TRANSPORT_WIFI_NOW;
         case CLUSTER_TRANSPORT_NONE:
         default:
             return NODE_REGISTRY_TRANSPORT_NONE;
@@ -532,6 +534,13 @@ void node_registry_process(void)
 
         entry->last_seen_ms = snapshot[i].last_seen_ms;
         entry->cluster_state = (uint8_t)snapshot[i].state;
+        if (snapshot[i].state == CLUSTER_NODE_ONLINE)
+            entry->health = 100U;
+        else if (snapshot[i].state == CLUSTER_NODE_SUSPECT)
+            entry->health = 50U;
+        else
+            entry->health = 0U;
+
         if (entry->last_transport == NODE_REGISTRY_TRANSPORT_NONE)
             entry->last_transport = NODE_REGISTRY_TRANSPORT_NONE;
         entry->offline_reason = node_registry_compute_offline_reason(entry);
@@ -539,6 +548,18 @@ void node_registry_process(void)
 
         if (is_new && new_count < NODE_REGISTRY_MAX_NODES)
             new_nodes[new_count++] = snapshot[i].node_id;
+    }
+
+    if (metrics.self_node != 0U)
+    {
+        node_registry_entry_t *self_entry = node_registry_find_locked(metrics.self_node);
+        if (self_entry)
+        {
+            self_entry->cluster_state = (uint8_t)CLUSTER_NODE_ONLINE;
+            self_entry->health = 100U;
+            self_entry->offline_reason = (uint8_t)NODE_REGISTRY_OFFLINE_NONE;
+            self_entry->recovery_capabilities = node_registry_default_recovery_caps();
+        }
     }
 
     portEXIT_CRITICAL(&node_registry_lock);
@@ -956,6 +977,8 @@ const char *node_registry_transport_name(uint8_t transport)
             return "ethernet-udp";
         case NODE_REGISTRY_TRANSPORT_RS485_CLUSTER:
             return "rs485-cluster";
+        case NODE_REGISTRY_TRANSPORT_WIFI_NOW:
+            return "wifi-now";
         case NODE_REGISTRY_TRANSPORT_NONE:
         default:
             return "none";

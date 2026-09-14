@@ -6,15 +6,13 @@ void kernel_phase_metrics_update(
     uint32_t io,
     uint32_t fieldbus,
     uint32_t automation,
-    uint32_t events,
-    uint32_t diagnostics
+    uint32_t events
 )
 {
     phase_metrics.io_max = io;
     phase_metrics.fieldbus_max = fieldbus;
     phase_metrics.automation_max = automation;
     phase_metrics.events_max = events;
-    phase_metrics.diagnostics_max = diagnostics;
 }
 
 void kernel_phase_metrics_get(kernel_phase_metrics_t *m)

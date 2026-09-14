@@ -47,6 +47,10 @@ void pve_update(
     int32_t raw_value
 );
 
+void pve_clear_variable(
+    pve_variable_t *var
+);
+
 int32_t pve_get_scaled_value(uint16_t state_id, int32_t fallback);
 
 void pve_save_config(void);

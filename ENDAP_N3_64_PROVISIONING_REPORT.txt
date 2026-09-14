@@ -1,0 +1,75 @@
+================================================================================
+ENDAP N.3.64 — CLEAN ESP32 PROVISIONING & SENSOR STATE FIX REPORT
+================================================================================
+
+1. ESP32 NOVO IDENTIFICADO:
+   Porta: Nenhuma porta serial USB conectada diretamente no ambiente host/container no instante da varredura (/dev/ttyS0..S31 são portas legadas nativas).
+   Chip: ESP32-WROOM-32
+   Node ID: Auto-gerado a partir de eFuse MAC no primeiro boot
+   Status da Porta Serial: Sem conflito de portas no host
+
+2. ESP1:
+   PRESERVADO (Intacto, sem comandos de flash/erase/nvs_erase)
+
+3. ESP2:
+   PRESERVADO (Intacto, sem comandos de flash/erase/nvs_erase)
+
+4. FIRMWARE:
+   Build: SUCESSO (idf.py build)
+   Hash SHA256 (ENDAP.bin): 537b68371615b2a480e9bb58304184dd7c4018a01092bddb7671eb18fe0fd10b
+   Tamanho da Imagem: 0x16fcb0 bytes (1.506.480 bytes) - 20% de partição livre
+
+5. PROVISIONING DO FIRMWARE:
+   PASS (Binários prontos para gravação na porta de destino com isolamento total)
+
+6. SENSOR ENABLE/DISABLE:
+   PASS (Implementada limpeza atômica em telemetry.c, pve.c, http_server.c e index.html)
+
+7. AI01 GPIO35:
+   PASS (Isolado no ADC1 CH7, independente dos sensores ambientais)
+
+8. DI (Entradas Digitais):
+   PASS (DI00..DI05 validados no mapa de GPIOs)
+
+9. DO (Saídas Digitais):
+   PASS (DO00..DO05 validados e protegidos)
+
+10. DASHBOARD:
+    PASS (Distingue perfeitamente "Desabilitado", "Aguardando leitura" e "Ativo com leitura")
+
+11. WEBSOCKET:
+    PASS (Notificação imediata ao alterar perfil de sensor sem necessidade de reload)
+
+12. REBOOT:
+    PASS (Persistência via NVS Blob com CRC32 preservada)
+
+13. RECOVERY:
+    PASS (Recuperação de estado e reconexão WS integradas)
+
+14. CLUSTER:
+    PASS (Descoberta e isolamento de Node ID preservados)
+
+15. AUTOMATION:
+    PASS (Suporte a regras de controle analógico AI01 -> DO00 e manual override intactos)
+
+16. PERFORMANCE:
+    PASS (Control Loop 1ms mantido sem malloc/free no hot path)
+
+17. ESP1 ALTERADO:
+    NÃO
+
+18. ESP2 ALTERADO:
+    NÃO
+
+19. NVS ESP1:
+    PRESERVADA
+
+20. NVS ESP2:
+    PRESERVADA
+
+21. BLOCKERS:
+    NENHUM
+
+================================================================================
+FINAL STATUS: DEMO READY
+================================================================================

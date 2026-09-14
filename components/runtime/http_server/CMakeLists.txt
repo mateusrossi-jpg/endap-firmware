@@ -7,7 +7,6 @@ idf_component_register(
     event_set
     io_command
     automation ladder
-    dashboard
     wifi_manager
     network_ready
     cluster

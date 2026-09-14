@@ -9,7 +9,6 @@ typedef struct
     uint32_t fieldbus_max;
     uint32_t automation_max;
     uint32_t events_max;
-    uint32_t diagnostics_max;
 
 } kernel_phase_metrics_t;
 
@@ -17,8 +16,7 @@ void kernel_phase_metrics_update(
     uint32_t io,
     uint32_t fieldbus,
     uint32_t automation,
-    uint32_t events,
-    uint32_t diagnostics
+    uint32_t events
 );
 
 void kernel_phase_metrics_get(kernel_phase_metrics_t *m);

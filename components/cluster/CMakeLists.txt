@@ -17,6 +17,7 @@ idf_component_register(
 
     REQUIRES
         core
+        system_diag
         device_profile
         esp_timer
         failsafe

@@ -1,0 +1,31 @@
+================================================================================
+ENDAP N.3.64 — OFFICIAL DEMONSTRATION & REVERSIBILITY CHECKLIST
+================================================================================
+
+[X] 1. FASE 0 & SEGURANÇA DE HARDWARE
+    - Verificação de portas USB/TTY no host.
+    - Zero operações destrutivas em nós existentes (ESP1 e ESP2 100% intactos).
+
+[X] 2. COMPILAÇÃO LIMPA E ARQUITETURA
+    - Build limpo do firmware ELF e binários (bootloader, partition-table, ENDAP.bin).
+    - Zero malloc/free adicionados no control loop (1ms).
+    - Preservado determinismo, phase monitor e integridade do RTOS.
+
+[X] 3. SENSOR ENABLE/DISABLE REVERSIBILITY (AHT10 / DS18B20 / DHT11)
+    - Transição OFF -> ON: Habilita driver, gera leituras / simulação calibrada, atualiza PVE, emite WS.
+    - Transição ON -> OFF: Zera pve_variables imediatamente, zera state_engine (14..18), notifica WS, Dashboard exibe "Desabilitado" e "-- °C / -- %".
+    - Teste de reboot: Estado persistido no NVS carregado fielmente no boot.
+
+[X] 4. ISOLAMENTO DO SENSOR DE SOLO (AI01 / GPIO35)
+    - AI01 (ADC1 CH7 / GPIO35) permanece independente e preservado.
+    - Nenhuma interferência entre pinos analógicos e barramentos digitais/I2C/OneWire.
+
+[X] 5. PROVISIONING & DEMO WORKFLOW DO NOVO NÓ (ESP NOVO)
+    - RUN 1: Boot limpo, registro automático de Node ID, inicialização de subsistemas.
+    - RUN 2: Habilitar sensor -> Leituras atualizadas em tempo real.
+    - RUN 3: Desabilitar sensor -> Imediata inativação visual e física sem resíduos.
+    - RUN 4: Automação AI01 >= threshold -> DO00 acionado determinísticamente.
+    - RUN 5: Manual override testado -> Retorno para controle automático.
+    - RUN 6: Reboot e preservação de estado via NVS.
+    - RUN 7: Descoberta e convivência no cluster de nós ENDAP.
+================================================================================

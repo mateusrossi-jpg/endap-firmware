@@ -72,42 +72,42 @@ static node_profile_t current_node_profile = NODE_PROFILE_FIELD;
 
 static const device_input_profile_t input_profile[] =
 {
-    {ENDAP_INPUT_ID(0), "GPIO16", "Entrada Digital GPIO 16", GPIO_NUM_NC, true, 5},
-    {ENDAP_INPUT_ID(1), "GPIO17", "Entrada Digital GPIO 17", GPIO_NUM_NC, true, 5},
-    {ENDAP_INPUT_ID(2), "GPIO18", "Entrada Digital GPIO 18", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(3), "GPIO19", "Entrada Digital GPIO 19", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(4), "GPIO21", "Entrada Digital GPIO 21", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(5), "GPIO22", "Entrada Digital GPIO 22", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(6), "GPIO23", "Entrada Digital GPIO 23", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(7), "GPIO25", "Entrada Digital / ADC2 GPIO 25", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(8), "GPIO26", "Entrada Digital / ADC2 GPIO 26", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(9), "GPIO27", "Entrada Digital / ADC2 GPIO 27", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(10), "GPIO32", "Entrada Digital / ADC1 GPIO 32", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(11), "GPIO33", "Entrada Digital / ADC1 GPIO 33", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(12), "GPIO34", "Entrada Apenas / ADC1 GPIO 34", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(13), "GPIO35", "Entrada Apenas / ADC1 GPIO 35", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(14), "GPIO36", "Entrada Apenas / ADC1 GPIO 36 (VP)", GPIO_NUM_NC, false, 5},
-    {ENDAP_INPUT_ID(15), "GPIO39", "Entrada Apenas / ADC1 GPIO 39 (VN)", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(0), "GPIO16", "Entrada Digital GPIO 16", GPIO_NUM_16, false, 5},
+    {ENDAP_INPUT_ID(1), "GPIO17", "Entrada Digital GPIO 17", GPIO_NUM_17, false, 5},
+    {ENDAP_INPUT_ID(2), "GPIO21", "Entrada Digital GPIO 21", GPIO_NUM_21, false, 5},
+    {ENDAP_INPUT_ID(3), "GPIO22", "Entrada Desativada (Reservado Output Q0.0 / GPIO 22)", GPIO_NUM_NC, false, 5},
+    {ENDAP_INPUT_ID(4), "GPIO27", "Entrada Digital GPIO 27", GPIO_NUM_27, false, 5},
+    {ENDAP_INPUT_ID(5), "GPIO26", "Entrada Digital GPIO 26", GPIO_NUM_26, false, 5},
+    {ENDAP_INPUT_ID(6), "GPIO18", "Entrada Digital GPIO 18", GPIO_NUM_18, false, 5},
+    {ENDAP_INPUT_ID(7), "GPIO19", "Entrada Digital GPIO 19", GPIO_NUM_19, false, 5},
+    {ENDAP_INPUT_ID(8), "GPIO23", "Entrada Digital GPIO 23", GPIO_NUM_23, false, 5},
+    {ENDAP_INPUT_ID(9), "GPIO32", "Entrada Digital / ADC1 GPIO 32", GPIO_NUM_32, false, 5},
+    {ENDAP_INPUT_ID(10), "GPIO33", "Entrada Digital / ADC1 GPIO 33", GPIO_NUM_33, false, 5},
+    {ENDAP_INPUT_ID(11), "GPIO25", "Entrada Digital / ADC2 GPIO 25", GPIO_NUM_25, false, 5},
+    {ENDAP_INPUT_ID(12), "GPIO34", "Entrada Apenas / ADC1 GPIO 34", GPIO_NUM_34, false, 5},
+    {ENDAP_INPUT_ID(13), "GPIO35", "Entrada Apenas / ADC1 GPIO 35", GPIO_NUM_35, false, 5},
+    {ENDAP_INPUT_ID(14), "GPIO36", "Entrada Apenas / ADC1 GPIO 36 (VP)", GPIO_NUM_36, false, 5},
+    {ENDAP_INPUT_ID(15), "GPIO39", "Entrada Apenas / ADC1 GPIO 39 (VN)", GPIO_NUM_39, false, 5},
 };
 
 static const device_output_profile_t output_profile[] =
 {
-    {ENDAP_OUTPUT_ID(0), "GPIO2", "Saída / Relé / LED GPIO 2", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(1), "GPIO4", "Saída / Relé 1 GPIO 4", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(2), "GPIO5", "Saída / Relé 2 GPIO 5", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(3), "GPIO13", "Saída / Relé 3 GPIO 13", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(4), "GPIO14", "Saída / Relé 4 GPIO 14", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(5), "GPIO16", "Saída / Relé GPIO 16", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(6), "GPIO17", "Saída / Relé GPIO 17", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(7), "GPIO18", "Saída / Relé GPIO 18", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(8), "GPIO19", "Saída / Relé GPIO 19", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(9), "GPIO21", "Saída / Relé GPIO 21", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(10), "GPIO22", "Saída / Relé GPIO 22", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(11), "GPIO23", "Saída / Relé GPIO 23", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(12), "GPIO25", "Saída / Relé GPIO 25", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(13), "GPIO26", "Saída / Relé GPIO 26", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(14), "GPIO27", "Saída / Relé GPIO 27", GPIO_NUM_NC, false},
-    {ENDAP_OUTPUT_ID(15), "GPIO32", "Saída / Relé GPIO 32", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(0), "GPIO22", "Saída / Relé 0 GPIO 22", GPIO_NUM_22, true},
+    {ENDAP_OUTPUT_ID(1), "GPIO4", "Saída / Relé 1 GPIO 4", GPIO_NUM_4, true},
+    {ENDAP_OUTPUT_ID(2), "GPIO5", "Saída / Relé 2 GPIO 5", GPIO_NUM_5, true},
+    {ENDAP_OUTPUT_ID(3), "GPIO14", "Saída / Relé 3 GPIO 14", GPIO_NUM_14, true},
+    {ENDAP_OUTPUT_ID(4), "GPIO25", "Saída Desativada (Reservado Input GPIO 25)", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(5), "GPIO33", "Saída / Relé 5 GPIO 33", GPIO_NUM_33, true},
+    {ENDAP_OUTPUT_ID(6), "GPIO13", "Saída / Relé GPIO 13", GPIO_NUM_13, true},
+    {ENDAP_OUTPUT_ID(7), "GPIO16", "Saída / Relé GPIO 16", GPIO_NUM_16, true},
+    {ENDAP_OUTPUT_ID(8), "GPIO17", "Saída / Relé GPIO 17", GPIO_NUM_17, true},
+    {ENDAP_OUTPUT_ID(9), "GPIO18", "Saída / Relé GPIO 18", GPIO_NUM_18, true},
+    {ENDAP_OUTPUT_ID(10), "GPIO19", "Saída / Relé GPIO 19", GPIO_NUM_19, true},
+    {ENDAP_OUTPUT_ID(11), "GPIO21", "Saída / Relé GPIO 21", GPIO_NUM_21, true},
+    {ENDAP_OUTPUT_ID(12), "GPIO22", "Saída / Relé GPIO 22", GPIO_NUM_22, true},
+    {ENDAP_OUTPUT_ID(13), "GPIO23", "Saída / Relé GPIO 23", GPIO_NUM_23, true},
+    {ENDAP_OUTPUT_ID(14), "GPIO26", "Saída Desativada (Reservado Input GPIO 26)", GPIO_NUM_NC, false},
+    {ENDAP_OUTPUT_ID(15), "GPIO32", "Saída / Relé GPIO 32", GPIO_NUM_32, true},
 };
 
 static const device_default_automation_t default_automation[] = {};
@@ -134,7 +134,6 @@ static const device_gpio_option_t input_gpio_options[] =
 
 static const device_gpio_option_t output_gpio_options[] =
 {
-    {GPIO_NUM_2, "GPIO2"},
     {GPIO_NUM_4, "GPIO4"},
     {GPIO_NUM_5, "GPIO5"},
     {GPIO_NUM_13, "GPIO13"},
@@ -181,7 +180,7 @@ static const device_expansion_capabilities_t expansion_capabilities =
     .supports_ads1115 = true,
     .recommended_external_adc_instances = 2,
     .channels_per_external_adc = 4,
-    .native_analog_input_channels = 6,
+    .native_analog_input_channels = 4,
     .notes = "GPIO nativo continua sendo a base. MCP23x17 e ADCs externos entram como expansao local opcional por perfil de no.",
 };
 
@@ -791,7 +790,7 @@ static void device_profile_init_network_profile(void)
 
     network_profile.wifi_supported = CONFIG_ENDAP_WIFI_ENABLED;
     network_profile.ethernet_supported = CONFIG_ENDAP_ETHERNET_ENABLED;
-    network_profile.rs485_supported = true;
+    network_profile.rs485_supported = CONFIG_ENDAP_RS485_ENABLED;
     network_profile.wifi_enabled = network_profile.wifi_supported;
     network_profile.ethernet_enabled = false;
     network_profile.rs485_enabled = false;
@@ -1223,6 +1222,100 @@ bool device_profile_gpio_is_input_only(gpio_num_t gpio)
            gpio == GPIO_NUM_39;
 }
 
+const char *device_profile_gpio_reserved_by(gpio_num_t gpio)
+{
+    if (gpio == GPIO_NUM_1 || gpio == GPIO_NUM_3)
+        return "UART/Console";
+
+    if (gpio == GPIO_NUM_0 || gpio == GPIO_NUM_12 || gpio == GPIO_NUM_15)
+        return "Strapping/Boot";
+
+    if (gpio >= GPIO_NUM_6 && gpio <= GPIO_NUM_11)
+        return "Flash SPI";
+
+    const device_sensor_profile_t *sensors = device_profile_get_sensors();
+    if (sensors) {
+        if (sensors->aht10_enabled && (gpio == (gpio_num_t)sensors->aht10_sda_gpio || gpio == (gpio_num_t)sensors->aht10_scl_gpio))
+            return "I2C/AHT10";
+        if (sensors->dht11_enabled && gpio == (gpio_num_t)sensors->dht11_gpio)
+            return "DHT11";
+        if (sensors->ds18b20_enabled && gpio == (gpio_num_t)sensors->ds18b20_gpio)
+            return "DS18B20";
+    }
+
+    const device_network_profile_t *network = device_profile_network();
+    if (network && network->rs485_supported && network->rs485_enabled)
+    {
+        if (gpio == GPIO_NUM_14 || gpio == GPIO_NUM_25 || gpio == GPIO_NUM_26 || gpio == GPIO_NUM_27)
+            return "RS-485";
+    }
+
+    if (network && network->ethernet_supported && network->ethernet_enabled &&
+        device_profile_w5500_is_configured_from_profile(network))
+    {
+        const device_network_w5500_profile_t *w5500 = &network->w5500;
+        if (gpio == w5500->mosi_gpio || gpio == w5500->miso_gpio ||
+            gpio == w5500->sclk_gpio || gpio == w5500->cs_gpio ||
+            gpio == w5500->int_gpio || gpio == w5500->reset_gpio)
+        {
+            return "W5500";
+        }
+    }
+
+    return NULL;
+}
+
+static const int hardware_monitored_gpios[] = {
+    4, 5, 13, 14, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33, 34, 35, 36, 39
+};
+
+int device_profile_gpio_inventory_count(void)
+{
+    return ARRAY_LEN(hardware_monitored_gpios);
+}
+
+int device_profile_export_gpio_inventory(device_gpio_inventory_item_t *out_items, int max_items)
+{
+    if (!out_items || max_items <= 0)
+        return 0;
+
+    int total = device_profile_gpio_inventory_count();
+    int count = 0;
+
+    for (int i = 0; i < total && count < max_items; i++)
+    {
+        int g = hardware_monitored_gpios[i];
+        gpio_num_t gpio = (gpio_num_t)g;
+        device_gpio_inventory_item_t *item = &out_items[count];
+        memset(item, 0, sizeof(*item));
+
+        item->gpio = g;
+        item->input_capable = (g == 34 || g == 35 || g == 36 || g == 39 ||
+                               device_profile_gpio_is_listed(input_gpio_options, ARRAY_LEN(input_gpio_options), gpio));
+        item->output_capable = !device_profile_gpio_is_input_only(gpio) &&
+                               device_profile_gpio_is_listed(output_gpio_options, ARRAY_LEN(output_gpio_options), gpio);
+        item->analog_capable = (g == 32 || g == 33 || g == 34 || g == 35 || g == 36 || g == 39);
+
+        const char *res = device_profile_gpio_reserved_by(gpio);
+        if (res)
+        {
+            item->state = DEVICE_GPIO_STATE_RESERVED;
+            item->state_str = "RESERVED";
+            item->reserved_by = res;
+        }
+        else
+        {
+            item->state = DEVICE_GPIO_STATE_AVAILABLE;
+            item->state_str = "AVAILABLE";
+            item->reserved_by = NULL;
+        }
+
+        count++;
+    }
+
+    return count;
+}
+
 int device_profile_copy_local_io_ids(uint16_t *out_ids, int max_ids)
 {
     int total = ARRAY_LEN(input_profile) + ARRAY_LEN(output_profile);
@@ -1370,6 +1463,52 @@ esp_err_t device_profile_apply_template(node_profile_t type)
                                          net->recovery_hysteresis_ms);
 
     return device_profile_set_current(type);
+}
+
+int device_profile_plc_channel_count(node_profile_t type)
+{
+    const node_profile_desc_t *tpl = device_profile_get_template(type);
+    if (!tpl || !tpl->plc_channels)
+    {
+        return 0;
+    }
+
+    return (int)tpl->plc_channels_len;
+}
+
+const plc_channel_desc_t *device_profile_plc_channel_at(node_profile_t type, int index)
+{
+    const node_profile_desc_t *tpl = device_profile_get_template(type);
+    if (!tpl || !tpl->plc_channels || index < 0 || (size_t)index >= tpl->plc_channels_len)
+    {
+        return NULL;
+    }
+
+    return &tpl->plc_channels[index];
+}
+
+const plc_channel_desc_t *device_profile_get_plc_channel(node_profile_t type, const char *plc_code)
+{
+    if (!plc_code)
+    {
+        return NULL;
+    }
+
+    const node_profile_desc_t *tpl = device_profile_get_template(type);
+    if (!tpl || !tpl->plc_channels)
+    {
+        return NULL;
+    }
+
+    for (size_t i = 0; i < tpl->plc_channels_len; i++)
+    {
+        if (strcmp(tpl->plc_channels[i].plc_code, plc_code) == 0)
+        {
+            return &tpl->plc_channels[i];
+        }
+    }
+
+    return NULL;
 }
 
 

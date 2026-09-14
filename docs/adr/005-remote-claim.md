@@ -10,6 +10,8 @@ Na infraestrutura distribuída do ENDAP, o processo de "Adoção" (Claim) é ini
 Para o comando de Remote Claim, implementamos um Frame Binário Estático `endap_remote_claim_msg_t` com um magic word (`CLM1` = `0x434C4D31`). 
 Esta mensagem é enviada nativamente pelo layer abstrato `cluster_transport`. O Gateway impõe um timeout estrito (3 a 5 segundos) aguardando o reconhecimento síncrono da adoção pelo nó remoto (via semáforos/flags FreeRTOS), antes de reportar sucesso no front-end e atualizar seu próprio registro local (`node_registry`).
 
+**Regra Operacional Crítica:** Para onboarding de um Field Node, a transição do Node Registry do Gateway para ACTIVE depende de um ENDAP_REMOTE_CLAIM_RESP válido, correspondente ao node_id solicitado e com status de sucesso. O gateway jamais pode elevar o estado do nó localmente sem a prova de submissão do nó pela rede.
+
 ## Consequências
 * **Positivas**:
   * Processamento do pacote em $O(1)$ RAM e processamento; o nó remoto pode inspecionar e verificar se é um "claim frame" com zero parse string/JSON e alocação dinâmica.

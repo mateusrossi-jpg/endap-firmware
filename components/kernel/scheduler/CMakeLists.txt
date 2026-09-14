@@ -14,4 +14,5 @@ idf_component_register(
 	event_set
 	io_command
 	state
+	ladder
 )

@@ -13,7 +13,6 @@ Scheduler phases:
 3. Fieldbus
 4. Automation
 5. Events
-6. Diagnostics
 
 The control loop is driven by GPTimer and instrumented continuously.
 

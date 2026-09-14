@@ -77,6 +77,8 @@ automation_result_t automation_engine_add_rule(
 bool automation_engine_remove_node_at(int index);
 void automation_engine_clear(void);
 int automation_engine_get_node_count(void);
+bool automation_engine_set_interlock_at(int index, const automation_interlock_t *interlock);
+bool automation_engine_get_interlock_at(int index, automation_interlock_t *out_interlock);
 int automation_engine_export_nodes(automation_node_t *out, int max_nodes);
 int automation_engine_export_diags(automation_rule_diag_t *out, int max_nodes);
 bool automation_engine_has_persisted_config(void);

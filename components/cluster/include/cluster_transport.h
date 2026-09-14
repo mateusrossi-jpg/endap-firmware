@@ -79,6 +79,30 @@ typedef struct __attribute__((packed)) {
 
 bool cluster_transport_send_remote_claim(uint32_t target_node_id, uint8_t profile, uint32_t gateway_id, const char *node_name, uint32_t timeout_ms);
 
+#define ENDAP_REMOTE_TRANSPORT_MAGIC 0x54525031U
+
+typedef enum {
+    ENDAP_REMOTE_TRANSPORT_SET = 0x01,
+    ENDAP_REMOTE_TRANSPORT_ACK = 0x02
+} endap_remote_transport_type_t;
+
+typedef struct __attribute__((packed)) {
+    uint32_t magic;
+    uint8_t  msg_type;
+    uint8_t  primary_transport;   /* device_profile_transport_t values */
+    uint8_t  fallback_transport;  /* device_profile_transport_t values */
+    uint8_t  wifi_mode;           /* device_profile_wifi_mode_t */
+    uint8_t  flags;               /* bit0=wifi bit1=eth bit2=rs485 */
+    uint16_t status_code;
+    uint32_t target_node_id;
+    uint32_t gateway_id;
+} endap_remote_transport_msg_t;
+
+bool cluster_transport_send_remote_transport_set(
+    uint32_t target_node_id,
+    uint8_t primary, uint8_t fallback, uint8_t wifi_mode, uint8_t flags,
+    uint32_t gateway_id, uint32_t timeout_ms);
+
 #ifdef __cplusplus
 }
 #endif

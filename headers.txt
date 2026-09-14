@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 65679
+Content-Encoding: gzip
+Access-Control-Allow-Origin: *
+Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+Pragma: no-cache
+X-Content-Type-Options: nosniff
+

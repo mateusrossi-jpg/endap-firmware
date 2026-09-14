@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define PHASE_LOAD_TEST_PHASE_COUNT 6U
+#define PHASE_LOAD_TEST_PHASE_COUNT 5U
 #define PHASE_LOAD_TEST_MAX_EXTRA_US 1500U
 
 typedef enum
@@ -13,8 +13,7 @@ typedef enum
     PHASE_LOAD_TEST_IO_APPLY = 1,
     PHASE_LOAD_TEST_FIELDBUS = 2,
     PHASE_LOAD_TEST_AUTOMATION = 3,
-    PHASE_LOAD_TEST_EVENTS = 4,
-    PHASE_LOAD_TEST_DIAGNOSTICS = 5
+    PHASE_LOAD_TEST_EVENTS = 4
 } phase_load_test_phase_t;
 
 typedef struct
@@ -27,7 +26,6 @@ typedef struct
     uint32_t fieldbus_us;
     uint32_t automation_us;
     uint32_t events_us;
-    uint32_t diagnostics_us;
 } phase_load_test_snapshot_t;
 
 void phase_load_test_set(uint8_t phase, uint32_t extra_us);

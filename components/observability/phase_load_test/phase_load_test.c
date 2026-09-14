@@ -76,7 +76,6 @@ void phase_load_test_get(phase_load_test_snapshot_t *snapshot)
     snapshot->fieldbus_us = values[PHASE_LOAD_TEST_FIELDBUS];
     snapshot->automation_us = values[PHASE_LOAD_TEST_AUTOMATION];
     snapshot->events_us = values[PHASE_LOAD_TEST_EVENTS];
-    snapshot->diagnostics_us = values[PHASE_LOAD_TEST_DIAGNOSTICS];
 
     for (uint8_t i = 0; i < PHASE_LOAD_TEST_PHASE_COUNT; i++)
     {
